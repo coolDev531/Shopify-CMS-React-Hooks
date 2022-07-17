@@ -1,0 +1,21 @@
+{%- if input_links -%}
+  [
+  {%- for link in input_links -%}
+    {
+    {% comment %}"active": {{ link.active | json }},{% endcomment %}
+    {% comment %}"child_active": {{ link.child_active | json }},{% endcomment %}
+    {% comment %}"current": {{ link.current | json }},{% endcomment %}
+    {% comment %}"child_current": {{ link.child_current | json }},{% endcomment %}
+    {% comment %}"levels": {{ link.levels | json }},{% endcomment %}
+    "handle": {{ link.handle | json }},
+    "links": {%- include '_map_links', input_links: link.links -%},
+    {% comment %}"object": {%- include '_map_linkobject', input_linkobject: link.object -%},{% endcomment %}
+    "title": {{ link.title | json }},
+    "type": {{ link.type | json }},
+    "url": {{ link.url | json }}
+    }{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+  ]
+{%- else -%}
+  null
+{%- endif -%}

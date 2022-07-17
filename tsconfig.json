@@ -2,8 +2,6 @@
   "extends": "./node_modules/fx-style/tsconfig-google.json",
   "compilerOptions": {
     "module": "CommonJS",
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
     "target": "ES2020",
     "outDir": ".",
     "noImplicitAny": false,
@@ -24,12 +22,16 @@
     "paths": {
       "types/*": [
         "./@types/*"
+      ],
+      "utils/*": [
+        "./utils/*"
       ]
     },
     "baseUrl": "."
   },
   "include": [
-    "./index.ts"
+    "./index.ts",
+    "./test.ts"
   ],
   "exclude": [
     "node_modules"

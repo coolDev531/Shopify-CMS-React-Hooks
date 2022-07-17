@@ -1,0 +1,53 @@
+{%- if metafields -%}
+  [
+  {%- for key in metafields -%}
+    {% if metafields[key[0]].type == "page_reference" %}
+      {
+      "key": {{ key[0] | json }},
+      "type": {{ metafields[key[0]].type | json }},
+      "value": {%- include '_map_page', input_page: metafields[key[0]].value, no_metafields: true -%},
+      "namespace": "data"
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {% elsif metafields[key[0]].type == "list.page_reference" %}
+      {
+      "key": {{ key[0] | json }},
+      "type": {{ metafields[key[0]].type | json }},
+      "value": {{ metafields[key[0]] }},
+      "namespace": "data"
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {% elsif metafields[key[0]].type == "dimension" or metafields[key[0]].type == "weight" or metafields[key[0]].type == "volume" %}
+      {
+      "key": {{ key[0] | json }},
+      "type": {{ metafields[key[0]].type | json }},
+      "value": {
+        "type": {{ metafields[key[0]].value.type | json }},
+        "unit": {{ metafields[key[0]].value.unit | json }},
+        "value": {{ metafields[key[0]].value.value | json }}
+      },
+      "namespace": "data"
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {% elsif metafields[key[0]].type == "rating" %}
+      {
+      "key": {{ key[0] | json }},
+      "type": {{ metafields[key[0]].type | json }},
+      "value": {
+        "rating": {{ metafields[key[0]].value.rating | json }},
+        "scale_max": {{ metafields[key[0]].value.scale_max | json }},
+        "scale_min": {{ metafields[key[0]].value.scale_min | json }}
+      },
+      "namespace": "data"
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {% else %}
+      {
+      "key": {{ key[0] | json }},
+      "type": {{ metafields[key[0]].type | json }},
+      "value": {{ metafields[key[0]].value | json }},
+      "namespace": "data"
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {% endif %}
+  {%- endfor -%}
+  ]
+{%- else -%}
+  []
+{%- endif -%}
+

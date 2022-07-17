@@ -1,0 +1,21 @@
+{%- capture  blocks -%}
+  [
+  {%- for block in section.blocks -%}
+    {
+    "id": {{ block.id | json }},
+    "type": {{ block.type | json }},
+    "settings":{%- include '_map_settings_types', input_settings: block.settings -%}
+    }{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+  ]
+{%- endcapture -%}
+
+<script type="application/json" data-section id="{{ section.id }}">
+{
+  "id": {{ section.id | json }},
+  "type": {{ type | json }},
+  "settings": {%- include '_map_settings_types', input_settings: section.settings -%},
+  "blocks": {{ blocks }},
+  "global": true
+}
+</script>
