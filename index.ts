@@ -1,6 +1,6 @@
 import * as chalk from "chalk";
 import * as fs from "fs";
-import path from "path";
+import * as path from "path";
 
 const dataLogger = () => {
   console.log("suepr data");
