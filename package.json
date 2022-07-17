@@ -9,6 +9,7 @@
   },
   "main": "index.js",
   "scripts": {
+    "dev": "tsc --watch",
     "build": "tsc",
     "prepublish": "npm run build"
   },
@@ -24,6 +25,7 @@
     "gateway"
   ],
   "dependencies": {
+    "chalk": "4.1.2",
     "dotenv": "^16.0.1",
     "jsdom": "^20.0.0",
     "shopify-typed-node-api": "^2.0.18"
