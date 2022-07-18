@@ -6,8 +6,8 @@
       "module": "commonjs",
       "target": "es6",
       "esModuleInterop": true,
-      "swc": true
-    }
+    },
+    "swc": true
   },
   "compilerOptions": {
     "baseUrl": ".",
