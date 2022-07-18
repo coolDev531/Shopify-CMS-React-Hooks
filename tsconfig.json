@@ -5,7 +5,8 @@
     "compilerOptions": {
       "module": "commonjs",
       "target": "es6",
-      "esModuleInterop": true
+      "esModuleInterop": true,
+      "swc": true
     }
   },
   "compilerOptions": {
