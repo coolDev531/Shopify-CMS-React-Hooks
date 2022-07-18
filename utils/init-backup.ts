@@ -1,6 +1,6 @@
-import * as chalk from "chalk";
-import * as fs from "fs";
-import * as path from "path";
+import chalk from "chalk";
+import fs from "fs";
+import path from "path";
 import { RestClient } from "shopify-typed-node-api/dist/clients/rest";
 import { Asset } from "shopify-typed-node-api/dist/clients/rest/dataTypes";
 

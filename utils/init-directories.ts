@@ -1,9 +1,11 @@
-import * as chalk from "chalk";
-import * as fs from "fs";
-import * as path from "path";
+import chalk from "chalk";
+import fs from "fs";
+import path from "path";
 
 export function initDirectories() {
+  console.log("asd");
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms"))) {
+    console.log("asdcreating dir");
     fs.mkdirSync(path.join(process.cwd(), ".shopify-cms"));
   }
 

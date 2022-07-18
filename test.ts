@@ -1,7 +1,4 @@
 import * as fs from "fs";
-import * as globby from "globby";
-import * as path from "path";
-
 const getAllFiles = (dir) =>
   fs.readdirSync(dir).reduce((files, file) => {
     const name = `${dir}/${file}`;

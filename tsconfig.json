@@ -1,39 +1,45 @@
 {
   "extends": "./node_modules/fx-style/tsconfig-google.json",
+  "ts-node": {
+    // these options are overrides used only by ts-node
+    // same as the --compilerOptions flag and the TS_NODE_COMPILER_OPTIONS environment variable
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
   "compilerOptions": {
-    "module": "CommonJS",
-    "target": "ES2020",
-    "outDir": ".",
-    "noImplicitAny": false,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "sourceMap": false,
-    "isolatedModules": false,
-    "resolveJsonModule": false,
-    "noEmit": false,
-    "declaration": false,
-    "strict": false,
-    "strictNullChecks": false,
-    "forceConsistentCasingInFileNames": true,
-    "allowJs": true,
-    "skipDefaultLibCheck": true,
-    "incremental": true,
-    "skipLibCheck": true,
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "types/*": [
         "./@types/*"
-      ],
-      "utils/*": [
-        "./utils/*"
       ]
     },
-    "baseUrl": "."
+    "downlevelIteration": true,
+    "target": "ES2020",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
   },
   "include": [
-    "./index.ts",
-    "./test.ts"
+    "**/*.ts",
+    "**/*.tsx",
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
   ]
 }

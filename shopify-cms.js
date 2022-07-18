@@ -1,3 +1,5 @@
-#!/usr/bin/env node
+#!/usr/bin/env ts-node
 
-require("./index.js");
+import { init } from "./index";
+
+init();

@@ -7,7 +7,7 @@
   "bin": {
     "shopify-cms": "./shopify-cms.js"
   },
-  "main": "index.js",
+  "main": "./index.ts",
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc",
@@ -16,6 +16,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/FelixTellmann/shopify-ftp-access.git"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   },
   "keywords": [
     "shopify",
@@ -30,7 +33,9 @@
     "dotenv": "^16.0.1",
     "inquirer": "8.0.0",
     "jsdom": "^20.0.0",
-    "shopify-typed-node-api": "^2.0.18"
+    "node-watch": "^0.7.3",
+    "shopify-typed-node-api": "^2.0.18",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/inquirer": "^8.2.1",
