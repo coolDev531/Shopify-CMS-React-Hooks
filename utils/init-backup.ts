@@ -7,7 +7,9 @@ import { Asset } from "shopify-typed-node-api/dist/clients/rest/dataTypes";
 export const initBackup = async (
   api: RestClient,
   SHOPIFY_CMS_THEME_ID: string,
-  folder = `backup/${Date.now()}`
+  folder = `backup/${new Date().toLocaleDateString("en-CA")}_${new Date().toLocaleTimeString(
+    "en-GB"
+  )}`
 ) => {
   try {
     console.log(chalk.green(`Backup initiated: ${folder} - Loading...`));
