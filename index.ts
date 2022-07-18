@@ -50,6 +50,12 @@ export const init = async () => {
 
   if (!SHOPIFY_CMS_FOLDER) return;
 
+  console.log(
+    `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(
+      `Watching for changes in /${SHOPIFY_CMS_FOLDER}/`
+    )}`
+  );
+
   watch(path.join(process.cwd(), SHOPIFY_CMS_FOLDER), { recursive: true }, async (evt, name) => {
     if (!name.match(/\.(ts|tsx)$/)) return;
     if (name.match(/^index\.ts.$/)) return;
