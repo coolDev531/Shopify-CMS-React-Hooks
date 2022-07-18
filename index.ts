@@ -26,14 +26,23 @@ program
 const { SHOPIFY_CMS_FOLDER } = process.env;
 
 export const init = async () => {
+  console.log(
+    `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(
+      `Shopify CMS Started`
+    )}`
+  );
   const config = await initConfig(program.opts().config);
   initFolders(config);
   const api = initShopifyApi();
-
+  console.log(
+    `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Checking Theme`)}`
+  );
   const SHOPIFY_CMS_THEME_ID = await initTheme(api, config);
-
+  console.log(
+    `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Theme Checked`)}`
+  );
   if (program.opts().backup) {
-    initBackup(api, SHOPIFY_CMS_THEME_ID);
+    await initBackup(api, SHOPIFY_CMS_THEME_ID);
   }
   if (program.opts().download) {
     await initBackup(api, SHOPIFY_CMS_THEME_ID, "theme");

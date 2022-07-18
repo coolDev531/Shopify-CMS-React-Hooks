@@ -370,6 +370,9 @@ export const generateSections = async (
         .then((data) => {
           console.log(chalk.yellowBright(`Upload in progress: ${key}`));
           return data;
+        })
+        .catch((err) => {
+          console.log(chalk.redBright(err.message));
         });
     }
 
@@ -395,6 +398,9 @@ export const generateSections = async (
         .then((data) => {
           console.log(chalk.yellowBright(`Upload in progress: ${key}`));
           return data;
+        })
+        .catch((err) => {
+          console.log(chalk.redBright(err.message));
         });
     }
 
@@ -422,6 +428,9 @@ export const generateSections = async (
         .then((data) => {
           console.log(chalk.yellowBright(`Upload in progress: ${key}`));
           return data;
+        })
+        .catch((err) => {
+          console.log(chalk.redBright(err.message));
         });
     }
   }
@@ -576,6 +585,9 @@ export const generateSettings = async (
       .then((data) => {
         console.log(chalk.yellowBright(`Upload in progress: settings_schema.json`));
         return data;
+      })
+      .catch((err) => {
+        console.log(chalk.redBright(err.message));
       });
   }
 
@@ -606,6 +618,9 @@ export const generateSettings = async (
       .then((data) => {
         console.log(chalk.yellowBright(`Upload in progress: settings_schema.json`));
         return data;
+      })
+      .catch((err) => {
+        console.log(chalk.redBright(err.message));
       });
   }
 };

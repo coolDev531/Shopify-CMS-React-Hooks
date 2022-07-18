@@ -8,7 +8,7 @@ import { initBackup } from "./init-backup";
 import { Config } from "./init-config";
 import { PROJECT_ROOT } from "./project-root";
 
-export const initFolders = async (config: Config) => {
+export const initFolders = (config: Config) => {
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms"))) {
     fs.mkdirSync(path.join(process.cwd(), ".shopify-cms"));
   }
