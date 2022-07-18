@@ -1,39 +1,22 @@
 import chalk from "chalk";
-import fs from "fs";
 import inquirer from "inquirer";
-import path from "path";
 import { RestClient } from "shopify-typed-node-api/dist/clients/rest";
 import { Theme } from "shopify-typed-node-api/dist/clients/rest/dataTypes";
 import { createTheme } from "./create-theme";
-import { PROJECT_ROOT } from "./project-root";
+import { Config } from "./init-config";
 
-export const getAllFiles = (dir) => {
-  console.log(path.join(PROJECT_ROOT, dir));
-  return fs.readdirSync(path.join(PROJECT_ROOT, dir)).reduce((files, file) => {
-    const name = `${dir}/${file}`;
-    const isDirectory = fs.statSync(path.join(PROJECT_ROOT, name)).isDirectory();
-    return isDirectory ? [...files, ...getAllFiles(name)] : [...files, name];
-  }, []);
-};
-
-export const initTheme = async (
-  api: RestClient,
-  SHOPIFY_CMS_THEME_ID: string
-): Promise<string | null> => {
+export const initTheme = async (api: RestClient, config: Config): Promise<string | null> => {
+  const { SHOPIFY_CMS_THEME_ID } = process.env;
   try {
-    const themes = await api.get<Theme.Get>({
+    const {
+      body: { themes },
+    } = await api.get<Theme.Get>({
       path: "themes",
     });
 
-    if (!themes) {
-      return null;
-    }
-
     if (
       !SHOPIFY_CMS_THEME_ID ||
-      !themes.body.themes.some((theme) => {
-        console.log(theme.id === +SHOPIFY_CMS_THEME_ID);
-        console.log(theme);
+      !themes.some((theme) => {
         return theme.id === +SHOPIFY_CMS_THEME_ID;
       })
     ) {
@@ -63,11 +46,19 @@ export const initTheme = async (
           },
         ]);
 
-        const theme = await createTheme(api, theme_name, theme_publish);
+        const theme = await createTheme(api, theme_name, theme_publish, config);
 
         return String(theme.id);
       }
-      return null;
+
+      if (!SHOPIFY_CMS_THEME_ID) {
+        console.log(
+          chalk.red(
+            "`SHOPIFY_CMS_SHOP` or `SHOPIFY_CMS_ACCESS_TOKEN` are incorrect. Please ensure that the variables are setup. Read more here: https://github.com/FelixTellmann/shopify-cms"
+          )
+        );
+        throw "ERROR";
+      }
     }
   } catch (err) {
     if (err.response.code === 401) {
@@ -78,7 +69,7 @@ export const initTheme = async (
       );
     }
     console.log(chalk.redBright(err.message));
-    return null;
+    throw "ERROR";
   }
   return SHOPIFY_CMS_THEME_ID;
 };

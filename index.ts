@@ -1,10 +1,15 @@
 import chalk from "chalk";
 import { Command } from "commander";
+import fs from "fs";
 import path from "path";
-import Shopify from "shopify-typed-node-api";
-import { initTheme } from "./utils/init-theme";
+import { ShopifySection, ShopifySettings } from "./@types/shopify";
+import { generateSections, generateSettings } from "./utils/generate-section";
 import { initBackup } from "./utils/init-backup";
-import { initDirectories } from "./utils/init-directories";
+import { initConfig } from "./utils/init-config";
+import { initFolders } from "./utils/init-folders";
+import { initShopifyApi } from "./utils/init-shopify-api";
+import { initTheme } from "./utils/init-theme";
+
 const watch = require("node-watch");
 
 require("dotenv").config();
@@ -15,39 +20,23 @@ program
   .version(require("./package.json").version)
   .option("-b, --backup", "Create a backup of all shopify template & config files")
   .option("-c, --config", "Configure your theme")
+  .option("-d, --download", "Download settings")
   .parse(process.argv);
 
-const {
-  SHOPIFY_CMS_SHOP,
-  SHOPIFY_CMS_STOREFRONT_DIGEST,
-  SHOPIFY_CMS_ACCESS_TOKEN,
-  SHOPIFY_CMS_FOLDER,
-} = process.env;
-
-let { SHOPIFY_CMS_THEME_ID } = process.env;
+const { SHOPIFY_CMS_FOLDER } = process.env;
 
 export const init = async () => {
-  initDirectories();
+  const config = await initConfig(program.opts().config);
+  initFolders(config);
+  const api = initShopifyApi();
 
-  if (!SHOPIFY_CMS_SHOP || !SHOPIFY_CMS_ACCESS_TOKEN) {
-    console.log(
-      chalk.red(
-        "`SHOPIFY_CMS_SHOP` or `SHOPIFY_CMS_ACCESS_TOKEN` are not set. Please ensure that the variables are setup. Read more here: https://github.com/FelixTellmann/shopify-cms"
-      )
-    );
-    return;
-  }
-
-  const api = new Shopify.Clients.Rest(SHOPIFY_CMS_SHOP, SHOPIFY_CMS_ACCESS_TOKEN);
-
-  SHOPIFY_CMS_THEME_ID = await initTheme(api, SHOPIFY_CMS_THEME_ID);
-
-  if (!SHOPIFY_CMS_THEME_ID) {
-    return;
-  }
+  const SHOPIFY_CMS_THEME_ID = await initTheme(api, config);
 
   if (program.opts().backup) {
     initBackup(api, SHOPIFY_CMS_THEME_ID);
+  }
+  if (program.opts().download) {
+    await initBackup(api, SHOPIFY_CMS_THEME_ID, "theme");
   }
 
   if (!SHOPIFY_CMS_FOLDER) return;
@@ -56,20 +45,59 @@ export const init = async () => {
     if (!name.match(/\.(ts|tsx)$/)) return;
     if (name.match(/^index\.ts.$/)) return;
     if (name.match(/^_/)) return;
+
+    const files = fs.readdirSync(path.join(process.cwd(), SHOPIFY_CMS_FOLDER));
     const startTime = Date.now();
 
     console.log(
       `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.cyan(`File modified: ${name}`)}`
     );
 
-    const file = await import(name);
+    const sections: { [T: string]: ShopifySection } = files
+      .filter((name) => {
+        if (!name.match(/\.(ts|tsx)$/)) return false;
+        if (name.match(/^index\.ts.$/)) return false;
+        if (name.match(/^_/)) return false;
+        if (name.match("settings_schema")) return false;
+        const isDirectory = fs
+          .statSync(path.join(process.cwd(), SHOPIFY_CMS_FOLDER, name))
+          .isDirectory();
+        if (isDirectory) return false;
+        return true;
+      })
+      .reduce(
+        (acc, file) => {
+          const filename = path.join(process.cwd(), SHOPIFY_CMS_FOLDER, file);
+          const data = require(filename);
+          delete require.cache[filename];
+          return { ...acc, ...data };
+        },
+        {} as { [T: string]: ShopifySection }
+      );
 
-    console.log(file);
-    console.log(`Models updated: ${Date.now() - startTime}ms`);
+    await generateSections(api, SHOPIFY_CMS_THEME_ID, sections);
+
+    const settingsFilename = files.find((name) => name.match("settings_schema"));
+
+    if (settingsFilename) {
+      const filename = path.join(process.cwd(), SHOPIFY_CMS_FOLDER, settingsFilename);
+      const settings = require(filename);
+      delete require.cache[filename];
+
+      await generateSettings(
+        api,
+        SHOPIFY_CMS_THEME_ID,
+        Object.values(settings)[0] as ShopifySettings
+      );
+    }
+
+    console.log(
+      `[${chalk.gray(new Date().toLocaleTimeString())}]: [${chalk.magentaBright(
+        `${Date.now() - startTime}ms`
+      )}] ${chalk.cyan(`File modified: ${name}`)}`
+    );
   });
 };
-
-init();
 
 export const fetchPage = (string: string) => {
   console.log("string");

@@ -1,11 +1,15 @@
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
+import { RestClient } from "shopify-typed-node-api/dist/clients/rest";
+import { configureThemeFiles } from "./configure-theme-files";
+import { getAllFiles } from "./get-all-files";
+import { initBackup } from "./init-backup";
+import { Config } from "./init-config";
+import { PROJECT_ROOT } from "./project-root";
 
-export function initDirectories() {
-  console.log("asd");
+export const initFolders = async (config: Config) => {
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms"))) {
-    console.log("asdcreating dir");
     fs.mkdirSync(path.join(process.cwd(), ".shopify-cms"));
   }
 
@@ -59,4 +63,17 @@ export function initDirectories() {
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "theme", "templates"))) {
     fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", "theme", "templates"));
   }
-}
+
+  const files = getAllFiles("theme");
+  const fileData = files.map((file) => ({
+    key: file.replace("theme/", ""),
+    content: fs.readFileSync(path.join(PROJECT_ROOT, file), { encoding: "utf-8" }),
+  }));
+
+  fileData.forEach(({ key, content }) => {
+    fs.writeFileSync(
+      path.join(process.cwd(), ".shopify-cms", "theme", key),
+      configureThemeFiles(content, config)
+    );
+  });
+};

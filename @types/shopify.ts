@@ -1,23 +1,23 @@
 import { SettingsSchema } from "types/settings";
 
-type ShopifyHeader = {
+export type ShopifyHeader = {
   content: string;
   type: "header";
   info?: string;
 };
-type ShopifyParagraph = {
+export type ShopifyParagraph = {
   content: string;
   type: "paragraph";
   info?: string;
 };
-type ShopifyCheckbox = {
+export type ShopifyCheckbox = {
   id: string;
   label: string;
   type: "checkbox";
   default?: boolean;
   info?: string;
 };
-type ShopifyNumber = {
+export type ShopifyNumber = {
   id: string;
   label: string;
   type: "number";
@@ -25,7 +25,7 @@ type ShopifyNumber = {
   info?: string;
   placeholder?: number;
 };
-type ShopifyRadio = {
+export type ShopifyRadio = {
   id: string;
   label: string;
   options: { label: string; value: string }[];
@@ -33,7 +33,7 @@ type ShopifyRadio = {
   default?: string;
   info?: string;
 };
-type ShopifyRange = {
+export type ShopifyRange = {
   default: number;
   id: string;
   label: string;
@@ -44,7 +44,7 @@ type ShopifyRange = {
   info?: string;
   unit?: string;
 };
-type ShopifySelect = {
+export type ShopifySelect = {
   id: string;
   label: string;
   options: { label: string; value: string; group?: string }[];
@@ -52,7 +52,7 @@ type ShopifySelect = {
   default?: string;
   info?: string;
 };
-type ShopifyText = {
+export type ShopifyText = {
   id: string;
   label: string;
   type: "text";
@@ -60,7 +60,7 @@ type ShopifyText = {
   info?: string;
   placeholder?: string;
 };
-type ShopifyTextarea = {
+export type ShopifyTextarea = {
   id: string;
   label: string;
   type: "textarea";
@@ -68,60 +68,60 @@ type ShopifyTextarea = {
   info?: string;
   placeholder?: string;
 };
-type ShopifyArticle = {
+export type ShopifyArticle = {
   id: string;
   label: string;
   type: "article";
   info?: string;
 };
-type ShopifyBlog = {
+export type ShopifyBlog = {
   id: string;
   label: string;
   type: "blog";
   info?: string;
 };
-type ShopifyCollection = {
+export type ShopifyCollection = {
   id: string;
   label: string;
   type: "collection";
   info?: string;
 };
-type ShopifyCollection_list = {
+export type ShopifyCollection_list = {
   id: string;
   label: string;
   type: "collection_list";
   info?: string;
   limit?: number;
 };
-type ShopifyColor = {
+export type ShopifyColor = {
   id: string;
   label: string;
   type: "color";
   default?: string;
   info?: string;
 };
-type ShopifyColor_background = {
+export type ShopifyColor_background = {
   id: string;
   label: string;
   type: "color_background";
   default?: string;
   info?: string;
 };
-type ShopifyFont_picker = {
+export type ShopifyFont_picker = {
   default: string;
   id: string;
   label: string;
   type: "font_picker";
   info?: string;
 };
-type ShopifyFont = {
+export type ShopifyFont = {
   id: string;
   label: string;
   type: "font";
   default?: string;
   info?: string;
 };
-type ShopifyHtml = {
+export type ShopifyHtml = {
   id: string;
   label: string;
   type: "html";
@@ -129,59 +129,59 @@ type ShopifyHtml = {
   info?: string;
   placeholder?: string;
 };
-type ShopifyImage_picker = {
+export type ShopifyImage_picker = {
   id: string;
   label: string;
   type: "image_picker";
   info?: string;
 };
-type ShopifyLink_list = {
+export type ShopifyLink_list = {
   id: string;
   label: string;
   type: "link_list";
   default?: "main-menu" | "footer" | string;
   info?: string;
 };
-type ShopifyLiquid = {
+export type ShopifyLiquid = {
   id: string;
   label: string;
   type: "liquid";
   info?: string;
 };
-type ShopifyPage = {
+export type ShopifyPage = {
   id: string;
   label: string;
   type: "page";
   info?: string;
 };
-type ShopifyProduct = {
+export type ShopifyProduct = {
   id: string;
   label: string;
   type: "product";
   info?: string;
 };
-type ShopifyProduct_list = {
+export type ShopifyProduct_list = {
   id: string;
   label: string;
   type: "product_list";
   info?: string;
   limit?: number;
 };
-type ShopifyRichtext = {
+export type ShopifyRichtext = {
   id: string;
   label: string;
   type: "richtext";
   default?: `<p${string}</p>`;
   info?: string;
 };
-type ShopifyUrl = {
+export type ShopifyUrl = {
   id: string;
   label: string;
   type: "url";
   default?: string;
   info?: string;
 };
-type ShopifyVideo_url = {
+export type ShopifyVideo_url = {
   accept: ("youtube" | "vimeo")[];
   id: string;
   label: string;

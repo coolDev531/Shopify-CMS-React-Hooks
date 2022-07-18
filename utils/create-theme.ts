@@ -1,16 +1,19 @@
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
-import Types, { DataType } from "shopify-typed-node-api";
+import { DataType } from "shopify-typed-node-api";
 import { RestClient } from "shopify-typed-node-api/dist/clients/rest";
 import { _Theme, Asset, Theme } from "shopify-typed-node-api/dist/clients/rest/dataTypes";
-import { getAllFiles } from "./init-theme";
+import { configureThemeFiles } from "./configure-theme-files";
+import { getAllFiles } from "./get-all-files";
+import { Config } from "./init-config";
 import { PROJECT_ROOT } from "./project-root";
 
 export const createTheme = async (
   api: RestClient,
   theme_name: any,
-  theme_publish: any
+  theme_publish: any,
+  config: Config
 ): Promise<_Theme> => {
   try {
     const theme = await api.post<Theme.Create>({
@@ -39,7 +42,7 @@ export const createTheme = async (
             data: {
               asset: {
                 key: key,
-                value: content,
+                value: configureThemeFiles(content, config),
               },
             },
             tries: 20,

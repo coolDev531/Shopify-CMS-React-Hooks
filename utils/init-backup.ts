@@ -4,10 +4,13 @@ import path from "path";
 import { RestClient } from "shopify-typed-node-api/dist/clients/rest";
 import { Asset } from "shopify-typed-node-api/dist/clients/rest/dataTypes";
 
-export const initBackup = async (api: RestClient, SHOPIFY_CMS_THEME_ID: string) => {
-  const date = Date.now();
+export const initBackup = async (
+  api: RestClient,
+  SHOPIFY_CMS_THEME_ID: string,
+  folder = `backup/${Date.now()}`
+) => {
   try {
-    console.log(chalk.green(`Backup initiated: ${date} - Loading...`));
+    console.log(chalk.green(`Backup initiated: ${folder} - Loading...`));
     const { body } = await api.get<Asset.Get>({
       path: `themes/${SHOPIFY_CMS_THEME_ID}/assets`,
       tries: 20,
@@ -31,17 +34,27 @@ export const initBackup = async (api: RestClient, SHOPIFY_CMS_THEME_ID: string) 
               console.log(chalk.yellowBright(`Backup in progress: ${file.key}`));
               return data;
             })
+            .catch((e) => {
+              console.log(chalk.cyan(e));
+              return null;
+            })
         )
     );
 
     console.log(chalk.green(`Backup in progress: Assets downloaded`));
 
-    fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", "backup", String(date)));
-    fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", "backup", String(date), "templates"));
-    fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", "backup", String(date), "config"));
+    if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", folder))) {
+      fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", folder));
+    }
+    if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", folder, "templates"))) {
+      fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", folder, "templates"));
+    }
+    if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", folder, "config"))) {
+      fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", folder, "config"));
+    }
     files.map((file) => {
       fs.writeFileSync(
-        path.join(process.cwd(), ".shopify-cms", "backup", String(date), file.body.asset.key),
+        path.join(process.cwd(), ".shopify-cms", folder, file.body.asset.key),
         file.body.asset.value
           ? Buffer.from(file.body.asset.value)
           : Buffer.from(file.body.asset.attachment, "base64")
@@ -50,7 +63,6 @@ export const initBackup = async (api: RestClient, SHOPIFY_CMS_THEME_ID: string) 
 
     console.log(chalk.green(`Backup complete`));
   } catch (err) {
-    console.log(err.message);
-    fs.rmdirSync(path.join(process.cwd(), ".shopify-cms", "backup", String(date)));
+    console.log(chalk.redBright(err.message));
   }
 };
