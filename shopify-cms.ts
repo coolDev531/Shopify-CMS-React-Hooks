@@ -1,4 +1,4 @@
-#!/usr/bin/env -S ts-node
+#!/usr/bin/env ts-node-script
 
 import { init } from "./index";
 
