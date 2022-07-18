@@ -48,7 +48,7 @@ export const createTheme = async (
             tries: 20,
           })
           .then((data) => {
-            console.log(chalk.yellowBright(`Upload in progress: ${key}`));
+            console.log(chalk.greenBright(`File uploaded to Shopify: ${key}`));
             return data;
           });
       })

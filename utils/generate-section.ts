@@ -368,7 +368,7 @@ export const generateSections = async (
           tries: 20,
         })
         .then((data) => {
-          console.log(chalk.yellowBright(`Upload in progress: ${key}`));
+          console.log(chalk.greenBright(`File uploaded to Shopify: ${key}`));
           return data;
         })
         .catch((err) => {
@@ -396,7 +396,7 @@ export const generateSections = async (
           tries: 20,
         })
         .then((data) => {
-          console.log(chalk.yellowBright(`Upload in progress: ${key}`));
+          console.log(chalk.greenBright(`File uploaded to Shopify: ${key}`));
           return data;
         })
         .catch((err) => {
@@ -426,7 +426,7 @@ export const generateSections = async (
           tries: 20,
         })
         .then((data) => {
-          console.log(chalk.yellowBright(`Upload in progress: ${key}`));
+          console.log(chalk.greenBright(`File uploaded to Shopify: ${key}`));
           return data;
         })
         .catch((err) => {
@@ -583,7 +583,7 @@ export const generateSettings = async (
         tries: 20,
       })
       .then((data) => {
-        console.log(chalk.yellowBright(`Upload in progress: settings_schema.json`));
+        console.log(chalk.greenBright(`File uploaded to Shopify: settings_schema.json`));
         return data;
       })
       .catch((err) => {
@@ -616,7 +616,7 @@ export const generateSettings = async (
         tries: 20,
       })
       .then((data) => {
-        console.log(chalk.yellowBright(`Upload in progress: settings_schema.json`));
+        console.log(chalk.greenBright(`File uploaded to Shopify: settings_schema.json`));
         return data;
       })
       .catch((err) => {
