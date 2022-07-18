@@ -5,7 +5,7 @@
   "author": "Felix Tellmann",
   "license": "MIT",
   "bin": {
-    "shopify-cms": "./shopify-cms.js"
+    "shopify-cms": "shopify-cms.ts"
   },
   "main": "./index.ts",
   "scripts": {
