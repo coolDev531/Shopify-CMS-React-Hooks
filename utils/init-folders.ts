@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
-import { PROJECT_ROOT } from "utils/project-root";
+import { PROJECT_ROOT } from "./project-root";
 
 export const initFolders = () => {
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms"))) {
