@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
+import { PROJECT_ROOT } from "utils/project-root";
 
 export const initFolders = () => {
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms"))) {
@@ -18,12 +19,14 @@ export const initFolders = () => {
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types", "shopify.ts"))) {
     fs.writeFileSync(
       path.join(process.cwd(), ".shopify-cms", "types", "shopify.ts"),
-      fs.readFileSync("./@types/shopify.ts", { encoding: "utf-8" })
+      fs.readFileSync(path.join(PROJECT_ROOT, "./@types/shopify.ts"), { encoding: "utf-8" })
     );
   }
 
   if (fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types", "shopify.ts"))) {
-    const masterFile = fs.readFileSync("./@types/shopify.ts", { encoding: "utf-8" });
+    const masterFile = fs.readFileSync(path.join(PROJECT_ROOT, "./@types/shopify.ts"), {
+      encoding: "utf-8",
+    });
     const currentFile = fs.readFileSync(
       path.join(process.cwd(), ".shopify-cms", "types", "shopify.ts"),
       { encoding: "utf-8" }
