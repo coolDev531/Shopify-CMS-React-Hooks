@@ -11,6 +11,7 @@ export type Config = {
 };
 
 export const initConfig = async (force: boolean) => {
+  console.log({ fsExists: fs.existsSync(path.join(process.cwd(), ".shopify-cms")) });
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms"))) {
     fs.mkdirSync(path.join(process.cwd(), ".shopify-cms"));
   }
