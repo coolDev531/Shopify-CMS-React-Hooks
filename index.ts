@@ -60,62 +60,64 @@ export const init = async () => {
     )}`
   );
 
-  watch(path.join(process.cwd(), SHOPIFY_CMS_FOLDER), { recursive: true }, async (evt, name) => {
-    if (!name.match(/\.(ts|tsx)$/)) return;
-    if (name.match(/^index\.ts.$/)) return;
-    if (name.match(/^_/)) return;
+  if (fs.existsSync(path.join(process.cwd(), SHOPIFY_CMS_FOLDER))) {
+    watch(path.join(process.cwd(), SHOPIFY_CMS_FOLDER), { recursive: true }, async (evt, name) => {
+      if (!name.match(/\.(ts|tsx)$/)) return;
+      if (name.match(/^index\.ts.$/)) return;
+      if (name.match(/^_/)) return;
 
-    const files = fs.readdirSync(path.join(process.cwd(), SHOPIFY_CMS_FOLDER));
-    const startTime = Date.now();
+      const files = fs.readdirSync(path.join(process.cwd(), SHOPIFY_CMS_FOLDER));
+      const startTime = Date.now();
 
-    console.log(
-      `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.cyan(`File modified: ${name}`)}`
-    );
-
-    const sections: { [T: string]: ShopifySection } = files
-      .filter((name) => {
-        if (!name.match(/\.(ts|tsx)$/)) return false;
-        if (name.match(/^index\.ts.$/)) return false;
-        if (name.match(/^_/)) return false;
-        if (name.match("settings_schema")) return false;
-        const isDirectory = fs
-          .statSync(path.join(process.cwd(), SHOPIFY_CMS_FOLDER, name))
-          .isDirectory();
-        if (isDirectory) return false;
-        return true;
-      })
-      .reduce(
-        (acc, file) => {
-          const filename = path.join(process.cwd(), SHOPIFY_CMS_FOLDER, file);
-          const data = require(filename);
-          delete require.cache[filename];
-          return { ...acc, ...data };
-        },
-        {} as { [T: string]: ShopifySection }
+      console.log(
+        `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.cyan(`File modified: ${name}`)}`
       );
 
-    await generateSections(api, SHOPIFY_CMS_THEME_ID, sections);
+      const sections: { [T: string]: ShopifySection } = files
+        .filter((name) => {
+          if (!name.match(/\.(ts|tsx)$/)) return false;
+          if (name.match(/^index\.ts.$/)) return false;
+          if (name.match(/^_/)) return false;
+          if (name.match("settings_schema")) return false;
+          const isDirectory = fs
+            .statSync(path.join(process.cwd(), SHOPIFY_CMS_FOLDER, name))
+            .isDirectory();
+          if (isDirectory) return false;
+          return true;
+        })
+        .reduce(
+          (acc, file) => {
+            const filename = path.join(process.cwd(), SHOPIFY_CMS_FOLDER, file);
+            const data = require(filename);
+            delete require.cache[filename];
+            return { ...acc, ...data };
+          },
+          {} as { [T: string]: ShopifySection }
+        );
 
-    const settingsFilename = files.find((name) => name.match("settings_schema"));
+      await generateSections(api, SHOPIFY_CMS_THEME_ID, sections);
 
-    if (settingsFilename) {
-      const filename = path.join(process.cwd(), SHOPIFY_CMS_FOLDER, settingsFilename);
-      const settings = require(filename);
-      delete require.cache[filename];
+      const settingsFilename = files.find((name) => name.match("settings_schema"));
 
-      await generateSettings(
-        api,
-        SHOPIFY_CMS_THEME_ID,
-        Object.values(settings)[0] as ShopifySettings
+      if (settingsFilename) {
+        const filename = path.join(process.cwd(), SHOPIFY_CMS_FOLDER, settingsFilename);
+        const settings = require(filename);
+        delete require.cache[filename];
+
+        await generateSettings(
+          api,
+          SHOPIFY_CMS_THEME_ID,
+          Object.values(settings)[0] as ShopifySettings
+        );
+      }
+
+      console.log(
+        `[${chalk.gray(new Date().toLocaleTimeString())}]: [${chalk.magentaBright(
+          `${Date.now() - startTime}ms`
+        )}] ${chalk.cyan(`File modified: ${name}`)}`
       );
-    }
-
-    console.log(
-      `[${chalk.gray(new Date().toLocaleTimeString())}]: [${chalk.magentaBright(
-        `${Date.now() - startTime}ms`
-      )}] ${chalk.cyan(`File modified: ${name}`)}`
-    );
-  });
+    });
+  }
 };
 
 export const fetchPage = (string: string) => {
