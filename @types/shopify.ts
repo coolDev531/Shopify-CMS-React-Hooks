@@ -223,7 +223,7 @@ type ShopifySectionDefault<T = never> = {
         settings: { [T: string]: string | number | boolean };
         type: "step";
       }[]
-    : T extends { blocks }
+    : T extends { blocks: any }
     ? Partial<Omit<T["blocks"][number], "id">>[]
     : {
         settings: { [T: string]: string | number | boolean };
@@ -231,7 +231,7 @@ type ShopifySectionDefault<T = never> = {
       }[];
   settings?: T extends never
     ? { [T: string]: string | number | boolean }
-    : T extends { settings }
+    : T extends { settings: any }
     ? T["settings"]
     : { [T: string]: string | number | boolean };
 };
@@ -243,7 +243,7 @@ type ShopifySectionPreset<T = never> = {
         settings: { [T: string]: string | number | boolean };
         type: "step";
       }[]
-    : T extends { blocks }
+    : T extends { blocks: any }
     ? Partial<Omit<T["blocks"][number], "id">>[]
     : {
         settings: { [T: string]: string | number | boolean };
@@ -251,7 +251,7 @@ type ShopifySectionPreset<T = never> = {
       }[];
   settings?: T extends never
     ? { [T: string]: string | number | boolean }
-    : T extends { settings }
+    : T extends { settings: any }
     ? T["settings"]
     : { [T: string]: string | number | boolean };
 };
