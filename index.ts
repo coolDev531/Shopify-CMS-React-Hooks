@@ -2,6 +2,7 @@ import chalk from "chalk";
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
+import { copyFiles } from "utils/init-copy-files";
 import { ShopifySection, ShopifySettings } from "./@types/shopify";
 import { generateSections, generateSettings } from "./utils/generate-section";
 import { initBackup } from "./utils/init-backup";
@@ -31,8 +32,11 @@ export const init = async () => {
       `Shopify CMS Started`
     )}`
   );
+  initFolders();
+
   const config = await initConfig(program.opts().config);
-  initFolders(config);
+  copyFiles(config);
+
   const api = initShopifyApi();
   console.log(
     `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Checking Theme`)}`
