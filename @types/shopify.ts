@@ -1,4 +1,4 @@
-import { SettingsSchema } from "types/settings";
+import { SettingsSchema } from "./settings";
 
 export type ShopifyHeader = {
   content: string;
