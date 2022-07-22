@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
-import { configureThemeFiles } from "utils/configure-theme-files";
-import { getAllFiles } from "utils/get-all-files";
-import { Config } from "utils/init-config";
-import { PROJECT_ROOT } from "utils/project-root";
+import { configureThemeFiles } from "./configure-theme-files";
+import { getAllFiles } from "./get-all-files";
+import { Config } from "./init-config";
+import { PROJECT_ROOT } from "./project-root";
 
 export const copyFiles = (config: Config) => {
   const files = getAllFiles("theme");

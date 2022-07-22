@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
-import { copyFiles } from "utils/init-copy-files";
+import { copyFiles } from "./utils/init-copy-files";
 import { ShopifySection, ShopifySettings } from "./@types/shopify";
 import { generateSections, generateSettings } from "./utils/generate-section";
 import { initBackup } from "./utils/init-backup";
