@@ -33,7 +33,7 @@ export const initConfig = async (force: boolean) => {
     !("development_server" in config) ||
     force
   ) {
-    if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "theme", "sections"))) {
+    if (fs.existsSync(path.join(process.cwd(), ".shopify-cms", "theme", "sections"))) {
       const sections = fs.readdirSync(
         path.join(process.cwd(), ".shopify-cms", "theme", "sections")
       );
@@ -81,6 +81,27 @@ export const initConfig = async (force: boolean) => {
 
       return newConfig;
     }
+
+    const newConfig: Config = await inquirer.prompt([
+      {
+        name: "development_server",
+        type: "input",
+        default: config?.development_server ?? "http://localhost:3000",
+        message: "Please provide the dev server url",
+      },
+      {
+        name: "deployment_server",
+        type: "input",
+        default: config?.deployment_server ?? "https://theme-development.vercel.app",
+        message: "Please provide the deployment server url",
+      },
+    ]);
+
+    fs.writeFileSync(
+      path.join(process.cwd(), ".shopify-cms", "config.json"),
+      JSON.stringify({ ...config, ...newConfig }, null, 2)
+    );
+    console.log(chalk.greenBright("Config updated"));
   }
 
   return config;

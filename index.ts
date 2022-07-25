@@ -36,7 +36,8 @@ export const init = async () => {
   );
   initFolders();
 
-  const config = await initConfig(program.opts().config);
+  console.log(program.opts().config);
+  const config = await initConfig(!!program.opts().config);
   copyFiles(config);
 
   const api = initShopifyApi();
