@@ -1,0 +1,42 @@
+{%- if input_article -%}
+  {
+  "author": {{ input_article.author | json }},
+  "comments": {{ input_article.comments | json }},
+  "comments_count": {{ input_article.comments_count | json }},
+  "comments_enabled": {{ input_article.comments_enabled | json }},
+  "comment_post_url": {{ input_article.comment_post_url | json }},
+  "content": {{ input_article.content | json }},
+  "created_at": "{{ input_article.created_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
+  "excerpt": {{ input_article.excerpt | json }},
+  "excerpt_or_content": {{ input_article.excerpt_or_content | json }},
+  "featured_media": {% if input_article.image %}{
+    "aspect_ratio": {{ input_article.image.aspect_ratio | json }},
+    "height": {{ input_article.image.height | json }},
+    "id": {{ input_article.image.id | json }},
+    "src": {{ input_article.image.src | json }},
+    "width": {{ input_article.image.width | json }},
+    "alt": {{ input_article.image.alt | json }}
+  }{% else %}null{% endif %},
+  "handle": {{ input_article.handle | json }},
+  "id": {{ input_article.id | json }},
+  "image": {{ input_article.image | json }},
+  "moderated": {{ input_article.moderated | json }},
+  "metafields": {%- include '_map_metafields', metafields: input_article.metafields.data -%},
+  "published_at": "{{ input_article.published_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
+  "tags": {{ input_article.tags | json }},
+  "title": {{ input_article.title | json }},
+  "updated_at": "{{ input_article.updated_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
+  "url": {{ input_article.url | json }},
+  "user": {
+    "account_owner": {{ input_article.user.account_owner | json }},
+    "bio": {{ input_article.user.bio | json }},
+    "email": {{ input_article.user.email | json }},
+    "first_name": {{ input_article.user.first_name | json }},
+    "homepage": {{ input_article.user.homepage | json }},
+    "image": {{ input_article.user.image | json }},
+    "last_name": {{ input_article.user.last_name | json }}
+    }
+  }
+{%- else -%}
+  null
+{%- endif -%}

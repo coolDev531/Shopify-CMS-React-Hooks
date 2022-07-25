@@ -7,7 +7,7 @@ import { ShopifySection, ShopifySettings } from "./@types/shopify";
 import { generateSections, generateSettings } from "./utils/generate-section";
 import { initBackup } from "./utils/init-backup";
 import { initConfig } from "./utils/init-config";
-import { initFolders } from "utils/init-folders";
+import { initFolders } from "./utils/init-folders";
 import { initShopifyApi } from "./utils/init-shopify-api";
 import { initTheme } from "./utils/init-theme";
 

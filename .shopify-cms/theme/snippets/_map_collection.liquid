@@ -1,0 +1,25 @@
+{%- if input_collection -%}
+  {
+  "all_products_count": {{ input_collection.all_products_count | json }},
+  "all_tags": {{ input_collection.all_tags | json }},
+  "all_types": {{ input_collection.all_types | json }},
+  "all_vendors": {{ input_collection.all_vendors | json }},
+  "default_sort_by": {{ input_collection.default_sort_by | json }},
+  "description": {{ input_collection.description | json }},
+  "featured_image": {{ input_collection.featured_image | json }},
+  "filters": {{ input_collection.filters | json }},
+  "handle": {{ input_collection.handle | json }},
+  "id": {{ input_collection.id | json }},
+  "image": {{ input_collection.image | json }},
+  "metafields": {%- include '_map_metafields', metafields: input_collection.metafields.data -%},
+  "products": [{%- for product in input_collection.products -%}{%- include '_map_product', input_product: product -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+  "products_count": {{ input_collection.products_count | json }},
+  "published_at": "{{ input_collection.published_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
+  "template_suffix": {{ input_collection.template_suffix | json }},
+  "title": {{ input_collection.title | json }},
+  "tags": {{ input_collection.tags | json }},
+  "url": {{ input_collection.url | json }}
+  }
+{%- else -%}
+  null
+{%- endif -%}

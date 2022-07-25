@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node-script -r tsconfig-paths/register main.ts --traceResolution
+#!/usr/bin/env ts-node-script
 
 import { init } from "./index";
 

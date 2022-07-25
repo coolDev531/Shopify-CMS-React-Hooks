@@ -1,0 +1,27 @@
+{%- if input_variant -%}
+  {
+  "available": {{ input_variant.available | json }},
+  "barcode": {{ input_variant.barcode | json }},
+  "compare_at_price": {{ input_variant.compare_at_price | json }},
+  "featured_media": {{ input_variant.featured_media | json }},
+  "id": {{ input_variant.id | json }},
+  "image": {{ input_variant.image | json }},
+  "inventory_management": {{ input_variant.inventory_management | json }},
+  "inventory_policy": {{ input_variant.inventory_policy | json }},
+  "inventory_quantity": {{ input_variant.inventory_quantity | json }},
+  "metafields": {%- include '_map_metafields', metafields: input_variant.metafields.data -%},
+  "options": {{ input_variant.options | json }},
+  "option1": {{ input_variant.option1 | json }},
+  "option2": {{ input_variant.option2 | json }},
+  "option3": {{ input_variant.option3 | json }},
+  "price": {{ input_variant.price | json }},
+  "requires_shipping": {{ input_variant.requires_shipping | json }},
+  "sku": {{ input_variant.sku | json }},
+  "taxable": {{ input_variant.taxable | json }},
+  "title": {{ input_variant.title | json }},
+  "url": {{ input_variant.url | json }},
+  "weight": {{ input_variant.weight | json }}
+  }
+{%- else -%}
+  null
+{%- endif -%}
