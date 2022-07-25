@@ -69,7 +69,7 @@
       {%- endfor -%}
       ]{% endcomment %}
       }{%- unless forloop.last -%},{%- endunless -%}
-    {%- elsif value.alpha -%}
+    {%- elsif value.alpha and value.alpha > 0 -%}
       "{{ id }}": {
       "hex": {{ value | json }},
       "alpha": {{ value.alpha | json }},
