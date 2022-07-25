@@ -2,11 +2,12 @@ import chalk from "chalk";
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
-import { copyFiles } from "./utils/init-copy-files";
+import { updateTheme } from "./utils/updateTheme";
 import { ShopifySection, ShopifySettings } from "./@types/shopify";
 import { generateSections, generateSettings } from "./utils/generate-section";
 import { initBackup } from "./utils/init-backup";
 import { initConfig } from "./utils/init-config";
+import { copyFiles } from "./utils/init-copy-files";
 import { initFolders } from "./utils/init-folders";
 import { initShopifyApi } from "./utils/init-shopify-api";
 import { initTheme } from "./utils/init-theme";
@@ -22,6 +23,7 @@ program
   .option("-b, --backup", "Create a backup of all shopify template & config files")
   .option("-c, --config", "Configure your theme")
   .option("-d, --download", "Download settings")
+  .option("-u, --update", "Update Shopify Theme files")
   .parse(process.argv);
 
 const { SHOPIFY_CMS_FOLDER } = process.env;
@@ -45,6 +47,10 @@ export const init = async () => {
   console.log(
     `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Theme Checked`)}`
   );
+  if (program.opts().update) {
+    await updateTheme(api, SHOPIFY_CMS_THEME_ID, config);
+  }
+
   if (program.opts().backup) {
     await initBackup(api, SHOPIFY_CMS_THEME_ID);
   }
