@@ -7,7 +7,7 @@ import { ShopifySection, ShopifySettings } from "./@types/shopify";
 import { generateSections, generateSettings } from "./utils/generate-section";
 import { initBackup } from "./utils/init-backup";
 import { initConfig } from "./utils/init-config";
-import { initFolders } from "./utils/init-folders";
+import { initFolders } from "utils/init-folders";
 import { initShopifyApi } from "./utils/init-shopify-api";
 import { initTheme } from "./utils/init-theme";
 
@@ -87,10 +87,15 @@ export const init = async () => {
         })
         .reduce(
           (acc, file) => {
-            const filename = path.join(process.cwd(), SHOPIFY_CMS_FOLDER, file);
-            const data = require(filename);
-            delete require.cache[filename];
-            return { ...acc, ...data };
+            try {
+              const filename = path.join(process.cwd(), SHOPIFY_CMS_FOLDER, file);
+              const data = require(filename);
+              delete require.cache[filename];
+              return { ...acc, ...data };
+            } catch (err) {
+              console.log(chalk.redBright(err.message));
+              return acc;
+            }
           },
           {} as { [T: string]: ShopifySection }
         );

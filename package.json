@@ -42,7 +42,8 @@
     "node-watch": "^0.7.3",
     "regenerator-runtime": "^0.13.9",
     "shopify-typed-node-api": "^2.0.18",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.0.0"
   },
   "devDependencies": {
     "@types/inquirer": "^8.2.1",

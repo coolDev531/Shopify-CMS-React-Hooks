@@ -5,7 +5,27 @@
     "compilerOptions": {
       "module": "commonjs",
       "target": "es6",
+      //      "esModuleInterop": true,
+      "baseUrl": ".",
+      "paths": {
+        "types/*": [
+          "./@types/*"
+        ],
+        "utils/*": [
+          "./utils/*"
+        ],
+        "*": [
+          "*"
+        ]
+      },
+      "rootDirs": [
+        "."
+      ],
       "esModuleInterop": true,
+      //      "module": "esnext",
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true
     },
     "swc": true
   },
@@ -15,6 +35,12 @@
     "paths": {
       "types/*": [
         "./@types/*"
+      ],
+      "utils/*": [
+        "./utils/*"
+      ],
+      "*": [
+        "*"
       ]
     },
     "downlevelIteration": true,
@@ -36,13 +62,16 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "rootDirs": [
+      "."
+    ]
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx",
+    "**/*.tsx"
   ],
   "exclude": [
-    "node_modules",
+    "node_modules"
   ]
 }
