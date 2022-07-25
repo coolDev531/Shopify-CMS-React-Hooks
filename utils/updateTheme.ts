@@ -4,10 +4,10 @@ import path from "path";
 import { DataType } from "shopify-typed-node-api";
 import { RestClient } from "shopify-typed-node-api/dist/clients/rest";
 import { Asset } from "shopify-typed-node-api/dist/clients/rest/dataTypes";
-import { configureThemeFiles } from "utils/configure-theme-files";
-import { getAllFiles } from "utils/get-all-files";
-import { Config } from "utils/init-config";
-import { PROJECT_ROOT } from "utils/project-root";
+import { configureThemeFiles } from "./configure-theme-files";
+import { getAllFiles } from "./get-all-files";
+import { Config } from "./init-config";
+import { PROJECT_ROOT } from "./project-root";
 
 export const updateTheme = async (
   api: RestClient,
