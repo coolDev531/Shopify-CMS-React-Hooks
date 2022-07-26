@@ -112,6 +112,9 @@
     document.addEventListener('shopify:block:deselect', (e) => {
       handleEvents(e);
     });
+
+    const shopifyLoad = new CustomEvent("shopify:section:load")
+    document.dispatchEvent(shopifyLoad)
   </script>
 
 
