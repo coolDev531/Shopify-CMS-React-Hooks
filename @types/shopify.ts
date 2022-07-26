@@ -954,7 +954,7 @@ export type GlobalSettings = {
   description: string;
   handle: string;
   linklists: _Linklist_liquid[];
-  product: _Product_liquid_json;
+  product: _Product_liquid;
   request: _Request_liquid;
   settings: SettingsSchema;
   shop: _Shop_liquid_json;
