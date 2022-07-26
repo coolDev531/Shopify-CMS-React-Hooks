@@ -232,7 +232,7 @@ type ShopifySectionDefault<T = never> = {
   settings?: T extends never
     ? { [T: string]: string | number | boolean }
     : T extends { settings: any }
-    ? T["settings"]
+    ? Partial<T["settings"]>
     : { [T: string]: string | number | boolean };
 };
 
@@ -252,7 +252,7 @@ type ShopifySectionPreset<T = never> = {
   settings?: T extends never
     ? { [T: string]: string | number | boolean }
     : T extends { settings: any }
-    ? T["settings"]
+    ? Partial<T["settings"]>
     : { [T: string]: string | number | boolean };
 };
 
