@@ -60,7 +60,14 @@
         });
 
         themeEditorIframe.addEventListener('load', (e) => {
-          console.log(e, themeEditorIframe);
+          themeEditorIframe?.contentWindow.postMessage({
+              source: "theme-editor",
+              topic: "activateThemeEditor",
+              global,
+              sections
+            },
+            "*",
+          );
         });
 
 
