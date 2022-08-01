@@ -12,8 +12,6 @@ import { initShopifyApi } from "./utils/init-shopify-api";
 import { initTheme } from "./utils/init-theme";
 import { updateTheme } from "./utils/updateTheme";
 
-export { ShopifyCms } from "./react-hooks/shopify-cms";
-
 const watch = require("node-watch");
 
 require("dotenv").config();
