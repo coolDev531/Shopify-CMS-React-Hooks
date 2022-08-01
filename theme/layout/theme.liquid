@@ -57,14 +57,14 @@
         let sectionSizes = [];
 
         if (sessionUrl === `|||DEVELOPMENT_URL|||`) {
-          fetch('|||DEVELOPMENT_URL|||{{ request.path }}').catch(err => {
+          fetch('|||DEVELOPMENT_URL|||{{ request.path }}', { method: "HEAD" }).catch(err => {
             themeEditorIframe.setAttribute('src', '|||DEPLOYMENT_URL|||{{ request.path }}');
             sessionStorage.setItem('shopify-cms-url', `|||DEPLOYMENT_URL|||`)
           });
         }
 
         if (sessionUrl !== `|||DEVELOPMENT_URL|||`) {
-          fetch('|||DEVELOPMENT_URL|||{{ request.path }}').then((e) => {
+          fetch('|||DEVELOPMENT_URL|||{{ request.path }}', { method: "HEAD" }).then((e) => {
             themeEditorIframe.setAttribute('src', '|||DEVELOPMENT_URL|||{{ request.path }}');
             sessionStorage.setItem('shopify-cms-url', `|||DEVELOPMENT_URL|||`)
           }).catch(err => {
