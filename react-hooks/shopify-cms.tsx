@@ -68,17 +68,9 @@ export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
 
   const handleMessages = useCallback((e) => {
     if (e?.data?.source === "theme-editor") {
-      if (e.data.topic === "activateThemeEditor") {
+      if (!isThemeEditor) {
         setIsThemeEditor((current) => true);
-        document.body.classList.add("overflow-hidden");
       }
-
-      if (e.data.topic === "deactivateThemeEditor") {
-        setIsThemeEditor((current) => false);
-        document.body.classList.remove("overflow-hidden");
-      }
-
-      if (!isThemeEditor) return;
 
       setShopifyData((current) => ({ global: e.data.global, sections: e.data.sections }));
 
