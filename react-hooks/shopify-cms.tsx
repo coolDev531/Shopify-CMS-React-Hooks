@@ -71,6 +71,7 @@ export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
       if (!isThemeEditor) {
         setIsThemeEditor((current) => true);
       }
+      document.body.classList.add("overflow-hidden");
 
       setShopifyData((current) => ({ global: e.data.global, sections: e.data.sections }));
 
