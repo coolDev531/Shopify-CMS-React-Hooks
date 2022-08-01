@@ -2,7 +2,6 @@ import chalk from "chalk";
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
-import { updateTheme } from "./utils/updateTheme";
 import { ShopifySection, ShopifySettings } from "./@types/shopify";
 import { generateSections, generateSettings } from "./utils/generate-section";
 import { initBackup } from "./utils/init-backup";
@@ -11,6 +10,9 @@ import { copyFiles } from "./utils/init-copy-files";
 import { initFolders } from "./utils/init-folders";
 import { initShopifyApi } from "./utils/init-shopify-api";
 import { initTheme } from "./utils/init-theme";
+import { updateTheme } from "./utils/updateTheme";
+
+export { useShopifyCms } from "./react-hooks/use-shopify-cms";
 
 const watch = require("node-watch");
 
@@ -130,9 +132,4 @@ export const init = async () => {
       );
     });
   }
-};
-
-export const fetchPage = (string: string) => {
-  console.log("string");
-  return null;
 };

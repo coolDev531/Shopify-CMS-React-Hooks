@@ -16,106 +16,148 @@
 
   |||GLOBAL_SECTIONS_BELOW_LAYOUT|||
 
-  <iframe id="theme-editor"
-          style="width: 100%; height: 100%; overflow: hidden; position: absolute; top: 0; left:0; right: 0; bottom: 0; z-index: 10; min-height: 100vh"
-          src="|||DEPLOYMENT_URL|||{{ request.path }}"
-          frameborder="0"></iframe>
+  {% if request.design_mode == false %}
+    <iframe id="theme-editor"
+            style="
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            min-height: 100vh"
+            src="|||DEPLOYMENT_URL|||{{ request.path }}"
+            frameborder="0">
+    </iframe>
+  {% endif %}
 
-  <script>
-    const themeEditorIframe = document.getElementById("theme-editor");
+  {% if request.design_mode %}
+    <iframe id="theme-editor"
+            style="
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            min-height: 100vh"
+            src="|||DEPLOYMENT_URL|||{{ request.path }}"
+            frameborder="0">
+    </iframe>
 
-    themeEditorIframe.addEventListener('load', (e) => {
-      console.log(e, themeEditorIframe);
-    });
-    themeEditorIframe.addEventListener('loadstart', (e) => {
-      console.log(e, themeEditorIframe);
-    });
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const themeEditorIframe = document.getElementById("theme-editor");
+        let isInspectorMode = false;
+        let global = JSON.parse(document.querySelector("[data-global]").textContent);
+        let sections = [...document.querySelectorAll("[data-section]")].map((scriptElement) => JSON.parse(scriptElement.textContent));
+        let sectionSizes = [];
 
-    fetch('|||DEVELOPMENT_URL|||{{ request.path }}').then((e) => {
-      console.log(e);
-      themeEditorIframe.setAttribute('src', '|||DEVELOPMENT_URL|||{{ request.path }}');
-    }).catch(err => {
-      themeEditorIframe.setAttribute('src', '|||DEPLOYMENT_URL|||{{ request.path }}');
-    });
-
-    window.addEventListener('message', (e) => {
-      if (e?.data?.source === "theme-content") {
-        switch (e.data.topic) {
-          case "resize" : {
-            themeEditorIframe.style.height = `${e.data.totalHeight}px`;
-            e.data.sections.forEach(({ id, height }) => {
-              const sectionElement = document.getElementById(`shopify-section-${id}`);
-              if (sectionElement) {
-                sectionElement.style.position = 'relative';
-                sectionElement.style.height = `${height}px`;
-              }
-            });
-            break;
-          }
-          case "set-iframe": {
-            themeEditorIframe.style.height = `${e.data.totalHeight}px`;
-            break;
-          }
-          case "redirect": {
-            window.location.href = window.location.origin + e.data.href.replace(/^\/work\//gi, "/blogs/work/");
-          }
-        }
-      }
-    });
-
-    const handleEvents = (e) => {
-      setTimeout(() => {
-        const global = JSON.parse(document.querySelector("[data-global]").textContent);
-        const sections = [];
-        document.querySelectorAll("[data-section]").forEach((scriptElement) => {
-          sections.push(JSON.parse(scriptElement.textContent));
+        fetch('|||DEVELOPMENT_URL|||{{ request.path }}').then((e) => {
+          themeEditorIframe.setAttribute('src', '|||DEVELOPMENT_URL|||{{ request.path }}');
+        }).catch(err => {
+          themeEditorIframe.setAttribute('src', '|||DEPLOYMENT_URL|||{{ request.path }}');
         });
 
-        themeEditorIframe?.contentWindow.postMessage({
-            source: "theme-editor",
-            topic: e.type,
-            global,
-            sections,
-            detail: e.detail,
-          },
-          "*",
-        );
-      }, 15);
+        themeEditorIframe.addEventListener('load', (e) => {
+          console.log(e, themeEditorIframe);
+        });
 
-    };
-    document.addEventListener('shopify:inspector:activate', (e) => {
-      handleEvents(e);
-      themeEditorIframe.style.zIndex = -10;
-    });
-    document.addEventListener('shopify:inspector:deactivate', (e) => {
-      handleEvents(e);
-      themeEditorIframe.style.zIndex = 10;
-    });
-    document.addEventListener('shopify:section:load', (e) => {
-      handleEvents(e);
-    });
-    document.addEventListener('shopify:section:unload', (e) => {
-      handleEvents(e);
-    });
-    document.addEventListener('shopify:section:select', (e) => {
-      handleEvents(e);
-    });
-    document.addEventListener('shopify:section:deselect', (e) => {
-      handleEvents(e);
-    });
-    document.addEventListener('shopify:section:reorder', (e) => {
-      handleEvents(e);
-    });
-    document.addEventListener('shopify:block:select', (e) => {
-      handleEvents(e);
-    });
-    document.addEventListener('shopify:block:deselect', (e) => {
-      handleEvents(e);
-    });
 
-    const shopifyLoad = new CustomEvent("shopify:section:load")
-    document.dispatchEvent(shopifyLoad)
-  </script>
+        const resizeSections = () => {
+          sectionSizes.forEach(({ id, height, blocks }) => {
+            const sectionElement = document.getElementById(`shopify-section-${id}`);
+            if (sectionElement) {
+              sectionElement.style.position = 'static';
+              sectionElement.style.height = `${height}px`;
+            }
+            blocks?.forEach(({ id, rect }) => {
+              const blockElement = document.getElementById(`block--${id}`);
+              if (blockElement && rect) {
+                blockElement.style.width = rect.width + "px";
+                blockElement.style.height = rect.height + "px";
+                blockElement.style.top = rect.top + "px";
+                blockElement.style.left = rect.left + "px";
+                blockElement.style.bottom = rect.bottom + "px";
+                blockElement.style.right = rect.right + "px";
+              }
+            });
+          });
+        };
+
+        const sendSectionData = (e) => {
+          themeEditorIframe?.contentWindow.postMessage({
+              source: "theme-editor",
+              topic: e?.type,
+              global,
+              sections,
+              detail: e?.detail,
+            },
+            "*",
+          );
+        };
+
+        const shopifyEvents = [
+          'shopify:inspector:activate',
+          'shopify:inspector:deactivate',
+          'shopify:section:load',
+          'shopify:section:unload',
+          'shopify:section:select',
+          'shopify:section:deselect',
+          'shopify:section:reorder',
+          'shopify:block:select',
+          'shopify:block:deselect',
+        ];
+
+        /*= =============== SEND UPDATES ================ */
+        shopifyEvents.forEach(eventName => {
+          document.addEventListener(eventName, (event) => {
+            if (eventName === 'shopify:inspector:activate') {
+              isInspectorMode = true;
+              themeEditorIframe.style.zIndex = -10;
+              resizeSections();
+            }
+            if (eventName === 'shopify:inspector:deactivate') {
+              isInspectorMode = false;
+              themeEditorIframe.style.zIndex = 10;
+            }
+            setTimeout(() => {
+              global = JSON.parse(document.querySelector("[data-global]").textContent);
+              sections = [...document.querySelectorAll("[data-section]")].map((scriptElement) => JSON.parse(scriptElement.textContent));
+              sendSectionData(event);
+            }, 15);
+
+          });
+        });
+
+        /*= =============== RECEIVE UPDATES ================ */
+        window.addEventListener('message', (e) => {
+          if (e?.data?.source !== "theme-content") return;
+
+          switch (e.data.topic) {
+            case "resize" : {
+              themeEditorIframe.style.height = `${e.data.totalHeight}px`;
+              sectionSizes = e.data.sectionSizes;
+              if (isInspectorMode) {
+                resizeSections();
+              }
+              break;
+            }
+            case "set-iframe": {
+              themeEditorIframe.style.height = `${e.data.totalHeight}px`;
+              break;
+            }
+            case "redirect": {
+              window.location.href = window.location.origin + e.data.href;
+              break;
+            }
+          }
+        });
+
+      });
+    </script>
+
+  {% endif %}
 
 
 </body>

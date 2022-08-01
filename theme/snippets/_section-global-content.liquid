@@ -10,6 +10,10 @@
   ]
 {%- endcapture -%}
 
+{% for block in section.blocks %}
+  <div id="block--{{ block.id }}" {{ block.shopify_attributes  }} style="position: absolute"></div>
+{% endfor %}
+
 <script type="application/json" data-section id="{{ section.id }}">
 {
   "id": {{ section.id | json }},
