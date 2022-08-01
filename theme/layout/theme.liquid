@@ -46,6 +46,8 @@
     </iframe>
 
     <script>
+      const url2 = sessionStorage.getItem('shopify-cms-url')
+      console.log({ url2 })
       document.addEventListener('DOMContentLoaded', () => {
         const themeEditorIframe = document.getElementById("theme-editor");
         let isInspectorMode = false;
