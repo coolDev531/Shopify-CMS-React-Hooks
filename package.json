@@ -40,8 +40,6 @@
     "inquirer": "8.0.0",
     "jsdom": "^20.0.0",
     "node-watch": "^0.7.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "regenerator-runtime": "^0.13.9",
     "shopify-typed-node-api": "^2.0.18",
     "ts-node": "^10.9.1",

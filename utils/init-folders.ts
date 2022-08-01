@@ -4,14 +4,17 @@ import path from "path";
 import { PROJECT_ROOT } from "./project-root";
 
 export const initFolders = () => {
+  /*= =============== Root Folder ================ */
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms"))) {
     fs.mkdirSync(path.join(process.cwd(), ".shopify-cms"));
   }
 
+  /*= =============== Config ================ */
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "config.json"))) {
     fs.writeFileSync(path.join(process.cwd(), ".shopify-cms", "config.json"), JSON.stringify({}));
   }
 
+  /*= =============== Types ================ */
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types"))) {
     fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", "types"));
   }
@@ -37,10 +40,12 @@ export const initFolders = () => {
     }
   }
 
+  /*= =============== Backup ================ */
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "backup"))) {
     fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", "backup"));
   }
 
+  /*= =============== Theme ================ */
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "theme"))) {
     fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", "theme"));
   }
@@ -59,5 +64,35 @@ export const initFolders = () => {
   }
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "theme", "templates"))) {
     fs.mkdirSync(path.join(process.cwd(), ".shopify-cms", "theme", "templates"));
+  }
+
+  /*= =============== React hooks ================ */
+  const hooks = {
+    root: path.join(process.cwd(), ".shopify-cms", "hooks"),
+    shopifyCms: {
+      target: path.join(".shopify-cms", "hooks", "shopify-cms.tsx"),
+      src: path.join(PROJECT_ROOT, "./react-hooks/shopify-cms.tsx"),
+    },
+  };
+
+  if (!fs.existsSync(hooks.root)) {
+    fs.mkdirSync(hooks.root);
+  }
+
+  if (!fs.existsSync(hooks.shopifyCms.target)) {
+    fs.writeFileSync(
+      hooks.shopifyCms.target,
+      fs.readFileSync(hooks.shopifyCms.src, { encoding: "utf-8" })
+    );
+  }
+
+  if (fs.existsSync(hooks.shopifyCms.target)) {
+    const masterFile = fs.readFileSync(hooks.shopifyCms.src, { encoding: "utf-8" });
+    const currentFile = fs.readFileSync(hooks.shopifyCms.target, { encoding: "utf-8" });
+
+    if (masterFile !== currentFile) {
+      console.log(chalk.green("updated shopify-cms.tsx"));
+      fs.writeFileSync(hooks.shopifyCms.target, masterFile);
+    }
   }
 };

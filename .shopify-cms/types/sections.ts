@@ -1,1 +1,1 @@
-export type Sections = {}
+export type Sections = any
