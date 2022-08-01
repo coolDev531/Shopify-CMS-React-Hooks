@@ -1,19 +1,12 @@
+import { useCallback, useEffect, useState } from "react";
 import { makeStore } from "./_make-store";
-import { FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
-import { Sections } from ".shopify-cms/types/sections";
-import { GlobalSettings } from ".shopify-cms/types/shopify";
 
 const { Provider, useStore } = makeStore({ global: null, sections: [] }, "ShopifyThemeStore");
 
 export const useShopifyData = useStore;
 export const ShopifyDataProvider = Provider;
 
-type ShopifyCmsProps = {
-  global: GlobalSettings;
-  sections: Sections[];
-};
-
-export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
+export const InitShopifyCms = ({ children }) => {
   const [{ global, sections }, setShopifyData] = useShopifyData();
   const [isThemeEditor, setIsThemeEditor] = useState(false);
 
@@ -89,11 +82,7 @@ export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
   return <>{children}</>;
 };
 
-export const ShopifyCms: FC<PropsWithChildren<ShopifyCmsProps>> = ({
-  sections,
-  global,
-  children,
-}) => {
+export const ShopifyCms = ({ sections, global, children }) => {
   return (
     <>
       <ShopifyDataProvider init={{ sections: sections, global: global }}>
