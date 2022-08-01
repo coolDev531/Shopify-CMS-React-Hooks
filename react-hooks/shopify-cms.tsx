@@ -89,7 +89,7 @@ export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
   return <>{children}</>;
 };
 
-export const useShopifyCms: FC<PropsWithChildren<ShopifyCmsProps>> = ({
+export const ShopifyCms: FC<PropsWithChildren<ShopifyCmsProps>> = ({
   sections,
   global,
   children,
