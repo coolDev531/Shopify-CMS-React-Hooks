@@ -29,6 +29,29 @@
             src="|||DEPLOYMENT_URL|||{{ request.path }}"
             frameborder="0">
     </iframe>
+
+    <script>
+      const sessionUrl = sessionStorage.getItem('shopify-cms-url') ?? "|||DEVELOPMENT_URL|||"
+      const themeEditorIframe = document.getElementById("theme-editor");
+      themeEditorIframe.setAttribute('src', `${sessionUrl}{{ request.path }}`)
+
+      if (sessionUrl === `|||DEVELOPMENT_URL|||`) {
+        fetch('|||DEVELOPMENT_URL|||{{ request.path }}', { method: "HEAD" }).catch(err => {
+          themeEditorIframe.setAttribute('src', '|||DEPLOYMENT_URL|||{{ request.path }}');
+          sessionStorage.setItem('shopify-cms-url', `|||DEPLOYMENT_URL|||`)
+        });
+      }
+
+      if (sessionUrl !== `|||DEVELOPMENT_URL|||`) {
+        fetch('|||DEVELOPMENT_URL|||{{ request.path }}', { method: "HEAD" }).then((e) => {
+          themeEditorIframe.setAttribute('src', '|||DEVELOPMENT_URL|||{{ request.path }}');
+          sessionStorage.setItem('shopify-cms-url', `|||DEVELOPMENT_URL|||`)
+        }).catch(err => {
+          sessionStorage.setItem('shopify-cms-url', `|||DEPLOYMENT_URL|||`)
+        });
+      }
+    </script>
+
   {% endif %}
 
   {% if request.design_mode %}
