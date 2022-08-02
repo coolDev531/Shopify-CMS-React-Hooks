@@ -164,11 +164,13 @@
             if (eventName === 'shopify:inspector:deactivate') {
               isInspectorMode = false;
               themeEditorIframe.style.zIndex = 10;
+              resizeSections()
             }
             setTimeout(() => {
               global = JSON.parse(document.querySelector("[data-global]").textContent);
               sections = [...document.querySelectorAll("[data-section]")].map((scriptElement) => JSON.parse(scriptElement.textContent));
               sendSectionData(event);
+              resizeSections()
             }, 15);
 
           });

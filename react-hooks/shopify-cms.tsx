@@ -75,7 +75,12 @@ export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
 
       setShopifyData((current) => ({ global: e.data.global, sections: e.data.sections }));
 
-      sendSectionSizes(null, e.data.sections);
+      setTimeout(
+        () => {
+          sendSectionSizes(null, e.data.sections);
+        },
+        5
+      );
     }
   }, [isThemeEditor, sendSectionSizes, setShopifyData]);
 
