@@ -386,7 +386,7 @@ export type _Page_liquid = {
   content: string;
   handle: string;
   id: number;
-  metafields: _Metafield_liquid[];
+  metafields: { [T: string]: _Metafield_liquid };
   published_at: string;
   template_suffix: string;
   title: string;
@@ -400,7 +400,7 @@ export type _Blog_liquid = {
   articles_count: number;
   handle: string;
   id: number;
-  metafields: _Metafield_liquid[];
+  metafields: { [T: string]: _Metafield_liquid };
   tags: any[];
   title: string;
   url: string;
@@ -420,7 +420,7 @@ export type _Article_liquid = {
   featured_media: Omit<_Media_liquid, "media_type" | "position" | "preview_image">;
   handle: string;
   id: number;
-  metafields: _Metafield_liquid[];
+  metafields: { [T: string]: _Metafield_liquid };
   published_at: string;
   tags: any[];
   title: string;
@@ -491,33 +491,23 @@ export type _Product_liquid_json = {
 
 export type _Metafield_liquid_product_reference = {
   type: "product_reference";
-  key?: string;
-  namespace?: string;
   value?: _Product_liquid_json;
 };
 export type _Metafield_liquid_list_product_reference = {
   type: "list.product_reference";
-  key?: string;
-  namespace?: string;
   value?: _Product_liquid_json[];
 };
 
 export type _Metafield_liquid_variant_reference = {
   type: "variant_reference";
-  key?: string;
-  namespace?: string;
   value?: _Variant_liquid_json;
 };
 export type _Metafield_liquid_list_variant_reference = {
   type: "list.variant_reference";
-  key?: string;
-  namespace?: string;
   value?: _Variant_liquid_json[];
 };
 export type _Metafield_liquid_page_reference = {
   type: "page_reference";
-  key?: string;
-  namespace?: string;
   value?: _Page_liquid_json;
 };
 
@@ -552,21 +542,15 @@ export type _Metafield_liquid_file_reference_image = {
 
 export type _Metafield_liquid_file_reference = {
   type: "file_reference";
-  key?: string;
-  namespace?: string;
   value?: _Metafield_liquid_file_reference_generic | _Metafield_liquid_file_reference_image;
 };
 
 export type _Metafield_liquid_file_reference_force_generic = {
   type: "file_reference";
-  key?: string;
-  namespace?: string;
   value?: _Metafield_liquid_file_reference_generic;
 };
 export type _Metafield_liquid_file_reference_force_image = {
   type: "file_reference";
-  key?: string;
-  namespace?: string;
   value?: _Metafield_liquid_file_reference_image;
 };
 
@@ -579,8 +563,6 @@ export type _Metafield_liquid =
         | "single_line_text_field"
         | "multi_line_text_field"
         | "url";
-      key?: string;
-      namespace?: string;
       value?: string;
     }
   | {
@@ -591,44 +573,30 @@ export type _Metafield_liquid =
         | "list.single_line_text_field"
         | "list.multi_line_text_field"
         | "list.page_reference";
-      key?: string;
-      namespace?: string;
       value?: string[];
     }
   | {
       type: "number_integer";
-      key?: string;
-      namespace?: string;
       value?: number;
     }
   | {
       type: "list.number_integer";
-      key?: string;
-      namespace?: string;
       value?: number[];
     }
   | {
       type: "number_decimal";
-      key?: string;
-      namespace?: string;
       value?: number | string;
     }
   | {
       type: "list.number_decimal";
-      key?: string;
-      namespace?: string;
       value?: (number | string)[];
     }
   | {
       type: "json";
-      key?: string;
-      namespace?: string;
       value?: unknown;
     }
   | {
       type: "volume" | "weight" | "dimension";
-      key?: string;
-      namespace?: string;
       value?: {
         type: string;
         unit: string;
@@ -637,8 +605,6 @@ export type _Metafield_liquid =
     }
   | {
       type: "rating";
-      key?: string;
-      namespace?: string;
       value?: {
         rating: string;
         scale_max: string;
@@ -669,7 +635,7 @@ export type _Variant_liquid = {
   id: number;
   inventory_policy: string;
   inventory_quantity: number;
-  metafields: _Metafield_liquid[];
+  metafields: { [T: string]: _Metafield_liquid };
   option1: string;
   options: string[];
   price: number;
@@ -716,7 +682,7 @@ export type _Product_liquid = {
   id: number;
   images: any[];
   media: _Media_liquid[];
-  metafields: _Metafield_liquid[];
+  metafields: { [T: string]: _Metafield_liquid };
   options: string[];
   price: number;
   price_max: number;
@@ -762,7 +728,7 @@ export type _Collection_liquid = {
   filters: any[];
   handle: string;
   id: number;
-  metafields: _Metafield_liquid[];
+  metafields: { [T: string]: _Metafield_liquid };
   products: _Product_liquid[];
   products_count: number;
   published_at: string;
