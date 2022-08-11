@@ -1,7 +1,7 @@
 {%- if metafields -%}
   {
   {%- for key in metafields -%}
-    "{{ key[0] | json }}":
+    {{ key[0] | json }}:
     {%- if metafields[key[0]].type == "page_reference" -%}
       {
       "type": {{ metafields[key[0]].type | json }},
