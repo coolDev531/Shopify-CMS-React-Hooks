@@ -1,35 +1,72 @@
-{%- if input_product -%}
-  {
-  "available": {{ input_product.available | json }},
-  "collections": {{ input_product.collections | json }},
-  "compare_at_price": {{ input_product.compare_at_price | json }},
-  "compare_at_price_max": {{ input_product.compare_at_price_max | json }},
-  "compare_at_price_min": {{ input_product.compare_at_price_min | json }},
-  "compare_at_price_varies": {{ input_product.compare_at_price_varies | json }},
-  "content": {{ input_product.content | json }},
-  "created_at": "{{ input_product.created_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
-  "description": {{ input_product.description | json }},
-  "featured_image": {{ input_product.featured_image | json }},
-  "featured_media": {{ input_product.featured_media | json }},
-  "handle": {{ input_product.handle | json }},
-  "id": {{ input_product.id | json }},
-  "images": {{ input_product.images | json }},
-  "media": {{ input_product.media | json }},
-  "metafields": {%- include '_map_metafields', metafields: input_product.metafields.data -%},
-  "options": {{ input_product.options | json }},
-  "price": {{ input_product.price | json }},
-  "price_max": {{ input_product.price_max | json }},
-  "price_min": {{ input_product.price_min | json }},
-  "price_varies": {{ input_product.price_varies | json }},
-  "published_at": "{{ input_product.published_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
-  "tags": {{ input_product.tags | json }},
-  "template_suffix": {{ input_product.template_suffix | json }},
-  "title": {{ input_product.title | json }},
-  "type": {{ input_product.type | json }},
-  "url": {{ input_product.url | json }},
-  "variants": [{%- for variant in input_product.variants -%}{%- include '_map_variant', input_variant: variant -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
-  "vendor": {{ input_product.vendor | json }}
-  }
-{%- else -%}
-null
-{%- endif -%}
+{%- if no_metafields -%}
+  {%- if input_product -%}
+    {
+    "available": {{ input_product.available | json }},
+    "collections": {{ input_product.collections | json }},
+    "compare_at_price": {{ input_product.compare_at_price | json }},
+    "compare_at_price_max": {{ input_product.compare_at_price_max | json }},
+    "compare_at_price_min": {{ input_product.compare_at_price_min | json }},
+    "compare_at_price_varies": {{ input_product.compare_at_price_varies | json }},
+    "content": {{ input_product.content | json }},
+    "created_at": "{{ input_product.created_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
+    "description": {{ input_product.description | json }},
+    "featured_image": {{ input_product.featured_image | json }},
+    "featured_media": {{ input_product.featured_media | json }},
+    "handle": {{ input_product.handle | json }},
+    "id": {{ input_product.id | json }},
+    "images": {{ input_product.images | json }},
+    "media": {{ input_product.media | json }},
+    "options": {{ input_product.options | json }},
+    "price": {{ input_product.price | json }},
+    "price_max": {{ input_product.price_max | json }},
+    "price_min": {{ input_product.price_min | json }},
+    "price_varies": {{ input_product.price_varies | json }},
+    "published_at": "{{ input_product.published_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
+    "tags": {{ input_product.tags | json }},
+    "template_suffix": {{ input_product.template_suffix | json }},
+    "title": {{ input_product.title | json }},
+    "type": {{ input_product.type | json }},
+    "url": {{ input_product.url | json }},
+    "variants": [{%- for variant in input_product.variants -%}{%- include '_map_variant', input_variant: variant -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+    "vendor": {{ input_product.vendor | json }}
+    }
+  {%- else -%}
+    null
+  {%- endif -%}
+{% else %}
+  {%- if input_product -%}
+    {
+    "available": {{ input_product.available | json }},
+    "collections": {{ input_product.collections | json }},
+    "compare_at_price": {{ input_product.compare_at_price | json }},
+    "compare_at_price_max": {{ input_product.compare_at_price_max | json }},
+    "compare_at_price_min": {{ input_product.compare_at_price_min | json }},
+    "compare_at_price_varies": {{ input_product.compare_at_price_varies | json }},
+    "content": {{ input_product.content | json }},
+    "created_at": "{{ input_product.created_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
+    "description": {{ input_product.description | json }},
+    "featured_image": {{ input_product.featured_image | json }},
+    "featured_media": {{ input_product.featured_media | json }},
+    "handle": {{ input_product.handle | json }},
+    "id": {{ input_product.id | json }},
+    "images": {{ input_product.images | json }},
+    "media": {{ input_product.media | json }},
+    "metafields": {%- include '_map_metafields', metafields: input_product.metafields.data -%},
+    "options": {{ input_product.options | json }},
+    "price": {{ input_product.price | json }},
+    "price_max": {{ input_product.price_max | json }},
+    "price_min": {{ input_product.price_min | json }},
+    "price_varies": {{ input_product.price_varies | json }},
+    "published_at": "{{ input_product.published_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
+    "tags": {{ input_product.tags | json }},
+    "template_suffix": {{ input_product.template_suffix | json }},
+    "title": {{ input_product.title | json }},
+    "type": {{ input_product.type | json }},
+    "url": {{ input_product.url | json }},
+    "variants": [{%- for variant in input_product.variants -%}{%- include '_map_variant', input_variant: variant -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+    "vendor": {{ input_product.vendor | json }}
+    }
+  {%- else -%}
+    null
+  {%- endif -%}
+{% endif %}

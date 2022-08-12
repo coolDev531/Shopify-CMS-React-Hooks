@@ -30,6 +30,16 @@
       "scale_min": {{ metafields[key[0]].value.scale_min | json }}
       }
       }{%- unless forloop.last -%},{%- endunless -%}
+    {%- elsif metafields[key[0]].type == "product_reference" -%}
+      {
+      "type": {{ metafields[key[0]].type | json }},
+      "value": {%- include '_map_product', input_product: metafields[key[0]].value, no_metafields: true -%}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- elsif metafields[key[0]].type == "list.product_reference" -%}
+      {
+      "type": {{ metafields[key[0]].type | json }},
+      "value": [{% for p in metafields[key[0]].value %}{%- include '_map_product', input_product: p, no_metafields: true -%}{%- unless forloop.last -%},{%- endunless -%}{% endfor %}]
+      }{%- unless forloop.last -%},{%- endunless -%}
     {%- else -%}
       {
       "type": {{ metafields[key[0]].type | json }},
