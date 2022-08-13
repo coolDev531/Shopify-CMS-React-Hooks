@@ -11,5 +11,9 @@ export const initShopifyApi = () => {
     );
     throw "Error";
   }
-  return new Shopify.Clients.Rest(SHOPIFY_CMS_SHOP, SHOPIFY_CMS_ACCESS_TOKEN);
+
+  const api = new Shopify.Clients.Rest(SHOPIFY_CMS_SHOP, SHOPIFY_CMS_ACCESS_TOKEN);
+  const gql = new Shopify.Clients.Graphql(SHOPIFY_CMS_SHOP, SHOPIFY_CMS_ACCESS_TOKEN);
+
+  return { api, gql };
 };

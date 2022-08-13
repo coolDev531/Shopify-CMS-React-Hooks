@@ -68,6 +68,7 @@
   "email": {{ shop.email | json }},
   "enabled_payment_types": {{ shop.enabled_payment_types | json }},
   "id": {{ shop.id | json }},
+  "metafields": {%- include '_map_metafields', metafields: shop.metafields.data -%},
   "money_format": {{ shop.money_format | json }},
   "money_with_currency_format": {{ shop.money_with_currency_format | json }},
   "name": {{ shop.name | json }},

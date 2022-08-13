@@ -1,3 +1,4 @@
+import { _Article_metafields, _Blog_metafields, _Collection_metafields, _Page_metafields, _Product_metafields, _Shop_metafields, _Variant_metafields } from "types/metafields";
 import { SettingsSchema } from "./settings";
 
 export type ShopifyHeader = {
@@ -386,7 +387,7 @@ export type _Page_liquid = {
   content: string;
   handle: string;
   id: number;
-  metafields: { [T: string]: _Metafield_liquid };
+  metafields: _Page_metafields;
   published_at: string;
   template_suffix: string;
   title: string;
@@ -400,7 +401,7 @@ export type _Blog_liquid = {
   articles_count: number;
   handle: string;
   id: number;
-  metafields: { [T: string]: _Metafield_liquid };
+  metafields: _Blog_metafields;
   tags: any[];
   title: string;
   url: string;
@@ -420,7 +421,7 @@ export type _Article_liquid = {
   featured_media: Omit<_Media_liquid, "media_type" | "position" | "preview_image">;
   handle: string;
   id: number;
-  metafields: { [T: string]: _Metafield_liquid };
+  metafields: _Article_metafields;
   published_at: string;
   tags: any[];
   title: string;
@@ -491,11 +492,11 @@ export type _Product_liquid_json = {
 
 export type _Metafield_liquid_product_reference = {
   type: "product_reference";
-  value?: _Product_liquid_json;
+  value?: Omit<_Product_liquid, "metafields">;
 };
 export type _Metafield_liquid_list_product_reference = {
   type: "list.product_reference";
-  value?: _Product_liquid_json[];
+  value?: Omit<_Product_liquid, "metafields">[];
 };
 
 export type _Metafield_liquid_variant_reference = {
@@ -543,6 +544,11 @@ export type _Metafield_liquid_file_reference_image = {
 export type _Metafield_liquid_file_reference = {
   type: "file_reference";
   value?: _Metafield_liquid_file_reference_generic | _Metafield_liquid_file_reference_image;
+};
+
+export type _Metafield_liquid_list_file_reference = {
+  type: "list.file_reference";
+  value?: (_Metafield_liquid_file_reference_generic | _Metafield_liquid_file_reference_image)[];
 };
 
 export type _Metafield_liquid_file_reference_force_generic = {
@@ -597,25 +603,18 @@ export type _Metafield_liquid =
     }
   | {
       type: "volume" | "weight" | "dimension";
-      value?: {
-        type: string;
-        unit: string;
-        value: number;
-      };
+      value?: { type: string; unit: string; value: number };
     }
   | {
       type: "rating";
-      value?: {
-        rating: string;
-        scale_max: string;
-        scale_min: string;
-      };
+      value?: { rating: string; scale_max: string; scale_min: string };
     }
   | _Metafield_liquid_product_reference
   | _Metafield_liquid_list_product_reference
   | _Metafield_liquid_variant_reference
   | _Metafield_liquid_list_variant_reference
   | _Metafield_liquid_page_reference
+  | _Metafield_liquid_list_file_reference
   | _Metafield_liquid_file_reference;
 
 export type _Page_liquid_json = {
@@ -635,7 +634,7 @@ export type _Variant_liquid = {
   id: number;
   inventory_policy: string;
   inventory_quantity: number;
-  metafields: { [T: string]: _Metafield_liquid };
+  metafields: _Variant_metafields;
   option1: string;
   options: string[];
   price: number;
@@ -682,7 +681,7 @@ export type _Product_liquid = {
   id: number;
   images: any[];
   media: _Media_liquid[];
-  metafields: { [T: string]: _Metafield_liquid };
+  metafields: _Product_metafields;
   options: string[];
   price: number;
   price_max: number;
@@ -728,7 +727,7 @@ export type _Collection_liquid = {
   filters: any[];
   handle: string;
   id: number;
-  metafields: { [T: string]: _Metafield_liquid };
+  metafields: _Collection_metafields;
   products: _Product_liquid[];
   products_count: number;
   published_at: string;
@@ -873,6 +872,7 @@ export type _Shop_liquid_json = {
   email: string;
   enabled_payment_types: string[];
   id: number;
+  metafields: _Shop_metafields;
   money_format: string;
   money_with_currency_format: string;
   name: string;

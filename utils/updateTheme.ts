@@ -2,8 +2,10 @@ import chalk from "chalk";
 import fs from "fs";
 import path from "path";
 import { DataType } from "shopify-typed-node-api";
+import { GraphqlClient } from "shopify-typed-node-api/dist/clients/graphql";
 import { RestClient } from "shopify-typed-node-api/dist/clients/rest";
 import { Asset } from "shopify-typed-node-api/dist/clients/rest/dataTypes";
+import { createMetafieldTypes } from "./create-metafield-types";
 import { configureThemeFiles } from "./configure-theme-files";
 import { getAllFiles } from "./get-all-files";
 import { Config } from "./init-config";
@@ -11,9 +13,12 @@ import { PROJECT_ROOT } from "./project-root";
 
 export const updateTheme = async (
   api: RestClient,
+  gql: GraphqlClient,
   SHOPIFY_CMS_THEME_ID: string,
   config: Config
 ) => {
+  await createMetafieldTypes(gql);
+
   const files = await getAllFiles("theme");
 
   const fileData = files.map((file) => ({

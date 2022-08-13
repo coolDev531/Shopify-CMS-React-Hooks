@@ -40,7 +40,7 @@ export const init = async () => {
   const config = await initConfig(!!program.opts().config);
   copyFiles(config);
 
-  const api = initShopifyApi();
+  const { api, gql } = initShopifyApi();
   console.log(
     `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Checking Theme`)}`
   );
@@ -49,7 +49,7 @@ export const init = async () => {
     `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Theme Checked`)}`
   );
   if (program.opts().update) {
-    await updateTheme(api, SHOPIFY_CMS_THEME_ID, config);
+    await updateTheme(api, gql, SHOPIFY_CMS_THEME_ID, config);
   }
 
   if (program.opts().backup) {
