@@ -630,7 +630,7 @@ export const getSettings = async (api: RestClient, SHOPIFY_CMS_THEME_ID: string)
     path: `themes/${SHOPIFY_CMS_THEME_ID}/assets`,
     query: { "asset[key]": `config/settings_schema.json` },
   });
-
+  console.log(themeSettings.body);
   const settingsSchema = JSON.parse(themeSettings.body?.asset?.value) as ShopifySettings;
 
   const settings = settingsSchema.reduce((acc: ShopifySettingsInput[], group) => {

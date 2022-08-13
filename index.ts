@@ -56,7 +56,15 @@ export const init = async () => {
     if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types", "settings.ts"))) {
       fs.writeFileSync(
         path.join(process.cwd(), ".shopify-cms", "types", "settings.ts"),
-        `export type SettingsSchema = {}`
+        `export type SettingsSchema = {};`
+      );
+      return;
+    }
+
+    if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types", "sections.ts"))) {
+      fs.writeFileSync(
+        path.join(process.cwd(), ".shopify-cms", "types", "sections.ts"),
+        `export type Sections = [];`
       );
       return;
     }
