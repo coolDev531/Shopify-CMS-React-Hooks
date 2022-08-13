@@ -166,6 +166,7 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
   const masterFile = metafieldTypesContent.join("\n");
 
   if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types", "metafields.ts"))) {
+    console.log(chalk.green("created metafields.ts"));
     fs.writeFileSync(
       path.join(process.cwd(), ".shopify-cms", "types", "metafields.ts"),
       masterFile
