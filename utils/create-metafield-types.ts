@@ -163,9 +163,16 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
     }
   });
 
-  if (fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types", "metafields.ts"))) {
-    const masterFile = metafieldTypesContent.join("\n");
+  const masterFile = metafieldTypesContent.join("\n");
 
+  if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types", "metafields.ts"))) {
+    fs.writeFileSync(
+      path.join(process.cwd(), ".shopify-cms", "types", "metafields.ts"),
+      masterFile
+    );
+  }
+
+  if (fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types", "metafields.ts"))) {
     const currentFile = fs.readFileSync(
       path.join(process.cwd(), ".shopify-cms", "types", "metafields.ts"),
       { encoding: "utf-8" }
