@@ -2,6 +2,7 @@ import chalk from "chalk";
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
+import { createMetafieldTypes } from "./utils/create-metafield-types";
 import { ShopifySection, ShopifySettings } from "./@types/shopify";
 import { generateSections, generateSettings } from "./utils/generate-section";
 import { initBackup } from "./utils/init-backup";
@@ -24,11 +25,34 @@ program
   .option("-c, --config", "Configure your theme")
   .option("-d, --download", "Download settings")
   .option("-u, --update", "Update Shopify Theme files")
+  .option("-t, --types", "Create types only")
   .parse(process.argv);
 
 const { SHOPIFY_CMS_FOLDER } = process.env;
 
 export const init = async () => {
+  if (!program.opts().types) {
+    console.log(
+      `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(
+        `Creating Types only`
+      )}`
+    );
+
+    initFolders();
+
+    console.log(program.opts().config);
+    const config = await initConfig(!!program.opts().config);
+    copyFiles(config);
+
+    const { gql } = initShopifyApi();
+    console.log(
+      `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Checking Theme`)}`
+    );
+
+    await createMetafieldTypes(gql);
+    return;
+  }
+
   console.log(
     `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(
       `Shopify CMS Started`
@@ -44,12 +68,19 @@ export const init = async () => {
   console.log(
     `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Checking Theme`)}`
   );
+
   const SHOPIFY_CMS_THEME_ID = await initTheme(api, config);
   console.log(
     `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Theme Checked`)}`
   );
+
+  await createMetafieldTypes(gql);
+  console.log(
+    `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Metafields Checked`)}`
+  );
+
   if (program.opts().update) {
-    await updateTheme(api, gql, SHOPIFY_CMS_THEME_ID, config);
+    await updateTheme(api, SHOPIFY_CMS_THEME_ID, config);
   }
 
   if (program.opts().backup) {

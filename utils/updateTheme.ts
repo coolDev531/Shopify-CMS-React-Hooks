@@ -13,12 +13,9 @@ import { PROJECT_ROOT } from "./project-root";
 
 export const updateTheme = async (
   api: RestClient,
-  gql: GraphqlClient,
   SHOPIFY_CMS_THEME_ID: string,
   config: Config
 ) => {
-  await createMetafieldTypes(gql);
-
   const files = await getAllFiles("theme");
 
   const fileData = files.map((file) => ({
