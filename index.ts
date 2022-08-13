@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import { createMetafieldTypes } from "./utils/create-metafield-types";
 import { ShopifySection, ShopifySettings } from "./@types/shopify";
-import { generateSections, generateSettings } from "./utils/generate-section";
+import { generateSections, generateSettings, getSettings } from "./utils/generate-section";
 import { initBackup } from "./utils/init-backup";
 import { initConfig } from "./utils/init-config";
 import { copyFiles } from "./utils/init-copy-files";
@@ -44,12 +44,27 @@ export const init = async () => {
     const config = await initConfig(!!program.opts().config);
     copyFiles(config);
 
-    const { gql } = initShopifyApi();
+    const { api, gql } = initShopifyApi();
     console.log(
       `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(`Checking Theme`)}`
     );
 
     await createMetafieldTypes(gql);
+
+    const { SHOPIFY_CMS_THEME_ID } = process.env;
+
+    if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types", "settings.ts"))) {
+      fs.writeFileSync(
+        path.join(process.cwd(), ".shopify-cms", "types", "settings.ts"),
+        `export type SettingsSchema = {}`
+      );
+      return;
+    }
+
+    if (SHOPIFY_CMS_THEME_ID) {
+      await getSettings(api, SHOPIFY_CMS_THEME_ID);
+    }
+
     return;
   }
 
