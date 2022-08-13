@@ -31,7 +31,7 @@ program
 const { SHOPIFY_CMS_FOLDER } = process.env;
 
 export const init = async () => {
-  if (!program.opts().types) {
+  if (program.opts().types) {
     console.log(
       `[${chalk.gray(new Date().toLocaleTimeString())}]: ${chalk.magentaBright(
         `Creating Types only`
