@@ -64,7 +64,7 @@ export const init = async () => {
     if (!fs.existsSync(path.join(process.cwd(), ".shopify-cms", "types", "sections.ts"))) {
       fs.writeFileSync(
         path.join(process.cwd(), ".shopify-cms", "types", "sections.ts"),
-        `import { ShopifySection } from "./shopify";\n\n export type Sections = ShopifySection[];`
+        `export type Sections = { id: string; settings: unknown; blocks: { id: string; settings: unknown; type: string; }[]; }\n`
       );
       return;
     }
