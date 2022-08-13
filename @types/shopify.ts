@@ -1,4 +1,4 @@
-import { _Article_metafields, _Blog_metafields, _Collection_metafields, _Page_metafields, _Product_metafields, _Shop_metafields, _Variant_metafields } from "types/metafields";
+import { _Article_metafields, _Blog_metafields, _Collection_metafields, _Page_metafields, _Product_metafields, _Shop_metafields, _Variant_metafields } from "./metafields";
 import { SettingsSchema } from "./settings";
 
 export type ShopifyHeader = {
