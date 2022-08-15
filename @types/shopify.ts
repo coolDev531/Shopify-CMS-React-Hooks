@@ -738,7 +738,10 @@ export type _Collection_liquid = {
   url: string;
   featured_image?: any;
   image?: any;
+  product_pagination?: _Pagination_liquid;
 };
+
+export type _Pagination_liquid = {};
 
 export type _Link_liquid = {
   active: boolean;
