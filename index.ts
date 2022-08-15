@@ -2,9 +2,12 @@ import chalk from "chalk";
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
+import { generateSections } from "./utils/generate-sections";
+import { getSections } from "./utils/get-sections";
+import { getSettings } from "./utils/get-settings";
+import { generateSettings } from "./utils/generate-settings";
 import { createMetafieldTypes } from "./utils/create-metafield-types";
 import { ShopifySection, ShopifySettings } from "./@types/shopify";
-import { generateSections, generateSettings, getSettings } from "./utils/generate-section";
 import { initBackup } from "./utils/init-backup";
 import { initConfig } from "./utils/init-config";
 import { copyFiles } from "./utils/init-copy-files";
@@ -71,6 +74,7 @@ export const init = async () => {
 
     if (SHOPIFY_CMS_THEME_ID) {
       await getSettings(api, SHOPIFY_CMS_THEME_ID);
+      await getSections(api, SHOPIFY_CMS_THEME_ID);
     }
 
     return;

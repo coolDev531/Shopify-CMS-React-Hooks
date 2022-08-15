@@ -2,8 +2,7 @@ import chalk from "chalk";
 import fs from "fs";
 import path from "path";
 import { GraphqlClient } from "shopify-typed-node-api/dist/clients/graphql";
-import { PROJECT_ROOT } from "utils/project-root";
-import { MetafieldDefinitionsQuery, MetafieldDefinitionsQueryVariables } from "utils/shopify-gql-types";
+import { MetafieldDefinitionsQuery, MetafieldDefinitionsQueryVariables } from "./shopify-gql-types";
 
 const ownerTypes = [
   "ARTICLE",
