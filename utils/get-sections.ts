@@ -45,9 +45,8 @@ export const getSections = async (api: RestClient, SHOPIFY_CMS_THEME_ID: string)
   const sections = {};
 
   files.map((file) => {
-    sections[toCamelCase(file.body.asset.key)] = JSON.parse(
-      file.body.asset.value.replace(replacer, "$2")
-    );
+    sections[toCamelCase(file.body.asset.key.replace(/^sections\/(.*?)\.liquid$/i, "$1"))] =
+      JSON.parse(file.body.asset.value.replace(replacer, "$2"));
   });
 
   generateSectionsTypes(sections);
