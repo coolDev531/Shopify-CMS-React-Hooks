@@ -12,7 +12,7 @@ import { toKebabCase } from "./to-kebab-case";
 export const getSections = async (api: RestClient, SHOPIFY_CMS_THEME_ID: string) => {
   console.log(chalk.green(`Fetching sections - Loading...`));
   const { body } = await api.get<Asset.Get>({
-    path: `themes/${SHOPIFY_CMS_THEME_ID}/sections`,
+    path: `themes/${SHOPIFY_CMS_THEME_ID}/assets`,
     tries: 20,
   });
 
@@ -24,7 +24,7 @@ export const getSections = async (api: RestClient, SHOPIFY_CMS_THEME_ID: string)
       .map((file) =>
         api
           .get<Asset.GetById>({
-            path: `themes/${SHOPIFY_CMS_THEME_ID}/sections`,
+            path: `themes/${SHOPIFY_CMS_THEME_ID}/assets`,
             query: {
               "asset[key]": file.key,
             },
