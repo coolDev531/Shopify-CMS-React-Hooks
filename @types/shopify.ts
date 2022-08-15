@@ -741,7 +741,22 @@ export type _Collection_liquid = {
   product_pagination?: _Pagination_liquid;
 };
 
-export type _Pagination_liquid = {};
+export type _Pagination_liquid = {
+  current_offset: number;
+  current_page: number;
+  items: number;
+  page_size: number;
+  pages: number;
+  parts: _Pagination_liquid_part[];
+  next?: _Pagination_liquid_part;
+  previous?: _Pagination_liquid_part;
+};
+
+type _Pagination_liquid_part = {
+  is_link: boolean;
+  title: string;
+  url: string;
+};
 
 export type _Link_liquid = {
   active: boolean;
