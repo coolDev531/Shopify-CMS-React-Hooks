@@ -16,7 +16,7 @@ export const getSections = async (api: RestClient, SHOPIFY_CMS_THEME_ID: string)
     tries: 20,
   });
 
-  console.log(chalk.yellowBright(`Backup in progress: Assets directory loaded`));
+  console.log(chalk.yellowBright(`Type update in progress: Assets directory loaded`));
 
   const files = await Promise.all(
     body.assets
