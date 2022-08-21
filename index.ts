@@ -175,6 +175,7 @@ export const init = async () => {
         delete require.cache[filename];
 
         for (const key in settings) {
+          console.log(settings[key], typeof settings[key]);
           await generateSettings(api, SHOPIFY_CMS_THEME_ID, settings[key] as ShopifySettings);
         }
       }
