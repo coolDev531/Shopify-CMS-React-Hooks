@@ -174,11 +174,9 @@ export const init = async () => {
         const settings = require(filename);
         delete require.cache[filename];
 
-        await generateSettings(
-          api,
-          SHOPIFY_CMS_THEME_ID,
-          Object.values(settings)[0] as ShopifySettings
-        );
+        for (const key in settings) {
+          await generateSettings(api, SHOPIFY_CMS_THEME_ID, settings[key] as ShopifySettings);
+        }
       }
 
       console.log(
