@@ -33,8 +33,31 @@ export const createTheme = async (
       content: fs.readFileSync(path.join(PROJECT_ROOT, file), { encoding: "utf-8" }),
     }));
 
+    const initialFiles = fileData.filter((file) => !file.key.includes("templates/"));
+    const templateFiles = fileData.filter((file) => file.key.includes("templates/"));
+
     await Promise.all(
-      fileData.map(({ key, content }) => {
+      initialFiles.map(({ key, content }) => {
+        return api
+          .put<Asset.Update>({
+            path: `themes/${theme.body.theme.id}/assets`,
+            type: DataType.JSON,
+            data: {
+              asset: {
+                key: key,
+                value: configureThemeFiles(content, config),
+              },
+            },
+            tries: 20,
+          })
+          .then((data) => {
+            console.log(chalk.greenBright(`File uploaded to Shopify: ${key}`));
+            return data;
+          });
+      })
+    );
+    await Promise.all(
+      templateFiles.map(({ key, content }) => {
         return api
           .put<Asset.Update>({
             path: `themes/${theme.body.theme.id}/assets`,
