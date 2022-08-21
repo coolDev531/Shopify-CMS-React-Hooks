@@ -48,6 +48,7 @@ export const initTheme = async (api: RestClient, config: Config): Promise<string
 
         const theme = await createTheme(api, theme_name, theme_publish, config);
 
+        console.log(chalk.red.bold(`NEW THEME ID: "${theme.id}"`));
         return String(theme.id);
       }
 
