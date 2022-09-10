@@ -219,6 +219,7 @@ export type ShopifySettingsInput =
   | ShopifyVideo_url;
 
 type ExtractSettings<T extends ShopifySection | ShopifySectionBlock> = Extract<
+  /* @ts-ignore*/
   T["settings"][number],
   { id: string; type }
 >;

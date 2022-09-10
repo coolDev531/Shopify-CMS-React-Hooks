@@ -20,7 +20,7 @@ function makeStore<S>(defaultValue: S, displayName = "") {
   return { Provider, useStore };
 }
 
-const { Provider, useStore } = makeStore<{ global: GlobalSettings; sections: Sections[] }>(
+const { Provider, useStore } = makeStore<{ global: GlobalSettings | null; sections: Sections[] }>(
   { global: null, sections: [] },
   "ShopifyThemeStore"
 );
@@ -39,7 +39,10 @@ export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
 
   const sendSectionSizes = useCallback((e, currentSections = sections) => {
     const sectionSizes = currentSections?.map(({ id, ...section }) => {
-      const blocks = [];
+      const blocks: {
+        id: string | number;
+        rect?: DOMRect;
+      }[] = [];
       if ("blocks" in section) {
         section.blocks.forEach(({ id: blockId }) => {
           blocks.push({
