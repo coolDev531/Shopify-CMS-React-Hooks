@@ -20,10 +20,12 @@ function makeStore<S>(defaultValue: S, displayName = "") {
   return { Provider, useStore };
 }
 
-const { Provider, useStore } = makeStore<{ global: GlobalSettings | null; sections: Sections[] }>(
-  { global: null, sections: [] },
-  "ShopifyThemeStore"
-);
+const { Provider, useStore } = makeStore<{
+  global: GlobalSettings | null;
+  globalSections: Sections[];
+  sectionOrder: string[];
+  sections: Sections[];
+}>({ global: null, sections: [], sectionOrder: [], globalSections: [] }, "ShopifyThemeStore");
 
 export const useShopifyData = useStore;
 export const ShopifyDataProvider = Provider;
@@ -34,7 +36,7 @@ type ShopifyCmsProps = {
 };
 
 export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
-  const [{ global, sections }, setShopifyData] = useShopifyData();
+  const [{ global, sections, sectionOrder, globalSections }, setShopifyData] = useShopifyData();
   const [isThemeEditor, setIsThemeEditor] = useState(false);
 
   const sendSectionSizes = useCallback((e, currentSections = sections) => {
@@ -76,7 +78,12 @@ export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
       }
       document.body.classList.add("overflow-hidden");
 
-      setShopifyData((current) => ({ global: e.data.global, sections: e.data.sections }));
+      setShopifyData((current) => ({
+        global: e.data.global,
+        sections: e.data.sections,
+        sectionOrder: e.data.sections.map(({ id }) => id),
+        globalSections: e.data.sections.filter((section) => section.global),
+      }));
 
       setTimeout(
         () => {
@@ -116,10 +123,15 @@ export const ShopifyCms: FC<PropsWithChildren<ShopifyCmsProps>> = ({
   children,
 }) => {
   return (
-    <>
-      <ShopifyDataProvider init={{ sections: sections, global: global }}>
-        <InitShopifyCms>{children}</InitShopifyCms>
-      </ShopifyDataProvider>
-    </>
+    <ShopifyDataProvider
+      init={{
+        global: global,
+        sections: sections,
+        sectionOrder: sections.map(({ id }) => id),
+        globalSections: sections.filter((section) => section.global),
+      }}
+    >
+      <InitShopifyCms>{children}</InitShopifyCms>
+    </ShopifyDataProvider>
   );
 };
