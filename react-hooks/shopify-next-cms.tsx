@@ -42,7 +42,7 @@ type ShopifyCmsProps = {
   sections: Sections[];
 };
 
-export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
+export const InitShopifyNextCms: FC<PropsWithChildren> = ({ children }) => {
   const [{ sectionOrder, sections }, setShopifySections] = useShopifySections();
   const [{ global, globalSections }, setShopifyGlobals] = useShopifyGlobals();
   const [isThemeEditor, setIsThemeEditor] = useState(false);
@@ -128,7 +128,7 @@ export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
   return <>{children}</>;
 };
 
-export const ShopifyCms: FC<PropsWithChildren<ShopifyCmsProps>> = ({
+export const ShopifyNextCms: FC<PropsWithChildren<ShopifyCmsProps>> = ({
   sections,
   global,
   children,
@@ -144,7 +144,7 @@ export const ShopifyCms: FC<PropsWithChildren<ShopifyCmsProps>> = ({
             sectionOrder: sections.map(({ id }) => id),
           }}
         >
-          <InitShopifyCms>{children}</InitShopifyCms>
+          <InitShopifyNextCms>{children}</InitShopifyNextCms>
         </ShopifySectionsProvider>
       </ShopifyGlobalsProvider>
     </>
