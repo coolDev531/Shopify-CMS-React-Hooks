@@ -20,21 +20,31 @@ function makeStore<S>(defaultValue: S, displayName = "") {
   return { Provider, useStore };
 }
 
-const { Provider, useStore } = makeStore<{ global: GlobalSettings | null; sections: Sections[] }>(
-  { global: null, sections: [] },
-  "ShopifyThemeStore"
-);
+const { Provider: SectionsProvider, useStore: useSectionsStore } = makeStore<{
+  sectionOrder: Sections["id"][];
+  sections: Sections[];
+}>({ sectionOrder: [], sections: [] }, "Shopify Sections");
 
-export const useShopifyData = useStore;
-export const ShopifyDataProvider = Provider;
+const { Provider: GlobalsProvider, useStore: useGlobalsStore } = makeStore<{
+  global: GlobalSettings | null;
+  globalSections: Sections[];
+}>({ global: null, globalSections: [] }, "Shopify Globals");
+
+export const useShopifySections = useSectionsStore;
+export const useShopifyGlobals = useGlobalsStore;
+export const ShopifyGlobalsProvider = GlobalsProvider;
+export const ShopifySectionsProvider = SectionsProvider;
 
 type ShopifyCmsProps = {
   global: GlobalSettings;
+  globalSections: Sections[];
+  sectionOrder: Sections["id"][];
   sections: Sections[];
 };
 
 export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
-  const [{ global, sections }, setShopifyData] = useShopifyData();
+  const [{ sectionOrder, sections }, setShopifySections] = useShopifySections();
+  const [{ global, globalSections }, setShopifyGlobals] = useShopifyGlobals();
   const [isThemeEditor, setIsThemeEditor] = useState(false);
 
   const sendSectionSizes = useCallback((e, currentSections = sections) => {
@@ -76,7 +86,15 @@ export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
       }
       document.body.classList.add("overflow-hidden");
 
-      setShopifyData((current) => ({ global: e.data.global, sections: e.data.sections }));
+      setShopifySections((current) => ({
+        sections: e.data.sections.filter((section) => section.global),
+        sectionOrder: e.data.sections.map(({ id }) => id),
+      }));
+
+      setShopifyGlobals((current) => ({
+        global: e.data.global,
+        globalSections: e.data.sections.filter((section) => section.global),
+      }));
 
       setTimeout(
         () => {
@@ -85,7 +103,7 @@ export const InitShopifyCms: FC<PropsWithChildren> = ({ children }) => {
         5
       );
     }
-  }, [isThemeEditor, sendSectionSizes, setShopifyData]);
+  }, [isThemeEditor, sendSectionSizes, setShopifyGlobals, setShopifySections]);
 
   useEffect(() => {
     window.addEventListener("message", handleMessages);
@@ -117,9 +135,18 @@ export const ShopifyCms: FC<PropsWithChildren<ShopifyCmsProps>> = ({
 }) => {
   return (
     <>
-      <ShopifyDataProvider init={{ sections: sections, global: global }}>
-        <InitShopifyCms>{children}</InitShopifyCms>
-      </ShopifyDataProvider>
+      <ShopifyGlobalsProvider
+        init={{ global: global, globalSections: sections.filter((section) => section.global) }}
+      >
+        <ShopifySectionsProvider
+          init={{
+            sections: sections.filter((section) => !section.global),
+            sectionOrder: sections.map(({ id }) => id),
+          }}
+        >
+          <InitShopifyCms>{children}</InitShopifyCms>
+        </ShopifySectionsProvider>
+      </ShopifyGlobalsProvider>
     </>
   );
 };

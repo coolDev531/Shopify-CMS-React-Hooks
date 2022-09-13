@@ -163,6 +163,7 @@ export const sectionToTypes = (section, key) => {
   if (section.blocks?.length) {
     arr.push(`  blocks: ${capitalize(key)}Blocks[];`);
   }
+  arr.push(`  global: boolean;`);
   arr.push(`  id: string;`);
   if (settings?.length) {
     arr.push(`  settings: {`);
