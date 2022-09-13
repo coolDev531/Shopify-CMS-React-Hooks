@@ -37,8 +37,6 @@ export const ShopifySectionsProvider = SectionsProvider;
 
 type ShopifyCmsProps = {
   global: GlobalSettings;
-  globalSections: Sections[];
-  sectionOrder: Sections["id"][];
   sections: Sections[];
 };
 
