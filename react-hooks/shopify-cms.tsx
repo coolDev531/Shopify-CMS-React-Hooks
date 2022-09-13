@@ -128,6 +128,7 @@ export const ShopifyCms: FC<PropsWithChildren<ShopifyCmsProps>> = ({
         global: global,
         sections: sections,
         sectionOrder: sections.map(({ id }) => id),
+        /* @ts-ignore */
         globalSections: sections.filter((section) => section.global),
       }}
     >
