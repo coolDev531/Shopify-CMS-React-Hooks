@@ -73,6 +73,10 @@ export const initFolders = () => {
       target: path.join(".shopify-cms", "hooks", "shopify-cms.tsx"),
       src: path.join(PROJECT_ROOT, "./react-hooks/shopify-cms.tsx"),
     },
+    shopifyNextCms: {
+      target: path.join(".shopify-cms", "hooks", "shopify-next-cms.tsx"),
+      src: path.join(PROJECT_ROOT, "./react-hooks/shopify-next-cms.tsx"),
+    },
   };
 
   if (!fs.existsSync(hooks.root)) {
@@ -93,6 +97,23 @@ export const initFolders = () => {
     if (masterFile !== currentFile) {
       console.log(chalk.green("updated shopify-cms.tsx"));
       fs.writeFileSync(hooks.shopifyCms.target, masterFile);
+    }
+  }
+
+  if (!fs.existsSync(hooks.shopifyNextCms.target)) {
+    fs.writeFileSync(
+      hooks.shopifyNextCms.target,
+      fs.readFileSync(hooks.shopifyNextCms.src, { encoding: "utf-8" })
+    );
+  }
+
+  if (fs.existsSync(hooks.shopifyNextCms.target)) {
+    const masterFile = fs.readFileSync(hooks.shopifyNextCms.src, { encoding: "utf-8" });
+    const currentFile = fs.readFileSync(hooks.shopifyNextCms.target, { encoding: "utf-8" });
+
+    if (masterFile !== currentFile) {
+      console.log(chalk.green("updated shopify-cms.tsx"));
+      fs.writeFileSync(hooks.shopifyNextCms.target, masterFile);
     }
   }
 };
