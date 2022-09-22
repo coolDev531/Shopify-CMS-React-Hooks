@@ -52,7 +52,7 @@ export const InitShopifyNextCms: FC<PropsWithChildren> = ({ children }) => {
         rect?: DOMRect;
       }[] = [];
       if ("blocks" in section) {
-        section.blocks.forEach(({ id: blockId }) => {
+        section?.blocks?.forEach(({ id: blockId }) => {
           blocks.push({
             id: blockId,
             rect: document.getElementById(`block--${blockId}`)?.getBoundingClientRect(),
@@ -85,13 +85,13 @@ export const InitShopifyNextCms: FC<PropsWithChildren> = ({ children }) => {
       document.body.classList.add("overflow-hidden");
 
       setShopifySections((current) => ({
-        sections: e.data.sections.filter((section) => section.global),
-        sectionOrder: e.data.sections.map(({ id }) => id),
+        sections: e.data.sections?.filter((section) => section.global),
+        sectionOrder: e.data.sections?.map(({ id }) => id),
       }));
 
       setShopifyGlobals((current) => ({
         global: e.data.global,
-        globalSections: e.data.sections.filter((section) => section.global),
+        globalSections: e.data.sections?.filter((section) => section.global),
       }));
 
       setTimeout(
@@ -134,12 +134,12 @@ export const ShopifyNextCms: FC<PropsWithChildren<ShopifyCmsProps>> = ({
   return (
     <>
       <ShopifyGlobalsProvider
-        init={{ global: global, globalSections: sections.filter((section) => section.global) }}
+        init={{ global: global, globalSections: sections?.filter((section) => section.global) }}
       >
         <ShopifySectionsProvider
           init={{
-            sections: sections.filter((section) => !section.global),
-            sectionOrder: sections.map(({ id }) => id),
+            sections: sections?.filter((section) => !section.global),
+            sectionOrder: sections?.map(({ id }) => id),
           }}
         >
           <InitShopifyNextCms>{children}</InitShopifyNextCms>
