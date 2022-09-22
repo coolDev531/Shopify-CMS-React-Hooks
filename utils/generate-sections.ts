@@ -198,15 +198,14 @@ export const sectionToTypes = (section, key) => {
   arr.push(`  type: "${filename}";`);
   arr.push(`};`);
 
-  if (section.blocks?.length && section.blocks.length === 1) {
-    arr.push("");
-    arr.push(`export type ${capitalize(key)}Blocks = {`);
-
+  if (section.blocks?.length) {
     section.blocks?.forEach((block) => {
       const blockSettings: ShopifySettingsInput[] = block.settings
         ?.filter((s) => s.type !== "header" && s.type !== "paragraph")
         .sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
 
+      arr.push("");
+      arr.push(`export type ${capitalize(key)}Blocks${capitalize(block.type)} = {`);
       arr.push("  id: string;");
 
       if (blockSettings?.length) {
@@ -245,54 +244,25 @@ export const sectionToTypes = (section, key) => {
     });
   }
 
+  if (section.blocks?.length && section.blocks.length === 1) {
+    arr.push("");
+    arr.push(`export type ${capitalize(key)}Blocks = {`);
+
+    section.blocks?.forEach((block) => {
+      arr.push(`  ${capitalize(key)}Blocks${capitalize(block.type)};`);
+      arr.push(`};`);
+    });
+  }
+
   if (section.blocks?.length && section.blocks.length > 1) {
     arr.push("");
     arr.push(`export type ${capitalize(key)}Blocks =`);
 
     section.blocks?.forEach((block, i) => {
-      const blockSettings: ShopifySettingsInput[] = block.settings
-        ?.filter((s) => s.type !== "header" && s.type !== "paragraph")
-        .sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
-
-      arr.push("  | {");
-      arr.push("      id: string;");
-
-      if (blockSettings?.length) {
-        arr.push(`      settings: {`);
-        arr.push(
-          blockSettings
-            .map(
-              (setting) =>
-                `        /** Input type: ${setting.type} */\n        ` +
-                `${
-                  /[^\w_]/gi.test(setting.id) ? `"${setting.id}"` : `${setting.id}`
-                }${getSettingsType(setting)};`
-            )
-            .sort((a, b) => {
-              const aX = a.split("\n")[1];
-              const bX = b.split("\n")[1];
-              if (aX.includes("?") && !bX.includes("?")) {
-                return 1;
-              } else if (!aX.includes("?") && bX.includes("?")) {
-                return -1;
-              } else if (aX > bX) {
-                return 1;
-              } else if (aX < bX) {
-                return -1;
-              } else {
-                return 0;
-              }
-            })
-            .join("\n")
-        );
-        arr.push(`      };`);
-      }
-
-      arr.push(`      type: "${block.type}";`);
       if (section.blocks.length - 1 === i) {
-        arr.push(`    };`);
+        arr.push(`  | ${capitalize(key)}Blocks${capitalize(block.type)};`);
       } else {
-        arr.push(`    }`);
+        arr.push(`  | ${capitalize(key)}Blocks${capitalize(block.type)}`);
       }
     });
   }
