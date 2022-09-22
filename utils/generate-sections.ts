@@ -246,12 +246,11 @@ export const sectionToTypes = (section, key) => {
 
   if (section.blocks?.length && section.blocks.length === 1) {
     arr.push("");
-    arr.push(`export type ${capitalize(key)}Blocks = {`);
-
-    section.blocks?.forEach((block) => {
-      arr.push(`  ${capitalize(key)}Blocks${capitalize(block.type)};`);
-      arr.push(`};`);
-    });
+    arr.push(
+      `export type ${capitalize(key)}Blocks = ${capitalize(key)}Blocks${capitalize(
+        section.blocks[0].type
+      )};`
+    );
   }
 
   if (section.blocks?.length && section.blocks.length > 1) {
