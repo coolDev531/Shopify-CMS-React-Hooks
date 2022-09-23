@@ -937,17 +937,17 @@ export type _Request_liquid = {
 };
 
 export type GlobalSettings = {
-  description: string;
-  handle: string;
-  linklists: _Linklist_liquid[];
-  product: _Product_liquid;
-  request: _Request_liquid;
-  settings: SettingsSchema;
-  shop: _Shop_liquid_json;
-  template: string;
-  title: string;
   article?: _Article_liquid;
   blog?: _Blog_liquid;
   collection?: _Collection_liquid;
+  description?: string;
+  handle?: string;
+  linklists?: _Linklist_liquid[];
   page?: _Page_liquid_json;
+  product?: _Product_liquid;
+  request?: _Request_liquid;
+  settings?: SettingsSchema;
+  shop?: _Shop_liquid_json;
+  template?: string;
+  title?: string;
 };
