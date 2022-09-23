@@ -75,6 +75,24 @@
 
       document.addEventListener('DOMContentLoaded', () => {
         let isInspectorMode = false;
+
+
+        const newSections = {};
+        const globalSections = {};
+        const order = [];
+
+        [...document.querySelectorAll("[data-section]")].forEach((scriptElement) => {
+          const section = JSON.parse(scriptElement.textContent);
+          if (section.global) {
+            globalSections[section.id] = section;
+          }
+          if (!section.global) {
+            newSections[section.id] = section;
+          }
+          order.push(section.id);
+        });
+
+
         let global = JSON.parse(document.querySelector("[data-global]").textContent);
         let sections = [...document.querySelectorAll("[data-section]")].map((scriptElement) => JSON.parse(scriptElement.textContent));
         let sectionSizes = [];
@@ -102,6 +120,17 @@
               topic: "activateThemeEditor",
               global,
               sections
+            },
+            "*",
+          );
+
+          themeEditorIframe?.contentWindow.postMessage({
+              source: "theme-editor-zustand",
+              topic: "activateThemeEditor",
+              global,
+              globalSections,
+              sections: newSections,
+              order,
             },
             "*",
           );
@@ -136,6 +165,19 @@
               global,
               sections,
               detail: e?.detail,
+            },
+            "*",
+          );
+
+
+          themeEditorIframe?.contentWindow.postMessage({
+              source: "theme-editor-zustand",
+              topic: e?.type,
+              detail: e?.detail,
+              global,
+              globalSections,
+              sections: newSections,
+              order,
             },
             "*",
           );
