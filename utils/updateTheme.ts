@@ -19,7 +19,10 @@ export const updateTheme = async (
   const files = await getAllFiles("theme");
 
   const fileData = files
-    .filter((file) => file !== "theme/config/settings_data.json")
+    .filter(
+      (file) =>
+        file !== "theme/config/settings_data.json" && !/theme\/templates\/.*?\.json$/gi.test(file)
+    )
     .map((file) => ({
       key: file.replace("theme/", ""),
       content: fs.readFileSync(path.join(PROJECT_ROOT, file), { encoding: "utf-8" }),
