@@ -212,6 +212,10 @@
               global = JSON.parse(document.querySelector("[data-global]").textContent);
               sections = [...document.querySelectorAll("[data-section]")].map((scriptElement) => JSON.parse(scriptElement.textContent));
 
+              newSections = {};
+              globalSections = {};
+              order = [];
+
               [...document.querySelectorAll("[data-section]")].forEach((scriptElement) => {
                 const section = JSON.parse(scriptElement.textContent);
                 if (section.global) {
