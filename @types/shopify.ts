@@ -738,8 +738,8 @@ export type _Collection_liquid = {
   template_suffix: string;
   title: string;
   url: string;
-  featured_image?: any;
-  image?: any;
+  featured_image?: _Media_liquid;
+  image?: _Media_liquid;
   product_pagination?: _Pagination_liquid;
 };
 

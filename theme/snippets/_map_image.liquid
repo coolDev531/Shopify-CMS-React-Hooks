@@ -1,0 +1,13 @@
+{%- if input_image.src -%}{
+  "alt": {{ input_image.alt | json }},
+  "aspect_ratio": {{ input_image.aspect_ratio | json }},
+  "height": {{ input_image.height | json }},
+  "id": {{ input_image.id | json }},
+  "media_type": {{ input_image.media_type | json }},
+  "preview_image": {{ input_image.preview_image | json }},
+  "src": {{ input_image.src | json }},
+  "variants": {{ input_image.variants | json }},
+  "width": {{ input_image.width | json }}
+}{%- else -%}
+  null
+{%- endif -%}
