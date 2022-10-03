@@ -1,0 +1,18 @@
+{%- if input_filter -%}
+  {
+  "active_values": [{%- for filter_value in input_filter.active_values -%}{%- include '_map_collection_filter_value', input_filter_value: filter_value -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+  "false_value": {%- include '_map_collection_filter_value', input_filter_value: input_filter.false_value -%},
+  "inactive_values": [{%- for filter_value in input_filter.inactive_values -%}{%- include '_map_collection_filter_value', input_filter_value: filter_value -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+  "label": {{ input_filter.label | json }},
+  "max_value": {%- include '_map_collection_filter_value', input_filter_value: input_filter.max_value -%},
+  "min_value": {%- include '_map_collection_filter_value', input_filter_value: input_filter.min_value -%},
+  "param_name": {{ input_filter.param_name | json }},
+  "range_max":{{ input_filter.range_max | json }},
+  "true_value": {%- include '_map_collection_filter_value', input_filter_value: input_filter.true_value -%},
+  "type": {{ input_filter.type | json }},
+  "url_to_remove": {{ input_filter.url_to_remove | json }},
+  "values": [{%- for filter_value in input_filter.values -%}{%- include '_map_collection_filter_value', input_filter_value: filter_value -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+  }
+{%- else -%}
+  null
+{%- endif -%}

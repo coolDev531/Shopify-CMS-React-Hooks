@@ -89,6 +89,38 @@
   "vendors": {{ shop.vendors | json }}
   }
 {%- endcapture -%}
+
+
+{%- capture recommendationsObject -%}
+  {
+  "products": [{%- for product in recommendations.products -%}{%- include '_map_product', input_product: product -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+  "products_count": {{ recommendations.products_count | json }},
+  "performed": {{ recommendations.performed | json }}
+  }
+{%- endcapture -%}
+
+{%- capture routesObject -%}
+  {
+  "account_addresses_url":{{ routes.account_addresses_url | json }},
+  "account_login_url": {{ routes.account_login_url | json }},
+  "account_logout_url": {{ routes.account_logout_url | json }},
+  "account_recover_url": {{ routes.account_recover_url | json }},
+  "account_register_url":{{ routes.account_register_url | json }},
+  "account_url":{{ routes.account_url | json }},
+  "all_products_collection_url": {{ routes.all_products_collection_url | json }},
+  "cart_add_url": {{ routes.cart_add_url | json }},
+  "cart_change_url": {{ routes.cart_change_url | json }},
+  "cart_clear_url": {{ routes.cart_clear_url | json }},
+  "cart_update_url": {{ routes.cart_update_url | json }},
+  "cart_url": {{ routes.cart_url | json }},
+  "collections_url": {{ routes.collections_url | json }},
+  "predictive_search_url": {{ routes.predictive_search_url | json }},
+  "product_recommendations_url": {{ routes.product_recommendations_url | json }},
+  "root_url": {{ routes.root_url | json }},
+  "search_url": {{ routes.search_url | json }}
+  }
+{%- endcapture -%}
+
 <script type="application/json" data-global>
   {
     "settings": {%- include '_map_settings_types', input_settings: settings -%},
@@ -103,6 +135,9 @@
     "handle": {{ handle | json }},
     "description": {{ page_description | json }},
     "title": {{ page_title | json }},
-    "template": {{ template | json }}
+    "template": {{ template | json }},
+    "recommendations": {{ recommendationsObject }},
+    "routes": {{ routesObject }}
   }
+
 </script>

@@ -726,7 +726,7 @@ export type _Collection_liquid = {
   all_vendors: string[];
   default_sort_by: string;
   description: string;
-  filters: any[];
+  filters: _Collection_filter[];
   handle: string;
   id: number;
   metafields: _Collection_metafields;
@@ -740,6 +740,30 @@ export type _Collection_liquid = {
   featured_image?: any;
   image?: any;
   product_pagination?: _Pagination_liquid;
+};
+
+export type _Collection_filter = {
+  active_values: _Collection_filter_value[];
+  inactive_values: _Collection_filter_value[];
+  label: string;
+  max_value: _Collection_filter_value;
+  min_value: _Collection_filter_value;
+  param_name: string;
+  type: string;
+  url_to_remove: string;
+  values: _Collection_filter_value[];
+  false_value?: _Collection_filter_value;
+  range_max?: number;
+  true_value?: _Collection_filter_value;
+};
+export type _Collection_filter_value = {
+  active: boolean;
+  count: number;
+  label: string;
+  param_name: string;
+  url_to_add: string;
+  url_to_remove: string;
+  value: string;
 };
 
 export type _Pagination_liquid = {
@@ -936,6 +960,32 @@ export type _Request_liquid = {
   path: string;
 };
 
+export type _Routes_liquid = {
+  account_addresses_url: string;
+  account_login_url: string;
+  account_logout_url: string;
+  account_recover_url: string;
+  account_register_url: string;
+  account_url: string;
+  all_products_collection_url: string;
+  cart_add_url: string;
+  cart_change_url: string;
+  cart_clear_url: string;
+  cart_update_url: string;
+  cart_url: string;
+  collections_url: string;
+  predictive_search_url: string;
+  product_recommendations_url: string;
+  root_url: string;
+  search_url: string;
+};
+
+export type _Recommendations_liquid = {
+  performed: boolean;
+  products: _Product_liquid[];
+  products_count: number;
+};
+
 export type GlobalSettings = {
   article?: _Article_liquid;
   blog?: _Blog_liquid;
@@ -945,7 +995,9 @@ export type GlobalSettings = {
   linklists?: _Linklist_liquid[];
   page?: _Page_liquid_json;
   product?: _Product_liquid;
+  recommendations?: _Recommendations_liquid;
   request?: _Request_liquid;
+  routes?: _Routes_liquid;
   settings?: SettingsSchema;
   shop?: _Shop_liquid_json;
   template?: string;

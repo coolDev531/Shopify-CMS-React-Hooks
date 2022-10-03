@@ -1,0 +1,13 @@
+{%- if input_filter_value -%}
+  {
+  "active": {{ input_filter_value.active | json }},
+  "count": {{ input_filter_value.count | json }},
+  "label": {{ input_filter_value.label | json }},
+  "param_name": {{ input_filter_value.param_name | json }},
+  "url_to_add": {{ input_filter_value.url_to_add | json }},
+  "url_to_remove":   {{ input_filter_value.url_to_remove | json }},
+  "value": {{ input_filter_value.value | json }}
+  }
+{%- else -%}
+  null
+{%- endif -%}
