@@ -26,6 +26,7 @@ interface ShopifyCmsState {
   sections: { [T: string]: Sections };
   setIsThemeEditor: () => void;
   updateShopifyCms: (props: {
+    global: ShopifyCmsState["global"];
     order: ShopifyCmsState["order"];
     sections: ShopifyCmsState["sections"];
   }) => void;
@@ -61,6 +62,7 @@ export const useShopifyCms = create<ShopifyCmsState>((set) => ({
       produce((state: ShopifyCmsState) => {
         state.sections = props.sections;
         state.order = props.order;
+        state.global = props.global;
       })
     );
   },
