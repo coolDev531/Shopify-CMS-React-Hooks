@@ -340,7 +340,7 @@ export type ShopifySection<T = never> = {
   presets?: ShopifySectionPreset<T>[];
   settings?: (ShopifySettingsInput | ShopifyHeader | ShopifyParagraph)[];
   tag?: "article" | "aside" | "div" | "footer" | "header" | "section";
-  templates?:
+  templates?: (
     | "404"
     | "article"
     | "blog"
@@ -359,7 +359,8 @@ export type ShopifySection<T = never> = {
     | "page"
     | "password"
     | "product"
-    | "search";
+    | "search"
+  )[];
 };
 
 export type ShopifySettings = (
