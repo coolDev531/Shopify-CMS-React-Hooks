@@ -12,7 +12,6 @@
     "handle": {{ input_collection.handle | json }},
     "id": {{ input_collection.id | json }},
     "image": {%- include '_map_image.liquid', input_image: input_collection.image -%},
-    {{ input_collection.image | json }},
     "metafields": {%- include '_map_metafields', metafields: input_collection.metafields.data -%},
     "products": [{%- for product in input_collection.products -%}{%- include '_map_product', input_product: product -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
     "product_pagination": {{ paginate | json }},
