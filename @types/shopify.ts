@@ -725,7 +725,7 @@ export type _Collection_liquid = {
   all_tags: string[];
   all_types: string[];
   all_vendors: string[];
-  default_sort_by: string;
+  default_sort_by: _Collection_sort_options[number][0];
   description: string;
   filters: _Collection_filter[];
   handle: string;
@@ -745,7 +745,7 @@ export type _Collection_liquid = {
   product_pagination?: _Pagination_liquid;
 };
 
-type _Collection_sort_options = [
+export type _Collection_sort_options = [
   ["manual", string],
   ["best-selling", string],
   ["title-ascending", string],
