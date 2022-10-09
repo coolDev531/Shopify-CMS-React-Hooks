@@ -734,6 +734,8 @@ export type _Collection_liquid = {
   products: _Product_liquid[];
   products_count: number;
   published_at: string;
+  sort_by: string;
+  sort_options: _Collection_sort_options;
   tags: string[];
   template_suffix: string;
   title: string;
@@ -742,6 +744,17 @@ export type _Collection_liquid = {
   image?: _Media_liquid;
   product_pagination?: _Pagination_liquid;
 };
+
+type _Collection_sort_options = [
+  ["manual", string],
+  ["best-selling", string],
+  ["title-ascending", string],
+  ["title-descending", string],
+  ["price-ascending", string],
+  ["price-descending", string],
+  ["created-ascending", string],
+  ["created-descending", string]
+];
 
 export type _Collection_filter = {
   active_values: _Collection_filter_value[];
