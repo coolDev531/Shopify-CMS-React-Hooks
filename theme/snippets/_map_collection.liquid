@@ -1,5 +1,5 @@
 {%- if input_collection and paginate -%}
-  {% paginate input_collection.products by 500 %}
+  {% paginate input_collection.products by 50 %}
     {
     "all_products_count": {{ input_collection.all_products_count | json }},
     "all_tags": {{ input_collection.all_tags | json }},
