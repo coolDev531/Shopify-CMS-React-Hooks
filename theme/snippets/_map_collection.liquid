@@ -1,31 +1,30 @@
 {%- if input_collection and paginate -%}
-  {% paginate input_collection.products by 50 %}
-    {
-    "all_products_count": {{ input_collection.all_products_count | json }},
-    "all_tags": {{ input_collection.all_tags | json }},
-    "all_types": {{ input_collection.all_types | json }},
-    "all_vendors": {{ input_collection.all_vendors | json }},
-    "default_sort_by": {{ input_collection.default_sort_by | json }},
-    "description": {{ input_collection.description | json }},
-    "featured_image": {%- include '_map_image.liquid', input_image: input_collection.featured_image -%},
-    "filters": [{%- for filter in input_collection.filters -%}{%- include '_map_collection_filter', input_filter: filter -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
-    "handle": {{ input_collection.handle | json }},
-    "id": {{ input_collection.id | json }},
-    "image": {%- include '_map_image.liquid', input_image: input_collection.image -%},
-    "metafields": {%- include '_map_metafields', metafields: input_collection.metafields.data -%},
-    "products": [{%- for product in input_collection.products -%}{%- include '_map_product', input_product: product -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
-    "product_pagination": {{ paginate | json }},
-    "products_count": {{ input_collection.products_count | json }},
-    "published_at": "{{ input_collection.published_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
-    "sort_by": {{ input_collection.sort_by | json }},
-    "sort_options": {{ input_collection.sort_options | json }},
-    "template_suffix": {{ input_collection.template_suffix | json }},
-    "title": {{ input_collection.title | json }},
-    "tags": {{ input_collection.tags | json }},
-    "url": {{ input_collection.url | json }}
-    }
-  {% endpaginate %}
-{% elsif input_collection %}
+  {
+  "all_products_count": {{ input_collection.all_products_count | json }},
+  "all_tags": {{ input_collection.all_tags | json }},
+  "all_types": {{ input_collection.all_types | json }},
+  "all_vendors": {{ input_collection.all_vendors | json }},
+  "default_sort_by": {{ input_collection.default_sort_by | json }},
+  "description": {{ input_collection.description | json }},
+  "featured_image": {%- include '_map_image.liquid', input_image: input_collection.featured_image -%},
+  "filters": [{%- for filter in input_collection.filters -%}{%- include '_map_collection_filter', input_filter: filter -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+  "handle": {{ input_collection.handle | json }},
+  "id": {{ input_collection.id | json }},
+  "image": {%- include '_map_image.liquid', input_image: input_collection.image -%},
+  "metafields": {%- include '_map_metafields', metafields: input_collection.metafields.data -%},
+  "products": [{%- paginate input_collection.products by 50 -%}{%- for product in input_collection.products -%}{%- include '_map_product', input_product: product -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}{%- endpaginate -%}],
+  "products_sorted": [{%- paginate input_collection.products by 1000 -%}{%- for product in input_collection.products -%}{{ product.id }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}{%- endpaginate -%}],
+  "product_pagination": {%- paginate input_collection.products by 50 -%}{{ paginate | json }}{% endpaginate %},
+  "products_count": {{ input_collection.products_count | json }},
+  "published_at": "{{ input_collection.published_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
+  "sort_by": {{ input_collection.sort_by | json }},
+  "sort_options": {{ input_collection.sort_options | json }},
+  "template_suffix": {{ input_collection.template_suffix | json }},
+  "title": {{ input_collection.title | json }},
+  "tags": {{ input_collection.tags | json }},
+  "url": {{ input_collection.url | json }}
+  }
+{%- elsif input_collection -%}
   {
   "all_products_count": {{ input_collection.all_products_count | json }},
   "all_tags": {{ input_collection.all_tags | json }},
@@ -40,6 +39,7 @@
   "image": {%- include '_map_image.liquid', input_image: input_collection.image -%},
   "metafields": {%- include '_map_metafields', metafields: input_collection.metafields.data -%},
   "products": [{%- for product in input_collection.products -%}{%- include '_map_product', input_product: product -%}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+  "products_sorted": null,
   "product_pagination": null,
   "products_count": {{ input_collection.products_count | json }},
   "published_at": "{{ input_collection.published_at | date: "%Y-%m-%dT%H:%M:%S%z" }}",
