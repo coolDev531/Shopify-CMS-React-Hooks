@@ -734,7 +734,7 @@ export type _Collection_liquid = {
   products: _Product_liquid[];
   products_count: number;
   published_at: string;
-  sort_by: string;
+  sort_by: _Collection_sort_options[number][0];
   sort_options: _Collection_sort_options;
   tags: string[];
   template_suffix: string;
