@@ -743,7 +743,8 @@ export type _Collection_liquid = {
   featured_image?: _Media_liquid;
   image?: _Media_liquid;
   product_pagination?: _Pagination_liquid;
-  products_sorted?: number[];
+  products_best_selling?: number[];
+  products_manual?: number[];
 };
 
 export type _Collection_sort_options = [
