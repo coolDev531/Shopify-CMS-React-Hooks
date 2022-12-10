@@ -36,7 +36,7 @@ ${JSON.stringify(section, undefined, 2)}
 export const getSettingsType = (setting: ShopifySettingsInput) => {
   switch (setting.type) {
     case "article":
-      return "?: _Article_liquid | string";
+      return "?: _Article_liquid";
     case "checkbox":
       return ": boolean";
     case "number":
@@ -52,29 +52,29 @@ export const getSettingsType = (setting: ShopifySettingsInput) => {
     case "textarea":
       return "?: string";
     case "blog":
-      return "?: _Blog_liquid | string";
+      return "?: _Blog_liquid";
     case "collection":
-      return "?: _Collection_liquid | string";
+      return "?: _Collection_liquid";
     case "collection_list":
       return "?: _Collection_liquid[]";
     case "color":
-      return "?: _Color_liquid | string";
+      return "?: _Color_liquid";
     case "color_background":
       return "?: string";
     case "font_picker":
-      return ": _Font_liquid | _Font_options";
+      return ": _Font_liquid";
     case "html":
       return "?: string";
     case "image_picker":
-      return "?: _Image_liquid | string";
+      return "?: _Image_liquid";
     case "link_list":
       return "?: _Linklist_liquid";
     case "liquid":
       return "?: string";
     case "page":
-      return "?: _Page_liquid | string";
+      return "?: _Page_liquid";
     case "product":
-      return "?: _Product_liquid | string";
+      return "?: _Product_liquid";
     case "product_list":
       return "?: _Product_liquid[]";
     case "richtext":
