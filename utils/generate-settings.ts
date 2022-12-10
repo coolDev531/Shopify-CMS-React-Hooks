@@ -53,6 +53,10 @@ export const generateSettings = async (
       if (localTypes.includes("_Font_liquid")) return;
       localTypes.push("_Font_liquid");
     }
+    if (setting.type === "font_picker") {
+      if (localTypes.includes("_Font_options")) return;
+      localTypes.push("_Font_options");
+    }
     if (setting.type === "link_list") {
       if (localTypes.includes("_Linklist_liquid")) return;
       localTypes.push("_Linklist_liquid");

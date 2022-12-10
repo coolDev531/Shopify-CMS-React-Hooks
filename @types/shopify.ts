@@ -187,6 +187,7 @@ export type ShopifyVideo_url = {
   id: string;
   label: string;
   type: "video_url";
+  default?: string;
   info?: string;
   placeholder?: string;
 };
@@ -295,20 +296,20 @@ type MapBlocks<T extends { blocks: ShopifySectionBlock[] }> = {
 
 type MapBlocksPreset<T extends { blocks: ShopifySectionBlock[] }> = {
   [B in Extract<T["blocks"][number], { type }>["type"]]: {
-    settings: Partial<MapSettings<Extract<T["blocks"][number], { type: B }>>>;
     type: B;
+    settings?: Partial<MapSettings<Extract<T["blocks"][number], { type: B }>>>;
   };
 };
 
 type ShopifySectionDefault<T = never> = {
   blocks?: T extends { blocks: Array<any> }
-    ? MapBlocksPreset<T>[keyof MapBlocksPreset<T>][]
+    ? MapBlocksPreset<T>[keyof MapBlocksPreset<T>][] | undefined
     : never;
   settings?: T extends never
-    ? { [T: string]: string | number | boolean }
+    ? { [T: string]: string | number | boolean } | undefined
     : T extends { settings: any }
-    ? Partial<T["settings"]>
-    : { [T: string]: string | number | boolean };
+    ? Partial<T["settings"]> | undefined
+    : { [T: string]: string | number | boolean } | undefined;
 };
 
 type ShopifySectionPreset<T = unknown> = {
@@ -317,18 +318,20 @@ type ShopifySectionPreset<T = unknown> = {
     ? MapBlocksPreset<T>[keyof MapBlocksPreset<T>][]
     : never;
   settings?: T extends never
-    ? { [T: string]: string | number | boolean }
+    ? { [T: string]: string | number | boolean } | undefined
     : T extends { settings: any }
-    ? Partial<T["settings"]>
-    : { [T: string]: string | number | boolean };
+    ? Partial<T["settings"]> | undefined
+    : { [T: string]: string | number | boolean } | undefined;
 };
 
-export type ShopifySectionBlock = {
-  name: string;
-  type: string;
-  limit?: number;
-  settings?: (ShopifySettingsInput | ShopifyHeader | ShopifyParagraph)[];
-};
+export type ShopifySectionBlock =
+  | {
+      name: string;
+      type: string;
+      limit?: number;
+      settings?: (ShopifySettingsInput | ShopifyHeader | ShopifyParagraph)[];
+    }
+  | { type: "@app"; limit?: never; name?: never; settings?: never };
 
 export type ShopifySection<T = never> = {
   name: string;
@@ -685,6 +688,7 @@ export type _Product_liquid = {
   media: _Media_liquid[];
   metafields: _Product_metafields;
   options: string[];
+  options_with_values: { name: string; position: 1 | 2 | 3; values: string[] }[];
   page_description: string;
   price: number;
   price_max: number;
@@ -1019,3 +1023,272 @@ export type GlobalSettings = {
   template?: string;
   title?: string;
 };
+
+export type _Font_options =
+  | "mono"
+  | "sans-serif"
+  | "serif"
+  | "abel_n4"
+  | "abril_fatface_n4"
+  | "agmena_n4"
+  | "akko_n4"
+  | "alegreya_n4"
+  | "alegreya_sans_n4"
+  | "alfie_n4"
+  | "americana_n4"
+  | "amiri_n4"
+  | "anonymous_pro_n4"
+  | "antique_olive_n4"
+  | "arapey_n4"
+  | "archivo_n4"
+  | "archivo_narrow_n4"
+  | "arimo_n4"
+  | "armata_n4"
+  | "arvo_n4"
+  | "asap_n4"
+  | "assistant_n4"
+  | "asul_n4"
+  | "avenir_next_n4"
+  | "avenir_next_rounded_n4"
+  | "azbuka_n4"
+  | "basic_commercial_n4"
+  | "basic_commercial_soft_rounded_n4"
+  | "baskerville_no_2_n4"
+  | "bauer_bodoni_n4"
+  | "beefcakes_n4"
+  | "bembo_book_n4"
+  | "bernhard_modern_n4"
+  | "bio_rhyme_n4"
+  | "bitter_n4"
+  | "bodoni_poster_n9"
+  | "burlingame_n4"
+  | "cabin_n4"
+  | "cachet_n4"
+  | "cardamon_n4"
+  | "cardo_n4"
+  | "carter_sans_n4"
+  | "caslon_bold_n4"
+  | "caslon_old_face_n4"
+  | "catamaran_n4"
+  | "centaur_n4"
+  | "century_gothic_n4"
+  | "chivo_n4"
+  | "chong_modern_n4"
+  | "claire_news_n3"
+  | "cooper_bt_n5"
+  | "courier_new_n4"
+  | "crimson_text_n4"
+  | "din_neuzeit_grotesk_n3"
+  | "din_next_n4"
+  | "din_next_slab_n4"
+  | "daytona_n4"
+  | "domine_n4"
+  | "dosis_n4"
+  | "electra_n4"
+  | "eurostile_next_n4"
+  | "ff_meta_n4"
+  | "ff_meta_serif_n4"
+  | "ff_tisa_n4"
+  | "ff_tisa_sans_n4"
+  | "ff_unit_n4"
+  | "ff_unit_rounded_n4"
+  | "ff_unit_slab_n4"
+  | "fette_gotisch_n4"
+  | "fira_sans_n4"
+  | "fjalla_one_n4"
+  | "friz_quadrata_n4"
+  | "frutiger_serif_n4"
+  | "futura_n4"
+  | "futura_black_n4"
+  | "garamond_n4"
+  | "geometric_415_n4"
+  | "georgia_pro_n4"
+  | "gill_sans_nova_n4"
+  | "glegoo_n4"
+  | "goudy_old_style_n4"
+  | "harmonia_sans_n4"
+  | "helvetica_n4"
+  | "humanist_521_n4"
+  | "ibm_plex_sans_n4"
+  | "itc_avant_garde_gothic_n4"
+  | "itc_benguiat_n4"
+  | "itc_berkeley_old_style_n4"
+  | "itc_bodoni_seventytwo_n4"
+  | "itc_bodoni_twelve_n4"
+  | "itc_caslon_no_224_n4"
+  | "itc_charter_n4"
+  | "itc_cheltenham_n4"
+  | "itc_clearface_n4"
+  | "itc_conduit_n4"
+  | "itc_esprit_n4"
+  | "itc_founders_caslon_n4"
+  | "itc_franklin_gothic_n4"
+  | "itc_galliard_n4"
+  | "itc_gamma_n4"
+  | "itc_goudy_sans_n4"
+  | "itc_johnston_n5"
+  | "itc_mendoza_roman_n4"
+  | "itc_modern_no_216_n5"
+  | "itc_new_baskerville_n4"
+  | "itc_new_esprit_n4"
+  | "itc_new_veljovic_n4"
+  | "itc_novarese_n4"
+  | "itc_officina_sans_n4"
+  | "itc_officina_serif_n4"
+  | "itc_stepp_n4"
+  | "itc_stone_humanist_n5"
+  | "itc_stone_informal_n4"
+  | "itc_stone_sans_ii_n4"
+  | "itc_stone_serif_n4"
+  | "itc_tapioca_n5"
+  | "inconsolata_n4"
+  | "joanna_nova_n4"
+  | "joanna_sans_nova_n4"
+  | "josefin_sans_n4"
+  | "josefin_slab_n4"
+  | "kairos_n4"
+  | "kalam_n4"
+  | "karla_n4"
+  | "kreon_n4"
+  | "lato_n4"
+  | "laurentian_n4"
+  | "libelle_n4"
+  | "libre_baskerville_n4"
+  | "libre_franklin_n4"
+  | "linotype_didot_n4"
+  | "linotype_gianotten_n4"
+  | "linotype_really_n5"
+  | "linotype_syntax_serif_n4"
+  | "lobster_n4"
+  | "lobster_two_n4"
+  | "lora_n4"
+  | "lucia_n4"
+  | "lucida_grande_n4"
+  | "luthersche_fraktur_n4"
+  | "madera_n4"
+  | "malabar_n4"
+  | "mariposa_sans_n4"
+  | "maven_pro_n4"
+  | "megrim_n4"
+  | "melior_n4"
+  | "memphis_n5"
+  | "memphis_soft_rounded_n5"
+  | "mentor_sans_n4"
+  | "merriweather_sans_n4"
+  | "metro_nova_n4"
+  | "modern_no_20_n4"
+  | "monaco_n4"
+  | "monotype_baskerville_n4"
+  | "monotype_bodoni_n4"
+  | "monotype_century_old_style_n5"
+  | "monotype_goudy_n4"
+  | "monotype_goudy_modern_n4"
+  | "monotype_italian_old_style_n4"
+  | "monotype_new_clarendon_n5"
+  | "monotype_news_gothic_n4"
+  | "monotype_sabon_n4"
+  | "montserrat_n4"
+  | "mouse_memoirs_n4"
+  | "muli_n4"
+  | "mundo_sans_n4"
+  | "neo_sans_n4"
+  | "neue_aachen_n4"
+  | "neue_frutiger_1450_n4"
+  | "neue_haas_unica_n4"
+  | "neue_plak_n4"
+  | "neue_swift_n4"
+  | "neuton_n4"
+  | "neuzeit_office_n4"
+  | "neuzeit_office_soft_rounded_n4"
+  | "neuzeit_s_n4"
+  | "new_century_schoolbook_n4"
+  | "news_702_n4"
+  | "news_705_n4"
+  | "news_cycle_n4"
+  | "news_gothic_no_2_n4"
+  | "news_plantin_n4"
+  | "nobile_n4"
+  | "noticia_text_n4"
+  | "noto_serif_n4"
+  | "nunito_n4"
+  | "nunito_sans_n4"
+  | "old_standard_tt_n4"
+  | "open_sans_n4"
+  | "open_sans_condensed_n3"
+  | "optima_nova_n4"
+  | "oswald_n4"
+  | "ovo_n4"
+  | "oxygen_n4"
+  | "pmn_caecilia_n4"
+  | "pt_mono_n4"
+  | "pt_sans_n4"
+  | "pt_sans_narrow_n4"
+  | "pt_serif_n4"
+  | "pacifico_n4"
+  | "palatino_n4"
+  | "parma_n4"
+  | "perpetua_n4"
+  | "plantin_n4"
+  | "playball_n4"
+  | "playfair_display_n4"
+  | "poppins_n4"
+  | "prata_n4"
+  | "prompt_n4"
+  | "quantico_n4"
+  | "quattrocento_n4"
+  | "quattrocento_sans_n4"
+  | "questrial_n4"
+  | "quicksand_n4"
+  | "quire_sans_n4"
+  | "rajdhani_n4"
+  | "raleway_n4"
+  | "really_no_2_n4"
+  | "righteous_n4"
+  | "roboto_n4"
+  | "roboto_condensed_n4"
+  | "roboto_mono_n4"
+  | "roboto_slab_n4"
+  | "rockwell_n4"
+  | "rubik_n4"
+  | "sabon_next_n4"
+  | "sackers_square_gothic_n4"
+  | "sagrantino_n4"
+  | "scene_n4"
+  | "scherzo_n4"
+  | "shadows_into_light_n4"
+  | "slabo_13px_n4"
+  | "slate_n4"
+  | "soho_n4"
+  | "soho_gothic_n4"
+  | "source_code_pro_n4"
+  | "source_sans_pro_n4"
+  | "stempel_schneidler_n4"
+  | "swiss_721_n4"
+  | "swiss_721_rounded_n7"
+  | "tenor_sans_n4"
+  | "tiemann_n4"
+  | "times_new_roman_n4"
+  | "tinos_n4"
+  | "titillium_web_n4"
+  | "trade_gothic_n4"
+  | "trade_gothic_next_n4"
+  | "trebuchet_ms_n4"
+  | "twentieth_century_n4"
+  | "ubuntu_n4"
+  | "unica_one_n4"
+  | "univers_next_n4"
+  | "univers_next_typewriter_n4"
+  | "unna_n4"
+  | "vala_n4"
+  | "varela_n4"
+  | "varela_round_n4"
+  | "verdana_pro_n4"
+  | "vidaloka_n4"
+  | "volkhov_n4"
+  | "vollkorn_n4"
+  | "waza_n4"
+  | "wola_n4"
+  | "work_sans_n4"
+  | "ysobel_n4"
+  | "zurich_n4"
+  | "zurich_extended_n4";

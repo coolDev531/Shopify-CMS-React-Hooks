@@ -4,6 +4,7 @@ import path from "path";
 import { DataType } from "shopify-typed-node-api";
 import { RestClient } from "shopify-typed-node-api/dist/clients/rest";
 import { Asset } from "shopify-typed-node-api/dist/clients/rest/dataTypes";
+import { toPascalCase } from "./to-pascal-case";
 import { ShopifySection, ShopifySettingsInput } from "../@types/shopify";
 import { capitalize } from "./capitalize";
 import { toKebabCase } from "./to-kebab-case";
@@ -35,7 +36,7 @@ ${JSON.stringify(section, undefined, 2)}
 export const getSettingsType = (setting: ShopifySettingsInput) => {
   switch (setting.type) {
     case "article":
-      return "?: _Article_liquid";
+      return "?: _Article_liquid | string";
     case "checkbox":
       return ": boolean";
     case "number":
@@ -51,29 +52,29 @@ export const getSettingsType = (setting: ShopifySettingsInput) => {
     case "textarea":
       return "?: string";
     case "blog":
-      return "?: _Blog_liquid";
+      return "?: _Blog_liquid | string";
     case "collection":
-      return "?: _Collection_liquid";
+      return "?: _Collection_liquid | string";
     case "collection_list":
       return "?: _Collection_liquid[]";
     case "color":
-      return "?: _Color_liquid";
+      return "?: _Color_liquid | string";
     case "color_background":
       return "?: string";
     case "font_picker":
-      return ": _Font_liquid";
+      return ": _Font_liquid | _Font_options";
     case "html":
       return "?: string";
     case "image_picker":
-      return "?: _Image_liquid";
+      return "?: _Image_liquid | string";
     case "link_list":
       return "?: _Linklist_liquid";
     case "liquid":
       return "?: string";
     case "page":
-      return "?: _Page_liquid";
+      return "?: _Page_liquid | string";
     case "product":
-      return "?: _Product_liquid";
+      return "?: _Product_liquid | string";
     case "product_list":
       return "?: _Product_liquid[]";
     case "richtext":
@@ -118,6 +119,10 @@ export const getImports = (sections: { [T: string]: ShopifySection }) => {
     if (setting.type === "font_picker") {
       if (localTypes.includes("_Font_liquid")) return;
       localTypes.push("_Font_liquid");
+    }
+    if (setting.type === "font_picker") {
+      if (localTypes.includes("_Font_options")) return;
+      localTypes.push("_Font_options");
     }
     if (setting.type === "link_list") {
       if (localTypes.includes("_Linklist_liquid")) return;
@@ -205,7 +210,9 @@ export const sectionToTypes = (section, key) => {
         .sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
 
       arr.push("");
-      arr.push(`export type ${capitalize(key)}Blocks${capitalize(block.type)} = {`);
+      arr.push(
+        `export type ${capitalize(key)}Blocks${toPascalCase(block.type.replace("@", ""))} = {`
+      );
       arr.push("  id: string;");
 
       if (blockSettings?.length) {
@@ -247,8 +254,8 @@ export const sectionToTypes = (section, key) => {
   if (section.blocks?.length && section.blocks.length === 1) {
     arr.push("");
     arr.push(
-      `export type ${capitalize(key)}Blocks = ${capitalize(key)}Blocks${capitalize(
-        section.blocks[0].type
+      `export type ${capitalize(key)}Blocks = ${capitalize(key)}Blocks${toPascalCase(
+        section.blocks[0].type.replace("@", "")
       )};`
     );
   }
@@ -259,9 +266,9 @@ export const sectionToTypes = (section, key) => {
 
     section.blocks?.forEach((block, i) => {
       if (section.blocks.length - 1 === i) {
-        arr.push(`  | ${capitalize(key)}Blocks${capitalize(block.type)};`);
+        arr.push(`  | ${capitalize(key)}Blocks${toPascalCase(block.type.replace("@", ""))};`);
       } else {
-        arr.push(`  | ${capitalize(key)}Blocks${capitalize(block.type)}`);
+        arr.push(`  | ${capitalize(key)}Blocks${toPascalCase(block.type.replace("@", ""))}`);
       }
     });
   }
