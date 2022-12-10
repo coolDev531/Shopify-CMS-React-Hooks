@@ -222,7 +222,7 @@ export type ShopifySettingsInput =
 type ExtractSettings<T extends ShopifySection | ShopifySectionBlock> = Extract<
   /* @ts-ignore*/
   T["settings"][number],
-  { id: string; type }
+  { id: string; type: string }
 >;
 
 type ExtractSetting<T extends ShopifySection | ShopifySectionBlock, ID extends string> = Extract<
@@ -287,7 +287,7 @@ type MapSection<T> = {
 };
 
 type MapBlocks<T extends { blocks: ShopifySectionBlock[] }> = {
-  [B in Extract<T["blocks"][number], { type }>["type"]]: {
+  [B in Extract<T["blocks"][number], { type: string }>["type"]]: {
     id: string;
     settings: MapSettings<Extract<T["blocks"][number], { type: B }>>;
     type: B;
@@ -295,7 +295,7 @@ type MapBlocks<T extends { blocks: ShopifySectionBlock[] }> = {
 };
 
 type MapBlocksPreset<T extends { blocks: ShopifySectionBlock[] }> = {
-  [B in Extract<T["blocks"][number], { type }>["type"]]: {
+  [B in Extract<T["blocks"][number], { type: string }>["type"]]: {
     type: B;
     settings?: Partial<MapSettings<Extract<T["blocks"][number], { type: B }>>>;
   };
