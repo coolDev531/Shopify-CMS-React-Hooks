@@ -229,7 +229,7 @@
 
         /*= =============== RECEIVE UPDATES ================ */
         window.addEventListener('message', (e) => {
-          if (e?.data?.source !== "theme-content") return;
+          if (e?.data?.source !== "shopify-cms") return;
 
           switch (e.data.topic) {
             case "resize" : {
@@ -237,12 +237,8 @@
               resizeSections();
               break;
             }
-            case "set-iframe": {
-              resizeSections();
-              break;
-            }
             case "redirect": {
-              window.location.href = window.location.origin + e.data.href;
+              window.location.href = window.location.origin + '/_editor' + e.data.href;
               break;
             }
           }
