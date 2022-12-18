@@ -16,6 +16,11 @@
 
   |||GLOBAL_SECTIONS_BELOW_LAYOUT|||
 
+  {% assign path = request.path %}
+  {% if path == '/' %}
+    {% assign path = "" %}
+  {% endif %}
+
   {% if request.design_mode == false %}
     <iframe id="theme-editor"
             style="
@@ -26,7 +31,7 @@
             inset: 0;
             z-index: 10;
             min-height: 100vh"
-            src="|||DEPLOYMENT_URL|||{{ request.path }}"
+            src="|||DEPLOYMENT_URL|||{{ path }}"
             frameborder="0">
     </iframe>
 
@@ -36,18 +41,18 @@
 
       const sessionUrl = sessionStorage.getItem('shopify-cms-url') ?? "|||DEVELOPMENT_URL|||"
       const themeEditorIframe = document.getElementById("theme-editor");
-      themeEditorIframe.setAttribute('src', `${sessionUrl}{{ request.path }}`)
+      themeEditorIframe.setAttribute('src', `${sessionUrl}{{ path }}`)
 
       if (sessionUrl === developmentUrl) {
-        fetch(`${developmentUrl}{{ request.path }}`, { method: "HEAD" }).catch(err => {
-          themeEditorIframe.setAttribute('src', `${vercelUrl}{{ request.path }}`);
+        fetch(`${developmentUrl}{{ path }}`, { method: "HEAD" }).catch(err => {
+          themeEditorIframe.setAttribute('src', `${vercelUrl}{{ path }}`);
           sessionStorage.setItem('shopify-cms-url', vercelUrl)
         });
       }
 
       if (sessionUrl !== developmentUrl) {
-        fetch(`${developmentUrl}{{ request.path }}`, { method: "HEAD" }).then((e) => {
-          themeEditorIframe.setAttribute('src', `${developmentUrl}{{ request.path }}`);
+        fetch(`${developmentUrl}{{ path }}`, { method: "HEAD" }).then((e) => {
+          themeEditorIframe.setAttribute('src', `${developmentUrl}{{ path }}`);
           sessionStorage.setItem('shopify-cms-url', developmentUrl)
         }).catch(err => {
           sessionStorage.setItem('shopify-cms-url', vercelUrl)
@@ -67,7 +72,7 @@
             inset: 0;
             z-index: 10;
             min-height: 100vh"
-            src="|||DEPLOYMENT_URL|||{{ request.path }}"
+            src="|||DEPLOYMENT_URL|||{{ path }}"
             frameborder="0">
     </iframe>
 
@@ -77,19 +82,19 @@
 
       const sessionUrl = sessionStorage.getItem('shopify-cms-url') ?? developmentUrl
       const themeEditorIframe = document.getElementById("theme-editor");
-      themeEditorIframe.setAttribute('src', `${sessionUrl}{{ request.path }}`)
+      themeEditorIframe.setAttribute('src', `${sessionUrl}{{ path }}`)
 
       document.addEventListener('DOMContentLoaded', () => {
         if (sessionUrl === developmentUrl) {
-          fetch('|||DEVELOPMENT_URL|||{{ request.path }}', { method: "HEAD" }).catch(err => {
-            themeEditorIframe.setAttribute('src', `${vercelUrl}{{ request.path }}`);
+          fetch('|||DEVELOPMENT_URL|||{{ path }}', { method: "HEAD" }).catch(err => {
+            themeEditorIframe.setAttribute('src', `${vercelUrl}{{ path }}`);
             sessionStorage.setItem('shopify-cms-url', vercelUrl)
           });
         }
 
         if (sessionUrl !== developmentUrl) {
-          fetch(`${developmentUrl}{{ request.path }}`, { method: "HEAD" }).then((e) => {
-            themeEditorIframe.setAttribute('src', `${developmentUrl}{{ request.path }}`);
+          fetch(`${developmentUrl}{{ path }}`, { method: "HEAD" }).then((e) => {
+            themeEditorIframe.setAttribute('src', `${developmentUrl}{{ path }}`);
             sessionStorage.setItem('shopify-cms-url', developmentUrl)
           }).catch(err => {
             sessionStorage.setItem('shopify-cms-url', vercelUrl)
