@@ -31,23 +31,26 @@
     </iframe>
 
     <script>
+      const developmentUrl = "|||DEVELOPMENT_URL|||"
+      const vercelUrl = "|||DEPLOYMENT_URL|||"
+
       const sessionUrl = sessionStorage.getItem('shopify-cms-url') ?? "|||DEVELOPMENT_URL|||"
       const themeEditorIframe = document.getElementById("theme-editor");
       themeEditorIframe.setAttribute('src', `${sessionUrl}{{ request.path }}`)
 
-      if (sessionUrl === `|||DEVELOPMENT_URL|||`) {
-        fetch('|||DEVELOPMENT_URL|||{{ request.path }}', { method: "HEAD" }).catch(err => {
-          themeEditorIframe.setAttribute('src', '|||DEPLOYMENT_URL|||{{ request.path }}');
-          sessionStorage.setItem('shopify-cms-url', `|||DEPLOYMENT_URL|||`)
+      if (sessionUrl === developmentUrl) {
+        fetch(`${developmentUrl}{{ request.path }}`, { method: "HEAD" }).catch(err => {
+          themeEditorIframe.setAttribute('src', `${vercelUrl}{{ request.path }}`);
+          sessionStorage.setItem('shopify-cms-url', vercelUrl)
         });
       }
 
-      if (sessionUrl !== `|||DEVELOPMENT_URL|||`) {
-        fetch('|||DEVELOPMENT_URL|||{{ request.path }}', { method: "HEAD" }).then((e) => {
-          themeEditorIframe.setAttribute('src', '|||DEVELOPMENT_URL|||{{ request.path }}');
-          sessionStorage.setItem('shopify-cms-url', `|||DEVELOPMENT_URL|||`)
+      if (sessionUrl !== developmentUrl) {
+        fetch(`${developmentUrl}{{ request.path }}`, { method: "HEAD" }).then((e) => {
+          themeEditorIframe.setAttribute('src', `${developmentUrl}{{ request.path }}`);
+          sessionStorage.setItem('shopify-cms-url', developmentUrl)
         }).catch(err => {
-          sessionStorage.setItem('shopify-cms-url', `|||DEPLOYMENT_URL|||`)
+          sessionStorage.setItem('shopify-cms-url', vercelUrl)
         });
       }
     </script>
@@ -69,24 +72,27 @@
     </iframe>
 
     <script>
-      const sessionUrl = sessionStorage.getItem('shopify-cms-url') ?? "|||DEVELOPMENT_URL|||"
+      const developmentUrl = "|||DEVELOPMENT_URL|||"
+      const vercelUrl = `|||DEPLOYMENT_URL|||`
+
+      const sessionUrl = sessionStorage.getItem('shopify-cms-url') ?? developmentUrl
       const themeEditorIframe = document.getElementById("theme-editor");
       themeEditorIframe.setAttribute('src', `${sessionUrl}{{ request.path }}`)
 
       document.addEventListener('DOMContentLoaded', () => {
-        if (sessionUrl === `|||DEVELOPMENT_URL|||`) {
+        if (sessionUrl === developmentUrl) {
           fetch('|||DEVELOPMENT_URL|||{{ request.path }}', { method: "HEAD" }).catch(err => {
-            themeEditorIframe.setAttribute('src', '|||DEPLOYMENT_URL|||{{ request.path }}');
-            sessionStorage.setItem('shopify-cms-url', `|||DEPLOYMENT_URL|||`)
+            themeEditorIframe.setAttribute('src', `${vercelUrl}{{ request.path }}`);
+            sessionStorage.setItem('shopify-cms-url', vercelUrl)
           });
         }
 
-        if (sessionUrl !== `|||DEVELOPMENT_URL|||`) {
-          fetch('|||DEVELOPMENT_URL|||{{ request.path }}', { method: "HEAD" }).then((e) => {
-            themeEditorIframe.setAttribute('src', '|||DEVELOPMENT_URL|||{{ request.path }}');
-            sessionStorage.setItem('shopify-cms-url', `|||DEVELOPMENT_URL|||`)
+        if (sessionUrl !== developmentUrl) {
+          fetch(`${developmentUrl}{{ request.path }}`, { method: "HEAD" }).then((e) => {
+            themeEditorIframe.setAttribute('src', `${developmentUrl}{{ request.path }}`);
+            sessionStorage.setItem('shopify-cms-url', developmentUrl)
           }).catch(err => {
-            sessionStorage.setItem('shopify-cms-url', `|||DEPLOYMENT_URL|||`)
+            sessionStorage.setItem('shopify-cms-url', vercelUrl)
           });
         }
 
