@@ -22,7 +22,7 @@
   {% endif %}
 
   {% if request.design_mode == false %}
-    <iframe data-theme-editor-production
+    <iframe data-shopify-cms-production
             style="
             width: 100%;
             height: 100%;
@@ -39,7 +39,7 @@
   {% endif %}
 
   {% if request.design_mode %}
-    <iframe data-theme-editor-development
+    <iframe data-shopify-cms-development
             style="
             width: 100%;
             height: 100%;
@@ -55,7 +55,7 @@
             src="|||DEVELOPMENT_URL|||{{ path }}"
             frameborder="0">
     </iframe>
-    <iframe data-theme-editor-production
+    <iframe data-shopify-cms-production
             style="
             width: 100%;
             height: 100%;
@@ -71,14 +71,14 @@
     </iframe>
 
     <script>
-      let themeEditorIframe = document.querySelector('[data-theme-editor-production]');
-      let themeEditorIframeDevelopment = document.querySelector('[data-theme-editor-development]');
+      let themeEditorIframe = document.querySelector('[data-shopify-cms-production]');
+      let themeEditorIframeDevelopment = document.querySelector('[data-shopify-cms-development]');
 
       let timeout = null;
 
 
       const handleLocalIframeLoadEvent = (event) => {
-        if (document.querySelector('[data-theme-editor-production]')) {
+        if (document.querySelector('[data-shopify-cms-production]')) {
           timeout = setTimeout(() => {
             console.log('production environment');
             themeEditorIframeDevelopment.remove();
@@ -154,14 +154,13 @@
 
         themeEditorIframe.addEventListener('load', (e) => {
           themeEditorIframe?.contentWindow.postMessage({
-              source: "theme-editor",
+              source: "shopify-cms",
               topic: "activateThemeEditor",
               themeData: parseShopifyData(document),
             },
             "*",
           );
         });
-
 
         const resizeSections = () => {
           sectionSizes.forEach(({ id, height, blocks }) => {
@@ -186,7 +185,7 @@
 
         const sendThemeData = (e) => {
           themeEditorIframe?.contentWindow.postMessage({
-              source: "theme-editor",
+              source: "shopify-cms",
               topic: e?.type,
               detail: e?.detail,
               themeData: parseShopifyData(document),
