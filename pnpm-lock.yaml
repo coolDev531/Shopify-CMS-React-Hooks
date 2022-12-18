@@ -16,7 +16,7 @@ specifiers:
   jsdom: ^20.0.0
   node-watch: ^0.7.3
   regenerator-runtime: ^0.13.9
-  shopify-typed-node-api: ^2.0.18
+  shopify-typed-node-api: ^2.1.0
   ts-node: ^10.9.1
   tsconfig-paths: ^4.0.0
   typescript: ^4.7.4
@@ -33,7 +33,7 @@ dependencies:
   jsdom: 20.0.3
   node-watch: 0.7.3
   regenerator-runtime: 0.13.11
-  shopify-typed-node-api: 2.0.20
+  shopify-typed-node-api: 2.1.0
   ts-node: 10.9.1_cdt7kd25fnza4agwhnm6aydboa
   tsconfig-paths: 4.1.1
   zustand: 4.1.5_immer@9.0.16+react@18.2.0
@@ -359,13 +359,6 @@ packages:
   /@types/minimist/1.2.2:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
     dev: true
-
-  /@types/node-fetch/2.6.2:
-    resolution: {integrity: sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==}
-    dependencies:
-      '@types/node': 18.11.12
-      form-data: 3.0.1
-    dev: false
 
   /@types/node/18.11.12:
     resolution: {integrity: sha512-FgD3NtTAKvyMmD44T07zz2fEf+OKwutgBCEVM8GcvMGVGaDktiLNTDvPwC/LUe3PinMW+X6CuLOF2Ui1mAlSXg==}
@@ -1758,15 +1751,6 @@ packages:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
     dev: true
 
-  /form-data/3.0.1:
-    resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
-    engines: {node: '>= 6'}
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.35
-    dev: false
-
   /form-data/4.0.0:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
     engines: {node: '>= 6'}
@@ -2730,18 +2714,6 @@ packages:
     hasBin: true
     dev: true
 
-  /node-fetch/2.6.7:
-    resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
-    engines: {node: 4.x || >=6.0.0}
-    peerDependencies:
-      encoding: ^0.1.0
-    peerDependenciesMeta:
-      encoding:
-        optional: true
-    dependencies:
-      whatwg-url: 5.0.0
-    dev: false
-
   /node-watch/0.7.3:
     resolution: {integrity: sha512-3l4E8uMPY1HdMMryPRUAl+oIHtXtyiTlIiESNSVSNxcPfzAFzeTbXFQkZfAwBbo0B1qMSG8nUABx+Gd+YrbKrQ==}
     engines: {node: '>=6'}
@@ -3332,21 +3304,18 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /shopify-typed-node-api/2.0.20:
-    resolution: {integrity: sha512-O1sOwtM/+P9lGEN42caC0VgZPkNXXYS1djS/gf7wZRcZtQZOpdcQTfsN1+NuVju956ilBIOwqEhyj61w5x46eQ==}
+  /shopify-typed-node-api/2.1.0:
+    resolution: {integrity: sha512-y65QGq6NOOMulIIHjONcLI4WLWy0gQM8tb8YiUz9gQu2Bo33MEOkurByr0LPCDym87Se2sHXPbzih7kt7m8Ncw==}
+    engines: {node: '>=18.0.0'}
     dependencies:
       '@shopify/network': 1.6.4
       '@types/jsonwebtoken': 8.5.9
-      '@types/node-fetch': 2.6.2
       '@types/supertest': 2.0.12
       cookies: 0.8.0
       jsonwebtoken: 8.5.1
       minimist: 1.2.7
-      node-fetch: 2.6.7
       tslib: 2.4.1
       uuid: 8.3.2
-    transitivePeerDependencies:
-      - encoding
     dev: false
 
   /side-channel/1.0.4:
@@ -3535,10 +3504,6 @@ packages:
       punycode: 2.1.1
       universalify: 0.2.0
       url-parse: 1.5.10
-    dev: false
-
-  /tr46/0.0.3:
-    resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
     dev: false
 
   /tr46/3.0.0:
@@ -3775,10 +3740,6 @@ packages:
       xml-name-validator: 4.0.0
     dev: false
 
-  /webidl-conversions/3.0.1:
-    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
-    dev: false
-
   /webidl-conversions/7.0.0:
     resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
     engines: {node: '>=12'}
@@ -3802,13 +3763,6 @@ packages:
     dependencies:
       tr46: 3.0.0
       webidl-conversions: 7.0.0
-    dev: false
-
-  /whatwg-url/5.0.0:
-    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
-    dependencies:
-      tr46: 0.0.3
-      webidl-conversions: 3.0.1
     dev: false
 
   /which-boxed-primitive/1.0.2:
