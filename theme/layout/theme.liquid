@@ -74,18 +74,20 @@
       let themeEditorIframe = document.querySelector('[data-theme-editor-production]')
       let themeEditorIframeDevelopment = document.querySelector('[data-theme-editor-development]')
 
-      themeEditorIframeDevelopment.addEventListener('load', (e) => {
-        console.log(e, 'loaded devleopment')
-        themeEditorIframe.remove();
-        themeEditorIframeDevelopment.style.opacity = '1'
-        themeEditorIframeDevelopment.style.pointerEvents = 'auto'
-        themeEditorIframe = themeEditorIframeDevelopment;
-        initThemeEditor();
-      })
-      themeEditorIframeDevelopment.addEventListener('error', (e) => {
-        console.log(e, 'error development')
-        themeEditorIframeDevelopment.remove();
-        initThemeEditor();
+      themeEditorIframeDevelopment.addEventListener("load", (e) => {
+        try {
+          themeEditorIframeDevelopment.contentWindow.location.href;
+          console.log('local development environment')
+          themeEditorIframe.remove();
+          themeEditorIframeDevelopment.style.opacity = '1'
+          themeEditorIframeDevelopment.style.pointerEvents = 'auto'
+          themeEditorIframe = themeEditorIframeDevelopment;
+          initThemeEditor()
+        } catch (err) {
+          console.log('production environment')
+          themeEditorIframeDevelopment.remove();
+          initThemeEditor()
+        }
       })
 
      const initThemeEditor = () => {
