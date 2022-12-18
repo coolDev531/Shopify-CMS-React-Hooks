@@ -71,26 +71,44 @@
     </iframe>
 
     <script>
-      let themeEditorIframe = document.querySelector('[data-theme-editor-production]')
-      let themeEditorIframeDevelopment = document.querySelector('[data-theme-editor-development]')
+      let themeEditorIframe = document.querySelector('[data-theme-editor-production]');
+      let themeEditorIframeDevelopment = document.querySelector('[data-theme-editor-development]');
 
-      themeEditorIframeDevelopment.addEventListener("load", (e) => {
-        try {
-          themeEditorIframeDevelopment.contentWindow.location.href;
-          console.log('local development environment')
-          themeEditorIframe.remove();
-          themeEditorIframeDevelopment.style.opacity = '1'
-          themeEditorIframeDevelopment.style.pointerEvents = 'auto'
-          themeEditorIframe = themeEditorIframeDevelopment;
-          initThemeEditor()
-        } catch (err) {
-          console.log('production environment')
-          themeEditorIframeDevelopment.remove();
-          initThemeEditor()
+      let timeout = null;
+
+
+      const handleLocalIframeLoadEvent = (event) => {
+        if (document.querySelector('[data-theme-editor-production]')) {
+          timeout = setTimeout(() => {
+            console.log('production environment');
+            themeEditorIframeDevelopment.remove();
+            initThemeEditor();
+          }, 500);
         }
-      })
+      };
 
-     const initThemeEditor = () => {
+      const handleInitialization = (event) => {
+        if (event?.data?.source !== "shopify-cms") return;
+
+        if (event.data.topic === 'initialize' && '|||DEVELOPMENT_URL|||'.includes(event.data.origin)) {
+          console.log('local development environment');
+          if (timeout) {
+            clearTimeout(timeout);
+          }
+          themeEditorIframe.remove();
+          themeEditorIframeDevelopment.style.opacity = '1';
+          themeEditorIframeDevelopment.style.pointerEvents = 'auto';
+          themeEditorIframe = themeEditorIframeDevelopment;
+          initThemeEditor();
+        }
+      };
+
+      window.addEventListener('message', handleInitialization);
+      themeEditorIframeDevelopment.addEventListener("load", handleLocalIframeLoadEvent);
+
+      const initThemeEditor = () => {
+        themeEditorIframeDevelopment.removeEventListener("load", handleLocalIframeLoadEvent);
+        window.removeEventListener('message', handleInitialization);
 
         let isInspectorMode = false;
         let sectionSizes = [];
@@ -138,7 +156,7 @@
           themeEditorIframe?.contentWindow.postMessage({
               source: "theme-editor",
               topic: "activateThemeEditor",
-              themeData: parseShopifyData(document)
+              themeData: parseShopifyData(document),
             },
             "*",
           );
@@ -171,7 +189,7 @@
               source: "theme-editor",
               topic: e?.type,
               detail: e?.detail,
-              themeData: parseShopifyData(document)
+              themeData: parseShopifyData(document),
             },
             "*",
           );
@@ -200,11 +218,11 @@
             if (eventName === 'shopify:inspector:deactivate') {
               isInspectorMode = false;
               themeEditorIframe.style.zIndex = 10;
-              resizeSections()
+              resizeSections();
             }
             setTimeout(() => {
               sendThemeData(event);
-              resizeSections()
+              resizeSections();
             }, 15);
 
           });
@@ -217,7 +235,7 @@
           switch (e.data.topic) {
             case "resize" : {
               sectionSizes = e.data.sectionSizes;
-              resizeSections()
+              resizeSections();
               break;
             }
             case "set-iframe": {
@@ -230,7 +248,7 @@
             }
           }
         });
-      }
+      };
     </script>
 
   {% endif %}
