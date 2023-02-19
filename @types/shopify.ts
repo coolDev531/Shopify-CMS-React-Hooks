@@ -747,8 +747,8 @@ export type _Collection_liquid = {
   featured_image?: _Media_liquid;
   image?: _Media_liquid;
   product_pagination?: _Pagination_liquid;
-  products_best_selling?: number[];
-  products_manual?: number[];
+  products_best_selling?: string[];
+  products_manual?: string[];
 };
 
 export type _Collection_sort_options = [
