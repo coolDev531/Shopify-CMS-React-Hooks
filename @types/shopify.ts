@@ -998,6 +998,7 @@ export type _Routes_liquid = {
   product_recommendations_url: string;
   root_url: string;
   search_url: string;
+  host?: string;
 };
 
 export type _Recommendations_liquid = {
