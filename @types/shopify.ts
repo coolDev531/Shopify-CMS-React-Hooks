@@ -711,7 +711,7 @@ export type _Media_liquid = {
   aspect_ratio: number;
   height: number;
   id: number;
-  media_type: string;
+  media_type: "image" | "model" | "video" | "external_video";
   position: number;
   preview_image: {
     aspect_ratio: number;
