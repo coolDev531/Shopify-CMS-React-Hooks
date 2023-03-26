@@ -141,10 +141,12 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
     console.log(data?.body?.data?.metafieldDefinitions?.edges?.map(({ node }) => node));
     returnData.push({
       owner,
-      data: data?.body?.data?.metafieldDefinitions?.edges?.map(({ node }, index, arr) => ({
-        ...node,
-        type: node.type.name,
-      })),
+      data: data?.body?.data?.metafieldDefinitions?.edges
+        ?.filter(({ node }) => node.namespace === "data")
+        .map(({ node }, index, arr) => ({
+          ...node,
+          type: node.type.name,
+        })),
     });
   }
 
