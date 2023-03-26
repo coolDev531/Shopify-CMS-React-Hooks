@@ -722,6 +722,8 @@ export type _Media_liquid = {
   src: string;
   width: number;
   alt?: string;
+  external_id?: string;
+  host?: string;
 };
 
 export type _Collection_liquid = {
