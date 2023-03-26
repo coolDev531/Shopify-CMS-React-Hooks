@@ -645,6 +645,19 @@ export type _Variant_liquid = {
   price: number;
   requires_shipping: boolean;
   sku: string;
+  store_availabilities: {
+    available: boolean;
+    location: {
+      address: {};
+      id: number;
+      latitude: number;
+      longitude: number;
+      metafields: { [T: string]: _Metafield_liquid };
+      name: string;
+    };
+    pick_up_enabled: true;
+    pick_up_time: string;
+  }[];
   taxable: boolean;
   title: string;
   url: string;
