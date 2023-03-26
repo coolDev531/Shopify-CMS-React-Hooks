@@ -723,7 +723,7 @@ export type _Media_liquid = {
   width: number;
   alt?: string;
   external_id?: string;
-  host?: string;
+  host?: "youtube" | "vimeo";
 };
 
 export type _Collection_liquid = {
