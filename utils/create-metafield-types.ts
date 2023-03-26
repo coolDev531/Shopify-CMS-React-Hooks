@@ -107,13 +107,10 @@ export const metafieldDefinitionsQuery = /* GraphQL */ `
         node {
           ownerType
           namespace
-          standardTemplate {
+          validations {
             name
-            validations {
-              name
-              type
-              value
-            }
+            type
+            value
           }
           key
           type {
