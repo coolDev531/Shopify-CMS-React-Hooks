@@ -724,6 +724,13 @@ export type _Media_liquid = {
   alt?: string;
   external_id?: string;
   host?: "youtube" | "vimeo";
+  sources?: {
+    format: "mp4" | "mov" | "m3u8";
+    height: number;
+    mime_type: string;
+    url: string;
+    width: number;
+  }[];
 };
 
 export type _Collection_liquid = {
