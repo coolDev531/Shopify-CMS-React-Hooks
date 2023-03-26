@@ -76,7 +76,7 @@ const getType = async (type, validations: { name: string; type: string; value: s
           additionalProperties: false,
         });
 
-        const content = types.split("__REPLACER")[1];
+        const content = types.split(/__REPLACER\s*/)[1];
         console.log(content);
 
         return content
