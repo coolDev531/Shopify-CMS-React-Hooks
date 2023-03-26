@@ -192,6 +192,7 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
       );
     }
     if (data.length > 0) {
+      metafieldTypesContent.push(`export type ${getKeyType(owner)} = {`);
       for (let index = 0; index < data.length; index++) {
         const { key, type, namespace, validations } = data[index];
         if (data.findIndex((item) => item.key === key) !== index) {
@@ -208,7 +209,6 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
             : `  ${key}?: ${await getType(type, validations)};`
         );
       }
-      metafieldTypesContent.push(`export type ${getKeyType(owner)} = {`);
       metafieldTypesContent.push("};\n");
     }
   }
