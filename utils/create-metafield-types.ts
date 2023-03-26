@@ -118,8 +118,10 @@ export const metafieldDefinitionsQuery = /* GraphQL */ `
 `;
 
 export async function createMetafieldTypes(gql: GraphqlClient) {
-  const returnData: { data: { key: string; type: string }[]; owner: typeof ownerTypes[number] }[] =
-    [];
+  const returnData: {
+    data: { key: string; namespace: string; type: string }[];
+    owner: typeof ownerTypes[number];
+  }[] = [];
 
   for (let i = 0; i < ownerTypes.length; i++) {
     const owner = ownerTypes[i];
@@ -139,7 +141,7 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
     console.log(data?.body?.data?.metafieldDefinitions?.edges?.map(({ node }) => node));
     returnData.push({
       owner,
-      data: data?.body?.data?.metafieldDefinitions?.edges?.map(({ node }) => ({
+      data: data?.body?.data?.metafieldDefinitions?.edges?.map(({ node }, index, arr) => ({
         ...node,
         type: node.type.name,
       })),
@@ -156,7 +158,15 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
     }
     if (data.length > 0) {
       metafieldTypesContent.push(`export type ${getKeyType(owner)} = {`);
-      data.forEach(({ key, type }) => {
+      data.forEach(({ key, type, namespace }, index, arr) => {
+        if (arr.findIndex((item) => item.key === key) !== index) {
+          metafieldTypesContent.push(
+            /[^\w_]/gi.test(key) || /[^\w_]/gi.test(namespace)
+              ? `  "${namespace}_${key}"?: ${getType(type)};`
+              : `  ${namespace}_${key}?: ${getType(type)};`
+          );
+          return;
+        }
         metafieldTypesContent.push(
           /[^\w_]/gi.test(key) ? `  "${key}"?: ${getType(type)};` : `  ${key}?: ${getType(type)};`
         );

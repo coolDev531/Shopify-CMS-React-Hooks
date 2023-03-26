@@ -8649,6 +8649,8 @@ export type MetafieldDefinitionsQueryVariables = Exact<{
 
 export type MetafieldDefinitionsQuery = {
   metafieldDefinitions: {
-    edges: Array<{ node: { key: string; name: string; type: { name: string } } }>;
+    edges: Array<{
+      node: { key: string; name: string; namespace: string; type: { name: string } };
+    }>;
   };
 };
