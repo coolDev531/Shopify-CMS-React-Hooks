@@ -82,7 +82,8 @@ const getType = async (type, validations: { name: string; type: string; value: s
         return content
           .split("\n")
           .map((item) => `  ${item}`)
-          .join("\n");
+          .join("\n")
+          .replace(/}\n$/gi, "}");
       }
 
       return "unknown";
