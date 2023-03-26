@@ -105,6 +105,8 @@ export const metafieldDefinitionsQuery = /* GraphQL */ `
     metafieldDefinitions(first: 250, ownerType: $ownerType) {
       edges {
         node {
+          ownerType
+          namespace
           key
           type {
             name
