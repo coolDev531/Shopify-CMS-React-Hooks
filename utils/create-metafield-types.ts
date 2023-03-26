@@ -15,16 +15,8 @@ const ownerTypes = [
   "SHOP",
 ] as const;
 
-const getType = (type, validations: { name: string; type: string; value: string }[] = []) => {
+const getType = async (type, validations: { name: string; type: string; value: string }[] = []) => {
   const jsonSchema = validations.find((v) => v.type === "json");
-  if (jsonSchema?.value) {
-    compile(JSON.parse(jsonSchema?.value), "__REPLACER", {
-      bannerComment: "",
-      additionalProperties: false,
-    }).then((t) => {
-      console.log(t);
-    });
-  }
 
   switch (type) {
     case "product_reference": {
@@ -78,6 +70,15 @@ const getType = (type, validations: { name: string; type: string; value: string 
       return "(number | string)[]";
     }
     case "json": {
+      if (jsonSchema?.value) {
+        const types = await compile(JSON.parse(jsonSchema?.value), "__REPLACER", {
+          bannerComment: "",
+          additionalProperties: false,
+        });
+
+        return types.split("__REPLACER")[1];
+      }
+
       return "unknown";
     }
     case "volume":
@@ -182,32 +183,35 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
 
   const metafieldTypesContent = [imports];
 
-  returnData.forEach(({ owner, data }) => {
+  for (let i = 0; i < returnData.length; i++) {
+    const { owner, data } = returnData[i];
+
     if (data.length === 0) {
       metafieldTypesContent.push(
         `export type ${getKeyType(owner)} = { [T: string]: _Metafield_liquid };\n`
       );
     }
     if (data.length > 0) {
-      metafieldTypesContent.push(`export type ${getKeyType(owner)} = {`);
-      data.forEach(({ key, type, namespace, validations }, index, arr) => {
-        if (arr.findIndex((item) => item.key === key) !== index) {
+      for (let index = 0; index < data.length; index++) {
+        const { key, type, namespace, validations } = data[index];
+        if (data.findIndex((item) => item.key === key) !== index) {
           metafieldTypesContent.push(
             /[^\w_]/gi.test(key) || /[^\w_]/gi.test(namespace)
-              ? `  "${namespace}_${key}"?: ${getType(type, validations)};`
-              : `  ${namespace}_${key}?: ${getType(type, validations)};`
+              ? `  "${namespace}_${key}"?: ${await getType(type, validations)};`
+              : `  ${namespace}_${key}?: ${await getType(type, validations)};`
           );
           return;
         }
         metafieldTypesContent.push(
           /[^\w_]/gi.test(key)
-            ? `  "${key}"?: ${getType(type, validations)};`
-            : `  ${key}?: ${getType(type, validations)};`
+            ? `  "${key}"?: ${await getType(type, validations)};`
+            : `  ${key}?: ${await getType(type, validations)};`
         );
-      });
+      }
+      metafieldTypesContent.push(`export type ${getKeyType(owner)} = {`);
       metafieldTypesContent.push("};\n");
     }
-  });
+  }
 
   const masterFile = metafieldTypesContent.join("\n");
 
