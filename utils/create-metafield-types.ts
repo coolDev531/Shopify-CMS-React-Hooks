@@ -77,7 +77,6 @@ const getType = async (type, validations: { name: string; type: string; value: s
         });
 
         const content = types.split(/__REPLACER\s*/)[1];
-        console.log(content);
 
         return content
           .split("\n")
@@ -168,15 +167,6 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
       },
     });
 
-    console.log(
-      JSON.stringify(
-        data?.body?.data?.metafieldDefinitions?.edges
-          ?.filter(({ node }) => node.namespace === "data")
-          ?.map(({ node }) => node),
-        null,
-        2
-      )
-    );
     returnData.push({
       owner,
       data: data?.body?.data?.metafieldDefinitions?.edges
