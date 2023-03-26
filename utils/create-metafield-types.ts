@@ -76,7 +76,13 @@ const getType = async (type, validations: { name: string; type: string; value: s
           additionalProperties: false,
         });
 
-        return types.split("__REPLACER")[1];
+        const content = types.split("__REPLACER")[1];
+        console.log(content);
+
+        return content
+          .split("\n")
+          .map((item) => `  ${item}`)
+          .join("\n");
       }
 
       return "unknown";
