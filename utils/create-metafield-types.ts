@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { GraphqlClient } from "shopify-typed-node-api/dist/clients/graphql";
 import { MetafieldDefinitionsQuery, MetafieldDefinitionsQueryVariables } from "./shopify-gql-types";
+import { compile } from "json-schema-to-typescript";
 
 const ownerTypes = [
   "ARTICLE",
@@ -14,7 +15,14 @@ const ownerTypes = [
   "SHOP",
 ] as const;
 
-const getType = (type) => {
+const getType = (type, validations: { name: string; type: string; value: string }[] = []) => {
+  const jsonSchema = validations.find((v) => v.type === "json");
+  if (jsonSchema?.value) {
+    compile(JSON.parse(jsonSchema?.value), "test").then((t) => {
+      console.log(t);
+    });
+  }
+
   switch (type) {
     case "product_reference": {
       return `Omit<_Product_liquid, "metafields">`;
@@ -124,7 +132,13 @@ export const metafieldDefinitionsQuery = /* GraphQL */ `
 
 export async function createMetafieldTypes(gql: GraphqlClient) {
   const returnData: {
-    data: { key: string; namespace: string; type: string }[];
+    data: {
+      key: string;
+      name: string;
+      namespace: string;
+      type: string;
+      validations: { name: string; type: string; value: string }[];
+    }[];
     owner: typeof ownerTypes[number];
   }[] = [];
 
@@ -173,17 +187,19 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
     }
     if (data.length > 0) {
       metafieldTypesContent.push(`export type ${getKeyType(owner)} = {`);
-      data.forEach(({ key, type, namespace }, index, arr) => {
+      data.forEach(({ key, type, namespace, validations }, index, arr) => {
         if (arr.findIndex((item) => item.key === key) !== index) {
           metafieldTypesContent.push(
             /[^\w_]/gi.test(key) || /[^\w_]/gi.test(namespace)
-              ? `  "${namespace}_${key}"?: ${getType(type)};`
-              : `  ${namespace}_${key}?: ${getType(type)};`
+              ? `  "${namespace}_${key}"?: ${getType(type, validations)};`
+              : `  ${namespace}_${key}?: ${getType(type, validations)};`
           );
           return;
         }
         metafieldTypesContent.push(
-          /[^\w_]/gi.test(key) ? `  "${key}"?: ${getType(type)};` : `  ${key}?: ${getType(type)};`
+          /[^\w_]/gi.test(key)
+            ? `  "${key}"?: ${getType(type, validations)};`
+            : `  ${key}?: ${getType(type, validations)};`
         );
       });
       metafieldTypesContent.push("};\n");
