@@ -18,7 +18,10 @@ const ownerTypes = [
 const getType = (type, validations: { name: string; type: string; value: string }[] = []) => {
   const jsonSchema = validations.find((v) => v.type === "json");
   if (jsonSchema?.value) {
-    compile(JSON.parse(jsonSchema?.value), "test").then((t) => {
+    compile(JSON.parse(jsonSchema?.value), "__REPLACER", {
+      bannerComment: "",
+      additionalProperties: false,
+    }).then((t) => {
       console.log(t);
     });
   }
