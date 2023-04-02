@@ -86,7 +86,7 @@ const getType = async (type, validations: { name: string; type: string; value: s
 
         return content
           .split("\n")
-          .map((item, index) => (index === 0 ? item : `  ${item}`))
+          .map((item, index) => (index === 0 ? item : `    ${item}`))
           .join("\n")
           .replace(/}(\n|\s)*$/gi, "}");
       }
