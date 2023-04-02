@@ -1,6 +1,6 @@
 {
   "name": "shopify-cms",
-  "version": "4.0.41",
+  "version": "5.0.1",
   "description": "Shopify Theme editor as a interactive CMS",
   "author": "Felix Tellmann",
   "license": "MIT",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/FelixTellmann/shopify-ftp-access.git"
+    "url": "https://github.com/FelixTellmann/shopify-cms.git"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -23,37 +23,74 @@
   "keywords": [
     "shopify",
     "api",
-    "ftp",
-    "proxy",
-    "gateway"
+    "typescript",
+    "theme",
+    "cms"
   ],
   "peerDependencies": {
-    "ts-node": "^10.9.1",
-    "typescript": "^4.7.4"
+    "ts-node": ">= ^10.9.1",
+    "typescript": ">= ^4.9.3"
   },
   "dependencies": {
-    "@swc/core": "^1.2.218",
-    "@swc/helpers": "^0.4.3",
+    "@swc/core": "^1.3.44",
+    "@swc/helpers": "^0.4.14",
     "chalk": "4.1.2",
-    "commander": "^9.4.0",
-    "dotenv": "^16.0.1",
-    "immer": "^9.0.15",
-    "inquirer": "8.0.0",
-    "jsdom": "^20.0.0",
+    "commander": "^10.0.0",
+    "decache": "^4.6.1",
+    "dotenv": "^16.0.3",
+    "immer": "^9.0.21",
+    "inquirer": "9.1.5",
+    "jsdom": "^21.1.1",
     "json-schema-to-typescript": "^12.0.0",
     "node-watch": "^0.7.3",
-    "regenerator-runtime": "^0.13.9",
+    "regenerator-runtime": "^0.13.11",
     "shopify-typed-node-api": "^2.1.0",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.0.0",
-    "zustand": "^4.1.1"
+    "tsconfig-paths": "^4.2.0",
+    "zustand": "^4.3.7"
   },
   "devDependencies": {
-    "@types/inquirer": "^8.2.1",
-    "@types/node": "^18.0.5",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "fx-style": "^1.6.18",
-    "typescript": "^4.7.4"
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.32",
+    "@types/react-dom": "^18.0.11",
+    "fx-style": "^2.1.1",
+    "typescript": "^5.0.3"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true
+    },
+    "extends": [
+      "./node_modules/fx-style/"
+    ],
+    "ignorePatterns": [
+      ".github/**/*"
+    ],
+    "plugins": [
+      "sort-keys-fix"
+    ],
+    "rules": {
+      "typescript-sort-keys/interface": 0,
+      "sort-keys-fix/sort-keys-fix": 0,
+      "import/no-anonymous-default-export": 0,
+      "react/no-unescaped-entities": 0,
+      "react/jsx-sort-props": 0,
+      "node/no-unpublished-require": 0
+    }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "arrowParens": "always",
+    "singleQuote": false,
+    "bracketSpacing": true,
+    "printWidth": 100,
+    "indentChains": true,
+    "exportCurlySpacing": true,
+    "importCurlySpacing": true,
+    "allowBreakAfterOperator": false,
+    "breakLongMethodChains": true,
+    "importFormatting": "oneline",
+    "endOfLine": "auto"
   }
 }

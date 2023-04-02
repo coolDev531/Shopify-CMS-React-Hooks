@@ -24,7 +24,7 @@ export type ShopifyNumber = {
   type: "number";
   default?: number;
   info?: string;
-  placeholder?: number;
+  placeholder?: string;
 };
 export type ShopifyRadio = {
   id: string;
@@ -172,7 +172,14 @@ export type ShopifyRichtext = {
   id: string;
   label: string;
   type: "richtext";
-  default?: `<p${string}</p>`;
+  default?: `<${_BlockTag}${string}</${_BlockTag}>`;
+  info?: string;
+};
+export type ShopifyInlineRichtext = {
+  id: string;
+  label: string;
+  type: "inline_richtext";
+  default?: string;
   info?: string;
 };
 export type ShopifyUrl = {
@@ -187,6 +194,15 @@ export type ShopifyVideo_url = {
   id: string;
   label: string;
   type: "video_url";
+  default?: string;
+  info?: string;
+  placeholder?: string;
+};
+
+export type ShopifyVideo = {
+  id: string;
+  label: string;
+  type: "video";
   default?: string;
   info?: string;
   placeholder?: string;
@@ -216,7 +232,9 @@ export type ShopifySettingsInput =
   | ShopifyProduct
   | ShopifyProduct_list
   | ShopifyRichtext
+  | ShopifyInlineRichtext
   | ShopifyUrl
+  | ShopifyVideo
   | ShopifyVideo_url;
 
 type ExtractSettings<T extends ShopifySection | ShopifySectionBlock> = Extract<
@@ -243,6 +261,7 @@ type MapSettings<Section extends ShopifySection | ShopifySectionBlock> = {
     : ExtractSetting<Section, ID>["type"] extends
         | "text"
         | "textarea"
+        | "inline_richtext"
         | "color_background"
         | "html"
         | "liquid"
@@ -270,11 +289,13 @@ type MapSettings<Section extends ShopifySection | ShopifySectionBlock> = {
     : ExtractSetting<Section, ID>["type"] extends "product_list"
     ? _Product_liquid[]
     : ExtractSetting<Section, ID>["type"] extends "richtext"
-    ? `<p${string}</p>`
+    ? `<${_BlockTag}${string}</${_BlockTag}>`
     : ExtractSetting<Section, ID>["type"] extends "video_url"
-    ? ("youtube" | "vimeo")[]
+    ? `${string}youtube${string}` | `${string}vimeo${string}`
     : never;
 };
+
+export type _BlockTag = "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "ol" | "ul";
 
 type MapSection<T> = {
   // @ts-ignore
@@ -333,38 +354,96 @@ export type ShopifySectionBlock =
     }
   | { type: "@app"; limit?: never; name?: never; settings?: never };
 
+export type ShopifyTemplateTypes =
+  | "404"
+  | "article"
+  | "blog"
+  | "cart"
+  | "collection"
+  | "list-collections"
+  | "customers/account"
+  | "customers/activate_account"
+  | "customers/addresses"
+  | "customers/login"
+  | "customers/order"
+  | "customers/register"
+  | "customers/reset_password"
+  | "gift_card"
+  | "index"
+  | "page"
+  | "password"
+  | "product"
+  | "search";
 export type ShopifySection<T = never> = {
   name: string;
   blocks?: ShopifySectionBlock[];
   class?: string;
   default?: ShopifySectionDefault<T>;
+  disabled_block_files?: boolean;
+  generate_block_files?: string[];
   limit?: number;
+  locales?: {
+    [T: string]: {
+      [V: string]: string;
+    };
+  };
   max_blocks?: number;
   presets?: ShopifySectionPreset<T>[];
   settings?: (ShopifySettingsInput | ShopifyHeader | ShopifyParagraph)[];
   tag?: "article" | "aside" | "div" | "footer" | "header" | "section";
-  templates?: (
-    | "404"
-    | "article"
-    | "blog"
-    | "cart"
-    | "collection"
-    | "list-collections"
-    | "customers/account"
-    | "customers/activate_account"
-    | "customers/addresses"
-    | "customers/login"
-    | "customers/order"
-    | "customers/register"
-    | "customers/reset_password"
-    | "gift_card"
-    | "index"
-    | "page"
-    | "password"
-    | "product"
-    | "search"
-  )[];
+} & (
+  | {
+      enabled_on?: {
+        groups?: string[];
+        templates?: ShopifyTemplateTypes[];
+      };
+    }
+  | {
+      disabled_on?: {
+        groups?: string[];
+        templates?: ShopifyTemplateTypes[];
+      };
+    }
+);
+
+type ShopifyAppBlockDefault<T = never> = {
+  settings?: T extends never
+    ? { [T: string]: string | number | boolean } | undefined
+    : T extends { settings: any }
+    ? Partial<T["settings"]> | undefined
+    : { [T: string]: string | number | boolean } | undefined;
 };
+
+export type ShopifyAppBlock<T = never> = {
+  name: string;
+  target: "section" | "head" | "body";
+  available_if?: `{{ app.metafields.${string}.${string} }}`;
+  class?: string;
+  default?: ShopifyAppBlockDefault<T>;
+  javascript?: string;
+  locales?: {
+    [T: string]: {
+      [V: string]: string;
+    };
+  };
+  /* Max Settings: 25 - Max Content blocks: 6*/
+  settings?: (ShopifySettingsInput | ShopifyHeader | ShopifyParagraph)[];
+  stylesheet?: string;
+  tag?: "article" | "aside" | "div" | "footer" | "header" | "section";
+} & (
+  | {
+      enabled_on?: {
+        groups?: string[];
+        templates?: ShopifyTemplateTypes[];
+      };
+    }
+  | {
+      disabled_on?: {
+        groups?: string[];
+        templates?: ShopifyTemplateTypes[];
+      };
+    }
+);
 
 export type ShopifySettings = (
   | ({
@@ -499,8 +578,18 @@ export type _Metafield_liquid_product_reference = {
   type: "product_reference";
   value?: Omit<_Product_liquid, "metafields">;
 };
+
 export type _Metafield_liquid_list_product_reference = {
   type: "list.product_reference";
+  value?: Omit<_Product_liquid, "metafields">[];
+};
+
+export type _Metafield_liquid_collection_reference = {
+  type: "collection_reference";
+  value?: Omit<_Product_liquid, "metafields">;
+};
+export type _Metafield_liquid_list_collection_reference = {
+  type: "list.collection_reference";
   value?: Omit<_Product_liquid, "metafields">[];
 };
 
@@ -616,6 +705,8 @@ export type _Metafield_liquid =
     }
   | _Metafield_liquid_product_reference
   | _Metafield_liquid_list_product_reference
+  | _Metafield_liquid_collection_reference
+  | _Metafield_liquid_list_collection_reference
   | _Metafield_liquid_variant_reference
   | _Metafield_liquid_list_variant_reference
   | _Metafield_liquid_page_reference
@@ -645,7 +736,17 @@ export type _Variant_liquid = {
   price: number;
   requires_shipping: boolean;
   sku: string;
-  store_availabilities: {
+  taxable: boolean;
+  title: string;
+  url: string;
+  weight: number;
+  compare_at_price?: any;
+  featured_media?: _Media_liquid;
+  image?: any;
+  inventory_management?: any;
+  option2?: any;
+  option3?: any;
+  store_availabilities?: {
     available: boolean;
     location: {
       address: {};
@@ -658,16 +759,6 @@ export type _Variant_liquid = {
     pick_up_enabled: true;
     pick_up_time: string;
   }[];
-  taxable: boolean;
-  title: string;
-  url: string;
-  weight: number;
-  compare_at_price?: any;
-  featured_media?: _Media_liquid;
-  image?: any;
-  inventory_management?: any;
-  option2?: any;
-  option3?: any;
 };
 
 export type _Product_liquid = {
@@ -708,6 +799,7 @@ export type _Product_liquid = {
   price_min: number;
   price_varies: boolean;
   published_at: string;
+  selected_or_first_available_variant: _Variant_liquid;
   tags: string[];
   template_suffix: string;
   title: string;
@@ -737,13 +829,15 @@ export type _Media_liquid = {
   alt?: string;
   external_id?: string;
   host?: "youtube" | "vimeo";
-  sources?: {
-    format: "mp4" | "mov" | "m3u8";
-    height: number;
-    mime_type: string;
-    url: string;
-    width: number;
-  }[];
+  sources?: _Media_liquid_source[];
+};
+
+export type _Media_liquid_source = {
+  format: "mp4" | "mov" | "m3u8";
+  height: number;
+  mime_type: string;
+  url: string;
+  width: number;
 };
 
 export type _Collection_liquid = {

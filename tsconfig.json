@@ -1,6 +1,7 @@
 {
   "ts-node": {
     "require": ["tsconfig-paths/register"],
+    "exposeGC": true,
     // these options are overrides used only by ts-node
     // same as the --compilerOptions flag and the TS_NODE_COMPILER_OPTIONS environment variable
     "compilerOptions": {
