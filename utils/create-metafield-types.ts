@@ -25,6 +25,12 @@ const getType = async (type, validations: { name: string; type: string; value: s
     case "list.product_reference": {
       return `Omit<_Product_liquid, "metafields">[]`;
     }
+    case "collection_reference": {
+      return `Omit<_Collection_liquid, "metafields">`;
+    }
+    case "list.collection_reference": {
+      return `Omit<_Collection_liquid, "metafields">[]`;
+    }
     case "variant_reference": {
       return "_Variant_liquid_json";
     }
@@ -190,22 +196,30 @@ export async function createMetafieldTypes(gql: GraphqlClient) {
     }
     if (data.length > 0) {
       metafieldTypesContent.push(`export type ${getKeyType(owner)} = {`);
-      for (let index = 0; index < data.length; index++) {
-        const { key, type, namespace, validations } = data[index];
-        if (data.findIndex((item) => item.key === key) !== index) {
+      const namespaces = data.reduce<{ [key: string]: typeof data[number][] }>(
+        (acc, row) => {
+          acc[row.namespace] = [...(acc[row.namespace] || []), row];
+          return acc;
+        },
+        {}
+      );
+
+      for (const namespace in namespaces) {
+        const data = namespaces[namespace];
+        metafieldTypesContent.push(`  ${namespace}?: {`);
+
+        for (let index = 0; index < data.length; index++) {
+          const { key, type, validations } = data[index];
           metafieldTypesContent.push(
-            /[^\w_]/gi.test(key) || /[^\w_]/gi.test(namespace)
-              ? `  "${namespace}_${key}"?: ${await getType(type, validations)};`
-              : `  ${namespace}_${key}?: ${await getType(type, validations)};`
+            /[^\w_]/gi.test(key)
+              ? `  "${key}"?: ${await getType(type, validations)};`
+              : `  ${key}?: ${await getType(type, validations)};`
           );
-          return;
         }
-        metafieldTypesContent.push(
-          /[^\w_]/gi.test(key)
-            ? `  "${key}"?: ${await getType(type, validations)};`
-            : `  ${key}?: ${await getType(type, validations)};`
-        );
+
+        metafieldTypesContent.push(`  };`);
       }
+
       metafieldTypesContent.push("};\n");
     }
   }
